@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "rapportino-service": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
