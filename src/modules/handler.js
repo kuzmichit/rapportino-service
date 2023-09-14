@@ -4,7 +4,6 @@ import { renderDay, renderModalSignIn } from './renders.js';
 import {btnRegisterFormHandler} from './registers_form.js';
 
 export class MainHandler {
-
   
   constructor(date, elems) {
     this.elems = elems;
@@ -53,21 +52,23 @@ export class MainHandler {
   //le frecce per spostare le ore
   hourBtnLeft(e) {
     e.preventDefault();
-    if(this.elems.listHour.getBoundingClientRect().left <= 0 && this.elems.listHour.getBoundingClientRect().left + 150 <= 0) {this.elems.listHour.style.left = this.elems.listHour.getBoundingClientRect().left + 150 + 'px'
-  } else(this.elems.listHour.style.left = 0 + 'px')
-}
+    if(this.elems.listHour.getBoundingClientRect().left <= 0 && this.elems.listHour.getBoundingClientRect().left + 150 <= 0) {
+      this.elems.listHour.style.left = this.elems.listHour.getBoundingClientRect().left + 150 + 'px';
+    }
+    else(this.elems.listHour.style.left = 0 + 'px');
+  }
 
   hourBtnRight(e) {
     e.preventDefault();
     const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
-		const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
+    const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
     if(listHourStyleLeft >= leftMax && listHourStyleLeft - 150 >= leftMax) { 
-		this.elems.listHour.style.left = listHourStyleLeft - 150 + 'px';
-		console.log(true);
-  } 
-	else(this.elems.listHour.style.left = leftMax + 'px')
-	console.log(leftMax, listHourStyleLeft);
- }
+      this.elems.listHour.style.left = listHourStyleLeft - 150 + 'px';
+      console.log(true);
+    } 
+    else(this.elems.listHour.style.left = leftMax + 'px');
+    console.log(leftMax, listHourStyleLeft);
+  }
   //accerchiamento giorno
   dayItem(evt) {
     evt.preventDefault();
@@ -82,14 +83,15 @@ export class MainHandler {
   }
   //accerchiamento ora
   hour(evt) {
-   evt.preventDefault();
-    if(evt.target.classList.contains('item_checked')) {
+    evt.preventDefault();
+    if(evt.target.classList.contains('item_checked') ) {
       evt.target.classList.toggle('item_checked');
+      
       return;
     }
     //let hourChecked = evt.target;
     for (let hour of this.elems.listHour.children) {
-         if(hour.classList.contains('item_checked') ) hour.classList.remove('item_checked');
+      if(hour.classList.contains('item_checked') ) hour.classList.remove('item_checked');
     }
     evt.target.classList.add('item_checked');
 

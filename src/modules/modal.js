@@ -4,18 +4,18 @@
  *  this.title:"Test Confirm Window",
  *  this.yesCallback = resolve(true) || function() {};
  */
-const btnSubmit = document.getElementById('btnSubmit')
+const btnSubmit = document.getElementById('btnSubmit');
 class ConfirmBox {
   constructor( {
     title, messageBody, messageWorkedHour, yes, no, onBtnYes, onBtnNo, remove 
-  }, onClick ) {
+  }, onClick) {
     this.title = title || 'Errore';
     this.messageBody = messageBody || 'La scheda  non è stata registrata';
     this.messageWorkedHour = messageWorkedHour || null;
     this.yes = yes || 'Ok';
     this.no = no || 'No';
     this.remove = remove || function () {};
-    this.onBtnYes = onClick || function () {};
+    this.onBtnYes = onBtnYes || function () {};
     this.onBtnNo = onClick || function () {};
     this.Ui();
     this.eventHandler();
@@ -75,36 +75,34 @@ class ConfirmBox {
     this.remove(this.modalNo);
   }
 
-
   // Event And Callback Handler
   eventHandler() {
     // Append Event Listener to Yes Button
     this.modalYes.addEventListener('click', () => {
       this.onBtnYes(true);
       btnSubmit.disabled = false;
-      this.modal.remove(); 
+      this.modal.remove();
+      
+      return true;
 
     } );
 
     this.modalNo.addEventListener('click', () => {
-      this.onBtnNo(false)
+      this.onBtnNo(false);
       this.modal.remove();
-      document.getElementById("btnSubmit").disabled=false;
+      document.getElementById('btnSubmit').disabled=false;
     } );
   }
 
-
 }
 
-const asyncConfirm = (option) => new Promise( resolve => {
+const asyncConfirm = (option) => new Promise(resolve => {
   
   const onClick = (val) => {
-      resolve(val);
+    resolve(val);
   };
 
   let modal = new ConfirmBox(option, onClick);
 } ); 
-
-
 
 export {asyncConfirm, ConfirmBox};

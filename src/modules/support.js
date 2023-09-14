@@ -1,4 +1,4 @@
-import { ConfirmBox, asyncConfirm } from "./modal";
+import { ConfirmBox, asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 
 export const calendarsElements = {
@@ -45,21 +45,23 @@ export function isValid(str, regExp = /(\w+\b){1,}/g) {
   return regExp.test(str)?true:false;        
 }
 
-export function showError(message) {
+export async function translateErrorText(message) {
 
   switch (message) {
   case 'EMAIL_NOT_FOUND':
-    alert( 'La email non corretta, inserire nuovamente' );
-    break;      
+    showModalError( {messageBody: 'La email non corretta, inserire nuovamente', remove: (node) => this.remove(node)} );
+    
+    return 'La email non corretta, inserire nuovamente';
+     
   case 'INVALID_PASSWORD':
-    alert('La password non corretta, inserire nuovamente');
+    showModalError( {messageBody: 'La email non corretta, inserire nuovamente'} );
+    
+    return 'La password non corretta, inserire nuovamente';
 
-    break;
   case ' "TOO_MANY_ATTEMPTS_TRY_LATER':
-    alert('Fatti troppi tentativi, devi riprovare più tardi');
-    break;
+    return 'Sono fatti troppi tentativi, devi riprovare più tardi';
   default: 
-  alert('Errore generico prova a rifare più tardi');
+    return 'Errore generico riprova più tardi';
   }
 }
 
@@ -70,61 +72,65 @@ export const dateFormat = {
 
 export function getRapportinoFromLocal() {
 
-  if(localStorage.getItem('rapportino') === null)  localStorage.setItem('rapportino', '{}');
-  let rapportino = localStorage.getItem('rapportino')
+  if(localStorage.getItem('rapportino') === null) localStorage.setItem('rapportino', '{}');
+  let rapportino = localStorage.getItem('rapportino');
 
   return rapportino;
 }
 
-export function checkFillField({workedHours, building, description}) {
-    if(!workedHours) {
-      return errorMessage(ConfirmBox, {messageBody: 'Scegli le ore effettuate'});
-    }
-    else if(!isValid(building) ) {
-      return errorMessage(ConfirmBox, {messageBody:'Inserire il nome di cantiere valido'} );
-    }
-    else if(!isValid(description, /(\w|\s){10,}/) ) {
-      return errorMessage(ConfirmBox, {messageBody:'Inserire il lavoro svolto valido' } );
-    }
-    else return true;
+export function validateForm( {workedHours, building, description} ) {
+  if(!workedHours) {
+    return showModalError( {messageBody: 'Scegli le ore effettuate'} );
   }
+  else if(!isValid(building) ) {
+    return showModalError( {messageBody:'Inserire il nome di cantiere valido'} );
+  }
+  else if(!isValid(description, /(\w|\s){10,}/) ) {
+    return showModalError( {messageBody:'Inserire il lavoro svolto valido' } );
+  }
+
+  return true;
+}
 
 function isIncludingCurrentDate(rapportino, dateForCompare) {
     
-    if(rapportino && JSON.stringify(rapportino).includes(dateForCompare)) return true;
+  if(rapportino && JSON.stringify(rapportino).includes(dateForCompare) ) return true;
 }
 
-export function checkHoursOverflow(rapportino, dateFormatted, {workedHours}) {
+export function checkHoursOverflow(rapportino, dateFormatted, {workedHours} ) {
 
-  const dateForCompare = dateFormatted.slice(0, (dateFormatted.indexOf(202) + 4))
-   if (!isIncludingCurrentDate(rapportino, dateForCompare)) return true;
+  const dateForCompare = dateFormatted.slice(0, (dateFormatted.indexOf(202) + 4) );
+  if (!isIncludingCurrentDate(rapportino, dateForCompare) ) return true;
 
   let rapParsed = rapportino;
   let tmpHours = +workedHours;
 
-    for (let key in rapParsed) {
-        if( key.includes(dateForCompare) ) {
-        tmpHours += +rapParsed[key]['workedHours'];
-        }
+  for (let key in rapParsed) {
+    if(key.includes(dateForCompare) ) {
+      tmpHours += +rapParsed[key]['workedHours'];
     }
+  }
   if(tmpHours >= 12) {
-    alert('E stato superato il limite delle ore' );
+    alert('E stato superato il limite delle ore');
+    
     return false;
   }
+  
   return true;
 }
 
-export function errorMessage(ConfirmBox, option) {
-  let modal = new ConfirmBox(option);
-  modal.modalNo.remove();
+export function showModalError(option) {
+  let modal = asyncConfirm(option);
+  // modal.modalNo.remove();
+  console.log(modal);
 }
 
 export async function showReport (dateFormatted, workForm) {
   if(await asyncConfirm(
-   {title: 'Tutto ok', 
-   messageBody: 'La scheda del ' + dateFormatted + ' è stata inserita',
-   remove: (node) => node.remove(),
-   }
-   ) )
-   workForm.submit()
+    {title: 'Tutto ok', 
+      messageBody: 'La scheda del ' + dateFormatted + ' è stata inserita',
+      remove: (node) => node.remove(),
+    }
+  ) )
+    workForm.submit();
 }
