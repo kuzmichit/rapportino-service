@@ -1,4 +1,4 @@
-import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport, showError} from './support.js';
+import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
 import { renderModalSignIn } from './renders.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { getScheduleFromDatabase, authWithEmailAndPassword} from './service';
@@ -35,14 +35,13 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     const getToken = authWithEmailAndPassword(),
       idToken = await getToken(userData),
       currentData = await getScheduleFromDatabase(idToken, currentMonth), //controllo se si puo memorizzare la scheda
-      itsOverflow= checkHoursOverflow(currentData, dateFormatted, dataForm);
+      itsOverflow = checkHoursOverflow(currentData, dateFormatted, dataForm);
 
     if(itsOverflow) showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 
   }       
   catch (error) {
     console.log(error); // { "error": 400 }
   }
-  // {messageBody: e = 'Qualcosa non va, riprova più tardi' } ) }
 }
 
 function CreateObjectForDatabase(date, {building, description, workedHours} ) {

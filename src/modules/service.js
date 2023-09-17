@@ -11,7 +11,7 @@ const emulatorConfigURLs = {
   _databaseURL: 'http://127.0.0.1:9000/database/rapportino-service',
   _pathToResource: 'rapportino-service',
   _URL() { return this._databaseURL + this._pathToResource; },
-  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword'
+  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPasswor' // manca la d
 };
 
 // const fetchArguments = {
@@ -35,36 +35,43 @@ export function authWithEmailAndPassword() {
       
       return idToken ;
     }
-    
-    let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${config._API_KEY}`, {
-      method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify( {
-        email: email,
-        password: password,
-        returnSecureToken: true
-      } ) ,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    } );
-    let data = await response.json();
-    if(data && data.error) console.log('error auth');
+    try {
+      let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${config._API_KEY}`, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify( {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        } ) ,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      } );
   
-    idToken = data.idToken;
-    timePreviousRun = data;
+      let data = await response.json();
+      if(data && data.error) throw new Error(data.error); 
+  
+      idToken = data.idToken;
+      timePreviousRun = data;
 
-    return idToken;
-        
-  }; 
-  // .catch(error => {
-  //   if(400 <= error.code && 500 > error.code) {
-  //     let errorText = translateErrorText(error.message);
-  //     console.log(error);
+      return idToken;
+    }
+    catch (error) {
+      if(400 <= error.code && 500 > error.code) {
+        showError(error.message);
+        console.log(error);             
+      } 
+    }
+    // .catch(error => {
+    //   if(400 <= error.code && 500 > error.code) {
+    //     let errorText = translateErrorText(error.message);
+    //     console.log(error);
           
   // if( error.message === 'INVALID_PASSWORD' || error.message === 'EMAIL_NOT_FOUND' ) renderModalSignIn();
   // } 
-} 
+  }; 
+}
 
 // const showPopupToConfirmPutData = async () => {
 
