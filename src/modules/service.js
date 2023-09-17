@@ -31,7 +31,6 @@ export function authWithEmailAndPassword() {
   let timePreviousRun = null;
 
   return async function( {email, password} ) {
-    debugger;
     if(timePreviousRun && timePreviousRun > Date.now() - 3500) { 
       
       return idToken ;
@@ -50,9 +49,8 @@ export function authWithEmailAndPassword() {
       }
     } );
     let data = await response.json();
-    console.log(data);
     if(data && data.error) console.log('error auth');
-    // throw response.error;
+  
     idToken = data.idToken;
     timePreviousRun = data;
 

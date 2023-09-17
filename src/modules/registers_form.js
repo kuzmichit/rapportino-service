@@ -32,14 +32,12 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   try{
     
-    const getToken = authWithEmailAndPassword();
-    debugger;
-    const idToken = await getToken(userData);
-    const currentData = await getScheduleFromDatabase(idToken, currentMonth); //controllo se si puo memorizzare la scheda
-    const itsOwerflow= checkHoursOverflow(currentData, dateFormatted, dataForm);
+    const getToken = authWithEmailAndPassword(),
+      idToken = await getToken(userData),
+      currentData = await getScheduleFromDatabase(idToken, currentMonth), //controllo se si puo memorizzare la scheda
+      itsOverflow= checkHoursOverflow(currentData, dateFormatted, dataForm);
 
-    console.log(currentData.idToken) ;
-    if(itsOwerflow) showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 
+    if(itsOverflow) showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 
   }       
   catch (error) {
     console.log(error); // { "error": 400 }
@@ -56,41 +54,6 @@ function CreateObjectForDatabase(date, {building, description, workedHours} ) {
        workedHours,
      };
 }
-
-// function authWithEmailAndPassword(userData) {
-//   const apiKey = 'AIzaSyDMLR1XYP9NpvZbXZbBxBLEWB1Ssx528ms';
-
-//   return fetch(`http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
-//     method: 'POST',
-//     mode: 'cors',
-//     body: JSON.stringify( {
-//       email:userData.email,
-//       password: userData.password,
-//       returnSecureToken: true
-//     } ) ,
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   } )
-//     .then(response => response.json() )
-//     .then(response => {
-//       if(response && response.error) throw response.error;
-
-//       return response;
-//     } 
-//     )
-//     .then(data => {
-//       return data.idToken;
-//     } )
-//     .catch(error => {
-
-//       if(400 <= error.code && 500 > error.code) {
-//         showError(error.message, ConfirmBox);
-//         renderModalSignIn();
-//       } 
-//     }
-//     );
-// }
 
 const submitScheduleInDatabase = (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
   fetch(`http://127.0.0.1:9000/rapportino-service/${currentMonth}.json?auth=${idToken}`,
@@ -120,17 +83,10 @@ function saveDataInLocalStorage(data, dateFormatted) {
   localStorage.setItem('rapportino', JSON.stringify(rapportino) );
 } 
 
-// function getScheduleFromDatabase(idToken, currentMonth) {
-
-//   return fetch(`http://127.0.0.1:9000/rapportino-service/${currentMonth}.json?auth=${idToken}`)
-//     .then(response => response.json() )
-//     .catch(error => alert(error.message) );
-// }
-
 const showPopupToConfirmPutData = async (optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
-
   if (await asyncConfirm(optionConfirm, workForm) ) {
     submitScheduleInDatabase(dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm);
+    debugger;
     saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted); 
   }
 

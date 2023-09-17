@@ -15,7 +15,7 @@ class ConfirmBox {
     this.yes = yes || 'Ok';
     this.no = no || 'No';
     this.remove = remove || function () {};
-    this.onBtnYes = onBtnYes || function () {};
+    this.onBtnYes = onClick || function () {};
     this.onBtnNo = onClick || function () {};
     this.Ui();
     this.eventHandler();
@@ -82,9 +82,6 @@ class ConfirmBox {
       this.onBtnYes(true);
       btnSubmit.disabled = false;
       this.modal.remove();
-      
-      return true;
-
     } );
 
     this.modalNo.addEventListener('click', () => {
@@ -101,8 +98,7 @@ const asyncConfirm = (option) => new Promise(resolve => {
   const onClick = (val) => {
     resolve(val);
   };
-
-  let modal = new ConfirmBox(option, onClick);
+  new ConfirmBox(option, onClick);
 } ); 
 
 export {asyncConfirm, ConfirmBox};

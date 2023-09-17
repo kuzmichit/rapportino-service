@@ -121,6 +121,6 @@ export class MainHandler {
       } 
     };
     autoClickOnElement();
-    console.log('fired');
+    console.log('autoClickOnSubmit');
   }
 }
