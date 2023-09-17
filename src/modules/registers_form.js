@@ -34,7 +34,12 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     
     const getToken = authWithEmailAndPassword(),
       idToken = await getToken(userData);
-    if(!idToken) return;
+    if(!idToken) {
+      renderModalSignIn();
+
+      return; 
+    }
+
     const currentData = await getScheduleFromDatabase(idToken, currentMonth), //controllo se si puo memorizzare la scheda
       itsOverflow = checkHoursOverflow(currentData, dateFormatted, dataForm);
 

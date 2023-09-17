@@ -1,3 +1,4 @@
+import { renderModalSignIn } from './renders.js';
 import { ConfirmBox, asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 
@@ -45,24 +46,28 @@ export function isValid(str, regExp = /(\w+\b){1,}/g) {
   return regExp.test(str)?true:false;        
 }
 
-export async function showError(message) {
+export async function showTranslatedError(message) {
+  let errorMessage = ''; 
 
   switch (message) {
   case 'EMAIL_NOT_FOUND':
-    showModalError( {messageBody: 'La email non corretta, inserire nuovamente', remove: (node) => node.remove()} );
-    
-    return 'La email non corretta, inserire nuovamente';
+    errorMessage = 'La email non corretta, inserire nuovamente';
+    break;
      
   case 'INVALID_PASSWORD':
-    showModalError( {messageBody: 'La email non corretta, inserire nuovamente'} );
-    
-    return 'La password non corretta, inserire nuovamente';
+    errorMessage = 'La email non corretta, inserire nuovamente';
+    break;
 
   case ' "TOO_MANY_ATTEMPTS_TRY_LATER':
-    return 'Sono fatti troppi tentativi, devi riprovare più tardi';
+    errorMessage = 'Sono fatti troppi tentativi, riprova più tardi';
+    break;
+
   default: 
-    return 'Errore generico riprova più tardi';
+    errorMessage = 'Errore generico, riprova più tardi';
   }
+  
+  if(await showModalError( {messageBody: errorMessage, no: null} ) ) renderModalSignIn();
+  
 }
 
 export const dateFormat = {
@@ -119,17 +124,15 @@ export function checkHoursOverflow(rapportino, dateFormatted, {workedHours} ) {
   return true;
 }
 
-export function showModalError(option) {
-  let modal = asyncConfirm(option);
-  // modal.modalNo.remove();
-  console.log(modal);
+export async function showModalError(option) {
+  asyncConfirm(option);
 }
 
 export async function showReport (dateFormatted, workForm) {
   if(await asyncConfirm(
     {title: 'Tutto ok', 
       messageBody: 'La scheda del ' + dateFormatted + ' è stata inserita',
-      remove: (node) => node.remove(),
+      no: null,
     }
   ) )
     workForm.submit();

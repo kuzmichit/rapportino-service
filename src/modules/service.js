@@ -1,5 +1,5 @@
 import config from './../config';
-import {showError, getRapportinoFromLocal, showModalError, showReport} from './support.js';
+import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { renderModalSignIn } from './renders.js';
 const promise = new Promise( (resolve, reject) => {
@@ -59,17 +59,10 @@ export function authWithEmailAndPassword() {
     }
     catch (error) {
       if(400 <= error.code && 500 > error.code) {
-        showError(error.message);
-        console.log(error);             
+        showTranslatedError(error.message);     
       } 
     }
-    // .catch(error => {
-    //   if(400 <= error.code && 500 > error.code) {
-    //     let errorText = translateErrorText(error.message);
-    //     console.log(error);
-          
-  // if( error.message === 'INVALID_PASSWORD' || error.message === 'EMAIL_NOT_FOUND' ) renderModalSignIn();
-  // } 
+ 
   }; 
 }
 

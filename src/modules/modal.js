@@ -12,8 +12,8 @@ class ConfirmBox {
     this.title = title || 'Errore';
     this.messageBody = messageBody || 'La scheda  non è stata registrata';
     this.messageWorkedHour = messageWorkedHour || null;
-    this.yes = yes || 'Ok';
-    this.no = no || 'No';
+    this.yes = yes || 'Si';
+    this.no = !no || 'No';
     this.remove = remove || function () {};
     this.onBtnYes = onClick || function () {};
     this.onBtnNo = onClick || function () {};
@@ -64,13 +64,13 @@ class ConfirmBox {
     modalBody.appendChild(modalMessageWorkedHour);
     modalBody.appendChild(modalFooter);
     modalFooter.appendChild(modalYes);
-    modalFooter.appendChild(modalNo);
+    if(!this.no) modalFooter.appendChild(modalNo);
     // Append Modal to Body
     document.body.appendChild(modal);
 
     // Append Event Listener to Close Button like BIND
     this.modalYes = modalYes;
-    this.modalNo = modalNo;
+    this.modalNo = modalNo ;
     this.modal = modal;
     this.remove(this.modalNo);
   }
