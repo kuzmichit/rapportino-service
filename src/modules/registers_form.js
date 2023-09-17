@@ -33,8 +33,9 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   try{
     
     const getToken = authWithEmailAndPassword(),
-      idToken = await getToken(userData),
-      currentData = await getScheduleFromDatabase(idToken, currentMonth), //controllo se si puo memorizzare la scheda
+      idToken = await getToken(userData);
+    if(!idToken) return;
+    const currentData = await getScheduleFromDatabase(idToken, currentMonth), //controllo se si puo memorizzare la scheda
       itsOverflow = checkHoursOverflow(currentData, dateFormatted, dataForm);
 
     if(itsOverflow) showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 

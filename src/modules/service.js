@@ -11,7 +11,7 @@ const emulatorConfigURLs = {
   _databaseURL: 'http://127.0.0.1:9000/database/rapportino-service',
   _pathToResource: 'rapportino-service',
   _URL() { return this._databaseURL + this._pathToResource; },
-  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPasswor' // manca la d
+  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword' // manca la d
 };
 
 // const fetchArguments = {
@@ -50,7 +50,7 @@ export function authWithEmailAndPassword() {
       } );
   
       let data = await response.json();
-      if(data && data.error) throw new Error(data.error); 
+      if(data && data.error) throw data.error; 
   
       idToken = data.idToken;
       timePreviousRun = data;

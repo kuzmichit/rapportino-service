@@ -49,7 +49,7 @@ export async function showError(message) {
 
   switch (message) {
   case 'EMAIL_NOT_FOUND':
-    showModalError( {messageBody: 'La email non corretta, inserire nuovamente', remove: (node) => this.remove(node)} );
+    showModalError( {messageBody: 'La email non corretta, inserire nuovamente', remove: (node) => node.remove()} );
     
     return 'La email non corretta, inserire nuovamente';
      
