@@ -45,7 +45,7 @@ export function isValid(str, regExp = /(\w+\b){1,}/g) {
   return regExp.test(str)?true:false;        
 }
 
-export async function translateErrorText(message) {
+export async function showError(message) {
 
   switch (message) {
   case 'EMAIL_NOT_FOUND':
@@ -134,3 +134,13 @@ export async function showReport (dateFormatted, workForm) {
   ) )
     workForm.submit();
 }
+
+const autoclickOnElement = element => {
+
+  window.addEventListener('DOMContentLoaded', click);
+
+  function click() { 
+    const clickEvent = new Event('click');
+    element.dispatchEvent(clickEvent);
+  } 
+};

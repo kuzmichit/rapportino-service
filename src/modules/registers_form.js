@@ -1,7 +1,7 @@
-import {validateForm, isValid, showError, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
+import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport, showError} from './support.js';
 import { renderModalSignIn } from './renders.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
-import {authWithEmailAndPassword, getScheduleFromDatabase} from './service';
+import { getScheduleFromDatabase, authWithEmailAndPassword} from './service';
 
 export async function btnRegisterFormHandler(currentDate, evt) {
 
@@ -32,20 +32,15 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   try{
     
-    const getToken = await authWithEmailAndPassword(userData);
-    
-    const idToken = getToken();
+    const getToken = authWithEmailAndPassword();
     debugger;
-    const currentData = await getScheduleFromDatabase(idToken, currentMonth) //controllo se si puo memorizzare la scheda
-    
-      .then(data => console.log(data) )
-      .then(data => {
-        if(checkHoursOverflow(data, dateFormatted, dataForm) ) {
-          
-          showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 
-        } 
-      } ); 
-  }      
+    const idToken = await getToken(userData);
+    const currentData = await getScheduleFromDatabase(idToken, currentMonth); //controllo se si puo memorizzare la scheda
+    const itsOwerflow= checkHoursOverflow(currentData, dateFormatted, dataForm);
+
+    console.log(currentData.idToken) ;
+    if(itsOwerflow) showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 
+  }       
   catch (error) {
     console.log(error); // { "error": 400 }
   }

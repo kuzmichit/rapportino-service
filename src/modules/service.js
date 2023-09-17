@@ -1,5 +1,5 @@
 import config from './../config';
-import {translateErrorText, getRapportinoFromLocal, showModalError, showReport} from './support.js';
+import {showError, getRapportinoFromLocal, showModalError, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { renderModalSignIn } from './renders.js';
 const promise = new Promise( (resolve, reject) => {
@@ -25,19 +25,19 @@ const emulatorConfigURLs = {
 //   }
 // };
 
-export function authWithEmailAndPassword( {email, password} ) {
+export function authWithEmailAndPassword() {
 
   let idToken = '';
   let timePreviousRun = null;
 
-  return function() {
+  return async function( {email, password} ) {
     debugger;
     if(timePreviousRun && timePreviousRun > Date.now() - 3500) { 
-      console.log('object');
       
       return idToken ;
     }
-    fetch(`${emulatorConfigURLs._urlAuth}?key=${config._API_KEY}`, {
+    
+    let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${config._API_KEY}`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify( {
@@ -48,31 +48,25 @@ export function authWithEmailAndPassword( {email, password} ) {
       headers: {
         'Content-Type': 'application/json'
       }
-    } )
-      .then(response => response.json() )
-      .then(response => {
-        if(response && response.error) throw response.error;
+    } );
+    let data = await response.json();
+    console.log(data);
+    if(data && data.error) console.log('error auth');
+    // throw response.error;
+    idToken = data.idToken;
+    timePreviousRun = data;
 
-        return response;
-      } 
-      )
-      .then(data => {
-        idToken = data.idToken;
-        timePreviousRun = data;
+    return idToken;
         
-        return data.idToken;
-      } )
-      .catch(error => {
-        if(400 <= error.code && 500 > error.code) {
-          let errorText = translateErrorText(error.message);
-          console.log(error);
+  }; 
+  // .catch(error => {
+  //   if(400 <= error.code && 500 > error.code) {
+  //     let errorText = translateErrorText(error.message);
+  //     console.log(error);
           
-          return errorText;
-          // if( error.message === 'INVALID_PASSWORD' || error.message === 'EMAIL_NOT_FOUND' ) renderModalSignIn();
-        } 
-      } ); 
-  };
-}
+  // if( error.message === 'INVALID_PASSWORD' || error.message === 'EMAIL_NOT_FOUND' ) renderModalSignIn();
+  // } 
+} 
 
 // const showPopupToConfirmPutData = async () => {
 

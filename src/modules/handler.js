@@ -13,6 +13,7 @@ export class MainHandler {
     this.elems.targetCurrent.addEventListener('pointerdown', this.clickOnHandler.bind(this) );
     renderDay(date);
     this.addSubmit();
+    // this.test();
   }
   addSubmit() {
     this.btnSubmit.addEventListener('pointerdown', this.handleSubmit.bind(this) );
@@ -107,5 +108,19 @@ export class MainHandler {
       evt.target.style.display = 'none';
       renderModalSignIn();
     } 
+  }
+  static test() {
+
+    const autoClickOnElement = element => {
+      window.addEventListener('DOMContentLoaded', click);
+    
+      function click() { 
+        const clickEvent = new Event('pointerdown');
+        
+        document.querySelector('.submit__button').dispatchEvent(clickEvent);
+      } 
+    };
+    autoClickOnElement();
+    console.log('fired');
   }
 }
