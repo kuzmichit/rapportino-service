@@ -39,6 +39,6 @@ function btnLoginHandler() {
   
   document.querySelector('.submit__button').style.display = '';
   document.querySelector('.modal__container').style.display = 'none';
-  document.querySelector('.main__container').style = 'filter: blur(0)';
+  document.querySelector('.main__container').style = 'filter: blur(10px)';
   
 }

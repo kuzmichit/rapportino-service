@@ -6,13 +6,15 @@
  */
 const btnSubmit = document.getElementById('btnSubmit');
 class ConfirmBox {
+  containerStyle = document.querySelector('.main__container');
+  bodyStyle = document.body;
   constructor( {
     title, messageBody, messageWorkedHour, yes, no, onBtnYes, onBtnNo, remove 
   }, onClick) {
     this.title = title || 'Errore';
     this.messageBody = messageBody || 'La scheda  non è stata registrata';
     this.messageWorkedHour = messageWorkedHour || null;
-    this.yes = yes || 'Si';
+    this.yes = yes || 'Ok';
     this.no = !no || 'No';
     this.remove = remove || function () {};
     this.onBtnYes = onClick || function () {};
@@ -67,6 +69,8 @@ class ConfirmBox {
     if(!this.no) modalFooter.appendChild(modalNo);
     // Append Modal to Body
     document.body.appendChild(modal);
+    this.containerStyle.style = 'filter: blur(10px)';
+    this.bodyStyle.style = 'overflow: hidden';
 
     // Append Event Listener to Close Button like BIND
     this.modalYes = modalYes;
@@ -81,6 +85,8 @@ class ConfirmBox {
     this.modalYes.addEventListener('click', () => {
       this.onBtnYes(true);
       btnSubmit.disabled = false;
+      this.containerStyle.style = 'filter: blur(0)';
+      this.bodyStyle.style = 'overflow: visible';
       this.modal.remove();
     } );
 

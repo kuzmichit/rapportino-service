@@ -13,4 +13,4 @@ import { calendarsElements } from './modules/support.js';
 const date = new Date();
 
 let appLocal = new MainHandler(date, calendarsElements);
-MainHandler.test();
+// MainHandler.test();

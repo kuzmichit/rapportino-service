@@ -51,22 +51,22 @@ export async function showTranslatedError(message) {
 
   switch (message) {
   case 'EMAIL_NOT_FOUND':
-    errorMessage = 'La email non corretta, inserire nuovamente';
+    errorMessage = 'L\'email non è corretta, inserire nuovamente';
     break;
      
   case 'INVALID_PASSWORD':
-    errorMessage = 'La email non corretta, inserire nuovamente';
+    errorMessage = 'La password non è corretta, inserire nuovamente';
     break;
 
   case ' "TOO_MANY_ATTEMPTS_TRY_LATER':
-    errorMessage = 'Sono fatti troppi tentativi, riprova più tardi';
+    errorMessage = 'Fatti troppi tentativi, riprova più tardi';
     break;
 
   default: 
     errorMessage = 'Errore generico, riprova più tardi';
   }
   
-  if(await showModalError( {messageBody: errorMessage, no: null} ) ) renderModalSignIn();
+  if(await asyncConfirm( {messageBody: errorMessage, no: null} ) ) renderModalSignIn();
   
 }
 
@@ -83,18 +83,43 @@ export function getRapportinoFromLocal() {
   return rapportino;
 }
 
+// export function validateForm( {workedHours, building, description} ) {
+//   if(!workedHours) {
+//     return showModalError( {messageBody: 'Scegli le ore effettuate'} );
+//   }
+//   else if(!isValid(building) ) {
+//     return showModalError( {messageBody:'Inserire il nome di cantiere valido'} );
+//   }
+//   else if(!isValid(description, /(\w|\s){10,}/) ) {
+//     return showModalError( {messageBody:'Inserire il lavoro svolto valido' } );
+//   }
+
+//   return true;
+// }
+
 export function validateForm( {workedHours, building, description} ) {
-  if(!workedHours) {
-    return showModalError( {messageBody: 'Scegli le ore effettuate'} );
+
+  let errorMessage = '';
+  if(!workedHours) { 
+    errorMessage = 'Scegli le ore effettuate.' ;
   }
-  else if(!isValid(building) ) {
-    return showModalError( {messageBody:'Inserire il nome di cantiere valido'} );
+
+  else if(!isValid(building) ) { 
+    errorMessage = 'Inserire il nome di cantiere valido.';
   }
-  else if(!isValid(description, /(\w|\s){10,}/) ) {
-    return showModalError( {messageBody:'Inserire il lavoro svolto valido' } );
+  
+  else if(!isValid(description, /(\w|\s){10,}/) ) { 
+    errorMessage = 'Inserire il lavoro svolto valido.';
+  }
+
+  if(errorMessage) {
+    asyncConfirm( {messageBody: errorMessage, no: null} );
+    
+    return false;
   }
 
   return true;
+  
 }
 
 function isIncludingCurrentDate(rapportino, dateForCompare) {

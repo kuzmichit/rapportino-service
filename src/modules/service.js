@@ -83,12 +83,12 @@ export const submitScheduleInDatabase = (dataForSaveInDatabase, dateFormatted, c
     }
   )
     .then(response => {
-      if (!response.ok) {
+      if (!response && !response.ok) {
         throw new Error();
       }
       showReport(dateFormatted, workForm);
     } )
-    .catch( (e) => {return e; } ) ;
+    .catch(asyncConfirm( {messageBody: 'Errore generico, riprova più tardi'} ) ) ;
 };
 
 export async function getScheduleFromDatabase(idToken, currentMonth = 'agosto') {
