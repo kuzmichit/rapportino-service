@@ -32,18 +32,23 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     
     const getToken = authWithEmailAndPassword(),
       idToken = await getToken(userData);
-    if(!idToken) {
+    if(!idToken) throw new Error(); 
 
-      return; 
+    const currentData = await getScheduleFromDatabase(idToken, currentMonth);
+    if(!currentData) {
+      throw Error(); //controllo se si puo memorizzare la scheda
     }
+    const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
+    if(!itsOverflow) throw Error();
+    if(await showPopupToConfirmPutData(optionConfirm, workForm) ) {
+      
+      submitScheduleInDatabase(dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm);
+    } 
 
-    const currentData = await getScheduleFromDatabase(idToken, currentMonth), //controllo se si puo memorizzare la scheda
-      itsOverflow = checkHoursOverflow(currentData, dateFormatted, dataForm);
-
-    if(itsOverflow) showPopupToConfirmPutData(optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm); 
   }       
   catch (error) {
-    console.log(error); // { "error": 400 }
+    document.getElementById('btnSubmit').disabled = false;
+    alert(error);
   }
 }
 
@@ -57,17 +62,8 @@ function CreateObjectForDatabase(date, {building, description, workedHours} ) {
      };
 }
 
-function saveDataInLocalStorage(data, dateFormatted) {
-  let rapportino = JSON.parse(getRapportinoFromLocal() );
+const showPopupToConfirmPutData = async (optionConfirm, workForm) => {
+  if (await asyncConfirm(optionConfirm, workForm) ) return true;
   
-  rapportino[dateFormatted] = {...data[dateFormatted]};
-  localStorage.setItem('rapportino', JSON.stringify(rapportino) );
-} 
-
-const showPopupToConfirmPutData = async (optionConfirm, dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
-  if (await asyncConfirm(optionConfirm, workForm) ) {
-    submitScheduleInDatabase(dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm);
-    saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted); 
-  }
-
+  return false;  
 };

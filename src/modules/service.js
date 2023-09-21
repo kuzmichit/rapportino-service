@@ -8,7 +8,7 @@ const promise = new Promise( (resolve, reject) => {
 
 //const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
 const emulatorConfigURLs = {
-  _databaseURL: 'http://127.0.0.1:9000/database/rapportino-service',
+  _databaseURL: 'http://127.0.0.1:9000/',
   _pathToResource: 'rapportino-service',
   _URL() { return this._databaseURL + this._pathToResource; },
   _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword' // manca la d
@@ -31,7 +31,7 @@ export function authWithEmailAndPassword() {
   let timePreviousRun = null;
 
   return async function( {email, password} ) {
-    if(timePreviousRun && timePreviousRun > Date.now() - 3500) { 
+    if(timePreviousRun || timePreviousRun > (Date.now() - 3500) ) { 
       
       return idToken ;
     }
@@ -48,10 +48,9 @@ export function authWithEmailAndPassword() {
           'Content-Type': 'application/json'
         }
       } );
-  
       let data = await response.json();
       if(data && data.error) throw data.error; 
-  
+      
       idToken = data.idToken;
       timePreviousRun = data;
 
@@ -66,13 +65,8 @@ export function authWithEmailAndPassword() {
   }; 
 }
 
-// const showPopupToConfirmPutData = async () => {
-
-//       if (await asyncConfirm(optionConfirm, workForm) ) {
-//         alert('fired')
-//       }
 export const submitScheduleInDatabase = (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
-  fetch(`http://127.0.0.1:9000/rapportino-service/${currentMonth}.json?auth=${idToken}`,
+  fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`,
     {
       method: 'PATCH',
       body: JSON.stringify(dataForSaveInDatabase),
@@ -82,22 +76,36 @@ export const submitScheduleInDatabase = (dataForSaveInDatabase, dateFormatted, c
       },
     }
   )
-    .then(response => {
-      if (!response && !response.ok) {
-        throw new Error();
-      }
+    .then(response => { 
+      if(!response.ok) throw Error(); 
+    } ) 
+    .then( () => {
       showReport(dateFormatted, workForm);
+      saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted); 
     } )
-    .catch(asyncConfirm( {messageBody: 'Errore generico, riprova più tardi'} ) ) ;
+    .catch( ()=> asyncConfirm( {messageBody: 'Errore generico, riprova più tardi.', no: null} ) ) ;
 };
 
-export async function getScheduleFromDatabase(idToken, currentMonth = 'agosto') {
+export async function getScheduleFromDatabase(idToken, currentMonth) {
   try {
-    const response = await fetch(`${emulatorConfigURLs._databaseURL}/${currentMonth}.json?auth=${idToken}`);
+    const response = await fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`);
+    if(!response.ok) throw Error(response.error);
+    const data = await response.json();
+
+    if(data !== null) return data;
     
-    return await response.json();
+    return true;
   }
   catch (error) {
-    return alert(error.message);
+    asyncConfirm( { bodyMessage: error.message, no: null } );
+    
+    Promise.resolve(false);
   }
+} 
+
+function saveDataInLocalStorage(data, dateFormatted) {
+  let rapportino = JSON.parse(getRapportinoFromLocal() );
+  
+  rapportino[dateFormatted] = {...data[dateFormatted]};
+  localStorage.setItem('rapportino', JSON.stringify(rapportino) );
 } 

@@ -51,11 +51,15 @@ export async function showTranslatedError(message) {
 
   switch (message) {
   case 'EMAIL_NOT_FOUND':
-    errorMessage = 'L\'email non è corretta, inserire nuovamente';
+    errorMessage = 'L\'email non è corretta, inserire nuovamente.';
+    if(await asyncConfirm( {messageBody: errorMessage, no: null} ) )
+      renderModalSignIn();
     break;
      
   case 'INVALID_PASSWORD':
-    errorMessage = 'La password non è corretta, inserire nuovamente';
+    errorMessage = 'La password non è corretta, inserire nuovamente.';
+    if(await asyncConfirm( {messageBody: errorMessage, no: null} ) )
+      renderModalSignIn();
     break;
 
   case ' "TOO_MANY_ATTEMPTS_TRY_LATER':
@@ -66,8 +70,7 @@ export async function showTranslatedError(message) {
     errorMessage = 'Errore generico, riprova più tardi';
   }
   
-  if(await asyncConfirm( {messageBody: errorMessage, no: null} ) ) renderModalSignIn();
-  
+  if(await asyncConfirm( {messageBody: errorMessage, no: null} ) );
 }
 
 export const dateFormat = {
@@ -127,7 +130,7 @@ function isIncludingCurrentDate(rapportino, dateForCompare) {
   if(rapportino && JSON.stringify(rapportino).includes(dateForCompare) ) return true;
 }
 
-export function checkHoursOverflow(rapportino, dateFormatted, {workedHours} ) {
+export async function checkHoursOverflow(rapportino, dateFormatted, {workedHours} ) {
 
   const dateForCompare = dateFormatted.slice(0, (dateFormatted.indexOf(202) + 4) );
   if (!isIncludingCurrentDate(rapportino, dateForCompare) ) return true;
@@ -141,9 +144,7 @@ export function checkHoursOverflow(rapportino, dateFormatted, {workedHours} ) {
     }
   }
   if(tmpHours >= 12) {
-    alert('E stato superato il limite delle ore');
-    
-    return false;
+    if(await asyncConfirm( {messageBody: 'E stato superato il limite delle ore', no: null} ) ) return false;
   }
   
   return true;

@@ -4,10 +4,18 @@
  *  this.title:"Test Confirm Window",
  *  this.yesCallback = resolve(true) || function() {};
  */
-const btnSubmit = document.getElementById('btnSubmit');
 class ConfirmBox {
-  containerStyle = document.querySelector('.main__container');
-  bodyStyle = document.body;
+  #btnSubmit= document.getElementById('btnSubmit');
+  #containerStyle = document.querySelector('.main__container');
+  #bodyStyle = document.body;
+
+  #closeModal() {
+    this.#btnSubmit.disabled = false;
+    this.#containerStyle.style = 'filter: blur(0)';
+    this.#bodyStyle.style = 'overflow: visible';
+    this.modal.remove();
+  }
+  
   constructor( {
     title, messageBody, messageWorkedHour, yes, no, onBtnYes, onBtnNo, remove 
   }, onClick) {
@@ -15,7 +23,7 @@ class ConfirmBox {
     this.messageBody = messageBody || 'La scheda  non è stata registrata';
     this.messageWorkedHour = messageWorkedHour || null;
     this.yes = yes || 'Ok';
-    this.no = !no || 'No';
+    this.no = (no !== null) && 'No';
     this.remove = remove || function () {};
     this.onBtnYes = onClick || function () {};
     this.onBtnNo = onClick || function () {};
@@ -66,11 +74,11 @@ class ConfirmBox {
     modalBody.appendChild(modalMessageWorkedHour);
     modalBody.appendChild(modalFooter);
     modalFooter.appendChild(modalYes);
-    if(!this.no) modalFooter.appendChild(modalNo);
+    if(this.no) modalFooter.appendChild(modalNo);
     // Append Modal to Body
     document.body.appendChild(modal);
-    this.containerStyle.style = 'filter: blur(10px)';
-    this.bodyStyle.style = 'overflow: hidden';
+    this.#containerStyle.style = 'filter: blur(10px)';
+    this.#bodyStyle.style = 'overflow: hidden';
 
     // Append Event Listener to Close Button like BIND
     this.modalYes = modalYes;
@@ -84,16 +92,12 @@ class ConfirmBox {
     // Append Event Listener to Yes Button
     this.modalYes.addEventListener('click', () => {
       this.onBtnYes(true);
-      btnSubmit.disabled = false;
-      this.containerStyle.style = 'filter: blur(0)';
-      this.bodyStyle.style = 'overflow: visible';
-      this.modal.remove();
+      this.#closeModal();
     } );
 
     this.modalNo.addEventListener('click', () => {
       this.onBtnNo(false);
-      this.modal.remove();
-      document.getElementById('btnSubmit').disabled=false;
+      this.#closeModal();
     } );
   }
 
