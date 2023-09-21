@@ -32,7 +32,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     
     const getToken = authWithEmailAndPassword(),
       idToken = await getToken(userData);
-    if(!idToken) throw new Error(); 
+    if(!idToken) throw Error(); 
 
     const currentData = await getScheduleFromDatabase(idToken, currentMonth);
     if(!currentData) {
@@ -48,7 +48,6 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   }       
   catch (error) {
     document.getElementById('btnSubmit').disabled = false;
-    alert(error);
   }
 }
 

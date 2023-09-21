@@ -62,8 +62,12 @@ export async function showTranslatedError(message) {
       renderModalSignIn();
     break;
 
-  case ' "TOO_MANY_ATTEMPTS_TRY_LATER':
+  case 'TOO_MANY_ATTEMPTS_TRY_LATER':
     errorMessage = 'Fatti troppi tentativi, riprova più tardi';
+    break;
+    
+  case 'NetworkError when attempting to fetch resource.':
+    errorMessage = 'Errore di rete, riprova più tardi';
     break;
 
   default: 

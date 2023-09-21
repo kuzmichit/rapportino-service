@@ -25,13 +25,13 @@ const emulatorConfigURLs = {
 //   }
 // };
 
-export function authWithEmailAndPassword() {
+export const authWithEmailAndPassword = () => {
 
-  let idToken = '';
-  let timePreviousRun = null;
+  let timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
+  let idToken = JSON.parse(sessionStorage.getItem('idToken') );
 
   return async function( {email, password} ) {
-    if(timePreviousRun || timePreviousRun > (Date.now() - 3500) ) { 
+    if(timePreviousRun > (Date.now() - 350000) ) { 
       
       return idToken ;
     }
@@ -52,44 +52,46 @@ export function authWithEmailAndPassword() {
       if(data && data.error) throw data.error; 
       
       idToken = data.idToken;
-      timePreviousRun = data;
+      sessionStorage.setItem('idToken', JSON.stringify(idToken) );
+      sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
 
       return idToken;
     }
     catch (error) {
       if(400 <= error.code && 500 > error.code) {
         showTranslatedError(error.message);     
-      } 
+      }
+      else(showTranslatedError(error.message) );
     }
  
   }; 
-}
-
-export const submitScheduleInDatabase = (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
-  fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`,
-    {
-      method: 'PATCH',
-      body: JSON.stringify(dataForSaveInDatabase),
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }
-  )
-    .then(response => { 
-      if(!response.ok) throw Error(); 
-    } ) 
-    .then( () => {
-      showReport(dateFormatted, workForm);
-      saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted); 
-    } )
-    .catch( ()=> asyncConfirm( {messageBody: 'Errore generico, riprova più tardi.', no: null} ) ) ;
 };
 
-export async function getScheduleFromDatabase(idToken, currentMonth) {
+export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
+  try {
+    const response = await fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(dataForSaveInDatabase),
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      }
+    );
+    if(!response.ok) throw Error();
+    showReport(dateFormatted, workForm);
+    saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted); 
+  }
+  catch(error) { 
+    showTranslatedError(error.message); 
+  } 
+};
+
+export const getScheduleFromDatabase = async (idToken, currentMonth) => {
   try {
     const response = await fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`);
-    if(!response.ok) throw Error(response.error);
+    if(!response.ok) throw Error();
     const data = await response.json();
 
     if(data !== null) return data;
@@ -97,11 +99,9 @@ export async function getScheduleFromDatabase(idToken, currentMonth) {
     return true;
   }
   catch (error) {
-    asyncConfirm( { bodyMessage: error.message, no: null } );
-    
-    Promise.resolve(false);
-  }
-} 
+    showTranslatedError(error.message); 
+  } 
+}; 
 
 function saveDataInLocalStorage(data, dateFormatted) {
   let rapportino = JSON.parse(getRapportinoFromLocal() );
