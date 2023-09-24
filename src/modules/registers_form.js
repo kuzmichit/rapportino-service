@@ -1,7 +1,7 @@
 import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
 import { renderModalSignIn } from './renders.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
-import { getScheduleFromDatabase, authWithEmailAndPassword, submitScheduleInDatabase} from './service';
+import { getScheduleFromDatabase, authWithEmailAndPassword, submitScheduleInDatabase, getResourceFromDatabase} from './service';
 
 export async function btnRegisterFormHandler(currentDate, evt) {
 
@@ -34,6 +34,9 @@ export async function btnRegisterFormHandler(currentDate, evt) {
       idToken = await getToken(userData);
     if(!idToken) throw Error(); 
 
+    let resource = getResourceFromDatabase(idToken);
+    console.log(resource.json(), '--------resource');
+    alert(111111111);
     const currentData = await getScheduleFromDatabase(idToken, currentMonth);
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda

@@ -11,7 +11,8 @@ const emulatorConfigURLs = {
   _databaseURL: 'http://127.0.0.1:9000/',
   _pathToResource: 'rapportino-service',
   _URL() { return this._databaseURL + this._pathToResource; },
-  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword' // manca la d
+  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword', // manca la d
+  _orderByDay: '21 settembre 2023'
 };
 
 // const fetchArguments = {
@@ -109,3 +110,18 @@ function saveDataInLocalStorage(data, dateFormatted) {
   rapportino[dateFormatted] = {...data[dateFormatted]};
   localStorage.setItem('rapportino', JSON.stringify(rapportino) );
 } 
+
+export const getResourceFromDatabase = async (idToken) => {
+  try {
+    const response = await fetch(`${emulatorConfigURLs._databaseURL}/dinosaurs.json?orderBy="height"&startAt=3`);
+    if(!response.ok) throw Error();
+    const data = await response.json();
+    console.log(data);
+    if(data !== null) return data;
+    
+    return true;
+  }
+  catch (error) {
+    showTranslatedError(error.message); 
+  } 
+};
