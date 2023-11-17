@@ -1,4 +1,4 @@
-import { camelizeClass, isObject, deleteNode, isUserDataInLocalStorage} from './support.js';
+import { camelizeClass, isObject, deleteNodes, isUserDataInLocalStorage} from './support.js';
 import { CreateCalendar } from './calendar.js';
 import { renderDay, renderModalSignIn } from './renders.js';
 import {btnRegisterFormHandler} from './registers_form.js';
@@ -27,7 +27,7 @@ export class MainHandler {
   }
 
   calendarHeaderText() {
-    deleteNode(this.elems.placeToInsert);
+    deleteNodes(this.elems.placeToInsert);
     this.elems.month.classList.toggle('visually-hidden');
     this.elems.buttonLeft.classList.toggle('hidden');
     this.elems.buttonRight.classList.toggle('hidden');
@@ -41,12 +41,12 @@ export class MainHandler {
   }
 
   buttonRight() {
-    deleteNode(this.elems.placeToInsert);
+    deleteNodes(this.elems.placeToInsert);
     this.calendar(this.currentDate.setMonth(this.currentDate.getMonth() + 1) );
     renderDay(null, this.currentDate);
   }
   buttonLeft() {
-    deleteNode(this.elems.placeToInsert);
+    deleteNodes(this.elems.placeToInsert);
     this.calendar(this.currentDate.setMonth(this.currentDate.getMonth() - 1) );
     renderDay(null, this.currentDate);
   }

@@ -28,7 +28,7 @@ export function camelizeClass(nameClass) {
   return camelizeStr;
 }
 
-export function deleteNode(collection) {
+export function deleteNodes(collection) {
   while(collection.firstChild) {
     collection.firstChild.remove();
   }

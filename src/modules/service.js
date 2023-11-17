@@ -8,9 +8,11 @@ const promise = new Promise( (resolve, reject) => {
 
 //const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
 const emulatorConfigURLs = {
-  _databaseURL: 'http://127.0.0.1:9000/',
-  _pathToResource: 'rapportino-service',
-  _URL() { return this._databaseURL + this._pathToResource; },
+  _hostname: 'http://127.0.0.1:9000/',
+  _pathname: 'rapportino-service',
+  _search: '?search',
+  _hash: '#hash',
+  _URL() { return this._hostname + this._pathname; },
   _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword', // manca la d
   _orderByDay: '21 settembre 2023'
 };
@@ -70,7 +72,7 @@ export const authWithEmailAndPassword = () => {
 
 export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`,
+    const response = await fetch(`${emulatorConfigURLs._hostname}${emulatorConfigURLs._pathname}/${currentMonth}.json?auth=${idToken}`,
       {
         method: 'PATCH',
         body: JSON.stringify(dataForSaveInDatabase),
@@ -91,7 +93,7 @@ export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormat
 
 export const getScheduleFromDatabase = async (idToken, currentMonth) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._databaseURL}${emulatorConfigURLs._pathToResource}/${currentMonth}.json?auth=${idToken}`);
+    const response = await fetch(`${emulatorConfigURLs._hostname}${emulatorConfigURLs._pathname}/${currentMonth}.json?auth=${idToken}`);
     if(!response.ok) throw Error();
     const data = await response.json();
 
@@ -113,7 +115,7 @@ function saveDataInLocalStorage(data, dateFormatted) {
 
 export const getResourceFromDatabase = async (idToken) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._databaseURL}/dinosaurs.json?orderBy="height"&startAt=3&print=pretty`);
+    const response = await fetch(`${emulatorConfigURLs._hostname}/dinosaurs.json?orderBy="height"&startAt=3&print=pretty`);
     if(!response.ok) throw Error();
     const data = await response.json();
     console.log(data);

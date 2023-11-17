@@ -1,11 +1,12 @@
 export function CreateCalendar(place) {
   const placeToInsert = place;
-  
+
+  // TODO: sistemare mese che precede
   return function (date) {
     let currentDate = new Date(+date);
     currentDate.setDate(1);
     let month = currentDate.getMonth();
-    let listDay = "";
+    let listDay = '';
   
     // I giorni che precedono il promo di mese
     // с понедельника до первого дня месяца
@@ -30,7 +31,7 @@ export function CreateCalendar(place) {
       }
     }
     // Inserimento dell' elemento
-    placeToInsert.insertAdjacentHTML("beforeend", `${listDay}`);
+    placeToInsert.insertAdjacentHTML('beforeend', `${listDay}`);
   };
 }
   
