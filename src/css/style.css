@@ -3,6 +3,7 @@
 [class*="__container"] {
   max-width: 940px;
   margin: 0 auto;
+  padding: 0 2px;
 }
 
 body {
@@ -19,6 +20,11 @@ body {
   justify-content: flex-start;
   flex-direction: column;
 }
+
+.temp__container {
+  display: flex;
+}
+
 
 .header__container {
   margin: 1.5rem auto 1.5rem auto;
@@ -47,6 +53,30 @@ body {
 .header__img img {
   width: 100%;
   height: 100%;
+  /* transform: scaleY(0.5); */
+}
+
+.register-consult__tabs {
+
+  margin-top: 30px;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+  color: rgb(72, 72, 72);
+}
+
+.register__tab {
+  width: 50%;
+  padding: 8px;
+  background-color: lightgrey;
+}
+
+.consult__tab {
+  width: 50%;
+  background-color: lightcoral;
+  padding: 8px;
 }
 
 .get-data {
@@ -101,6 +131,7 @@ body {
   html {
     font-size: calc(20 * (100vw / 1280));
   }
+
 }
 
 @media(max-width: 767.98px) {
@@ -110,14 +141,14 @@ body {
   }
 
   .wrapper {
-    width: 100%;
+    /* max-width: 100%; */
   }
 }
 
 @media(max-width: 480px) {
 
   .wrapper {
-    max-width: 100%;
+    /* max-width: 100%; */
   }
 
   html {
@@ -128,7 +159,6 @@ body {
     font-size: 1.3rem;
   }
 
-  .header {}
 }
 
 .register-consult__tabs {}

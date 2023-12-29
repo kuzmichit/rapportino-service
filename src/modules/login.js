@@ -1,6 +1,32 @@
+/* 
+**aggiungere la croce di chiusure del modal
+*/
+
 import { isValid } from './support.js';
 
-export function initLoginForm() {
+export function renderModalSignIn() {
+  let modalSignIn = `<section class="login__container">
+  <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
+    <div class="form-input-material">
+      <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
+      <label for="username">Email</label></div>
+    <div class="form-input-material">
+      <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
+      <label for="password">Password</label>
+    </div>
+    <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
+  </form>
+</section>`;
+
+  const insertNode = document.querySelector('.temp__container');
+  insertNode.insertAdjacentHTML('beforeend', modalSignIn);
+  // insertableElem.style = 'filter: blur(0.5rem)';
+  document.querySelector('.header__container').classList.add('visually-hidden');
+
+  initLoginForm();
+}
+
+function initLoginForm() {
 
   const formLogin = document.getElementById('login-form');
   let btnGhost = formLogin['btn-ghost'];
