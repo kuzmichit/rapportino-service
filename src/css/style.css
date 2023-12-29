@@ -49,6 +49,25 @@ body {
   height: 100%;
 }
 
+.register-consult__tabs {
+	/* border: 1px solid #000; */
+	margin-top: 10px;
+	display: flex;
+	height: 50px;
+	align-items: center;
+	cursor: pointer;
+}
+.register__tab {
+	width: 50%;
+	padding: 8px;
+	background-color: lightgrey;
+}
+.consult__tab {
+	width: 50%;
+	background-color: lightcoral;
+	padding: 8px;
+}
+
 .get-data {
   display: flex;
   flex-direction: column;
