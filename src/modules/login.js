@@ -1,5 +1,6 @@
 /* 
-**aggiungere la croce di chiusure del modal
+* aggiungere la croce di chiusura del modal
+* registrazione recupero della password 
 */
 
 import { isValid } from './support.js';
@@ -20,17 +21,17 @@ export function renderModalSignIn() {
 
   const insertNode = document.querySelector('.temp__container');
   insertNode.insertAdjacentHTML('beforeend', modalSignIn);
-  // insertableElem.style = 'filter: blur(0.5rem)';
-  document.querySelector('.header__container').classList.add('visually-hidden');
+  document.querySelector('.header__hidden').classList.add('visually-hidden');
 
   initLoginForm();
+  console.log(document.getElementById('sign-in') ) 
+
 }
 
 function initLoginForm() {
 
-  const formLogin = document.getElementById('login-form');
-  let btnGhost = formLogin['btn-ghost'];
-  btnGhost.addEventListener('pointerdown', btnLoginHandler);
+  const btnLogin = document.getElementById('sign-in');
+  btnLogin.addEventListener('click', btnLoginHandler);
 }
 
 function UserData(email, password) {
@@ -43,28 +44,29 @@ function saveUserDataInSessionStorage(userData) {
 }
 
 function btnLoginHandler() {
-
+  console.log('click')
+  /*  
   const formLogin = document.getElementById('login-form'),
-    email = formLogin.email.value,
-    password = formLogin.password.value,
-    expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
-
+  email = formLogin.email.value,
+  password = formLogin.password.value,
+  expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
+  
   if(!isValid(email, expForEmail) ) {
     alert('L\'email non valida');
-
+    
     return;
   }
   if(!isValid(password) ) {
     alert('La password non valida');
-
+    
     return;
   }
-
+  
   let userData = new UserData(email, password);
   saveUserDataInSessionStorage(userData);
   
   document.querySelector('.submit__button').style.display = '';
   document.querySelector('.modal__container').style.display = 'none';
-  document.querySelector('.main__container').style = 'filter: blur(10px)';
+  document.querySelector('.main__container').style = 'filter: blur(10px)'; */
   
 }

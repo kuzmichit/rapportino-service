@@ -1,8 +1,9 @@
-import { renderModalSignIn } from './renders.js';
+import { renderModalSignIn } from './login';
 import { ConfirmBox, asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 
-export const calendarsElements = {
+// uncomment dopp index calendar
+/* export const calendarsElements = {
   buttonRight: calendar.querySelector('.button__right'),
   buttonLeft: calendar.querySelector('.button__left'),
   targetCurrent: calendar,
@@ -13,7 +14,7 @@ export const calendarsElements = {
   listHour: calendar.querySelector('.list__hour'),
   inputHour: calendar.querySelector('.input__hour'),
   listHourContainer: calendar.querySelector('.list__hour-container')
-};
+}; */
 
 export function camelizeClass(nameClass) {
   let str = nameClass;
@@ -168,7 +169,7 @@ export async function showReport (dateFormatted, workForm) {
     workForm.submit();
 }
 
-const autoclickOnElement = element => {
+export const autoClickOnElement = element => {
 
   window.addEventListener('DOMContentLoaded', click);
 

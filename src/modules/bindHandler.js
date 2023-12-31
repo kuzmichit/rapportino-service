@@ -1,8 +1,9 @@
-/* 
-*
- */
+/*
+*   
+*/
 
-const bindHandler = (selector) => {
+import {renderModalSignIn} from './login';
+const bindHandler = () => {
   
   const registrazione = document.querySelector('.register__tab');
   const consultazione = document.querySelector('.consult__tab');
@@ -12,13 +13,16 @@ const bindHandler = (selector) => {
   };
 
   const onRegistrazioneClick = () => {
-    console.log('register__tab'); 
+    renderModalSignIn();
+    // console.log('register__tab'); 
   }
 
   const onConsultazioneClick = () => {
     console.log('consult__tab');
-    
   }
+
+  callHandler(registrazione, onRegistrazioneClick)
+  callHandler(consultazione, onConsultazioneClick)
 };
 
-default export bindHandler;
+export default bindHandler;

@@ -12,44 +12,45 @@
   <div class="wrapper">
     <header class="header__container">
       <h1 class="header__title">Rapportino di lavoro giornaliero</h1>
-      <div class="header__img"><img src="./img/header_img.jpeg" alt="Imagine di fondo"></div>
-        <div class="register-consult__tabs">
-          <div class="register__tab">Registrazione</div>
-          <div class="consult__tab">Consultazione</div>
+      <div class="header__hidden visually-hidden">
+        <div class="header__img"><img src="./img/header_img.jpeg" alt="Imagine di fondo"></div>
+          <div class="register-consult__tabs">
+            <div class="register__tab">Registrazione</div>
+            <div class="consult__tab">Consultazione</div>
+          </div>
         </div>
-
     </header>
     <main class="main__container">
 
-      <!-- main page login -->
-      <!-- <div class="header__text-container">
+
+      <section class="login__container">
+        <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
+          <div class="form-input-material">
+            <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
+            <label for="username">Email</label></div>
+          <div class="form-input-material">
+            <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
+            <label for="password">Password</label>
+          </div>
+          <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
+          <h4 class="password__lost">Password dimenticata?</h4>
+          <hr />
+          <!-- <h3 class="register__title">Non hai un account?</h3> -->
+          <p class="register__text">Non hai un account? <a href="#"> Crea un account</a> per accedere a tutti i servizi
+            online</p>
+        </form>
+      </section>
+  </div>
+
+  <!-- main page login -->
+  <!-- <div class="header__text-container">
         <h3 class="header__text">Effettua login o registrati </h3>
       </div> -->
-      <!--
+  <!--
         TODO: sistemare login
       -->
-      <div class="login-page visually-hidden">
-        <div class="login__container">
-          <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
-            <div class="form-input-material">
-              <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-              <label for="username">Email</label></div>
-            <div class="form-input-material">
-              <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-              <label for="password">Password</label>
-            </div>
-            <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
-          </form>
-        </div>
-        <div class="register__container login-form">
-          <h3 class="register__title">Non hai un account?</h3>
-          <p class="register__text">Crea un account per accedere a tutti i servizi online</p>
-          <button class="register__button btn btn-ghost" id="btn-register" type="submit" onclick="return false">Registrati</button>
-        </div>
-      </div>
-
-      <!-- calender page -->
-      <!--
+  <!-- calender page -->
+  <!--
           <div class="calendar" id="calendar">
             <div class="calendar__container">
               <div class="calendar__header">
@@ -109,8 +110,8 @@
             </form>
           </div>
         </div> -->
-      <div class="temp__container"></div>
-    </main>
+  <div class="temp__container"></div>
+  </main>
   </div>
 </body>
 

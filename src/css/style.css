@@ -75,7 +75,7 @@ body {
 
 .consult__tab {
   width: 50%;
-  background-color: lightcoral;
+  background-color: rgb(255, 166, 1);
   padding: 8px;
 }
 
@@ -160,9 +160,3 @@ body {
   }
 
 }
-
-.register-consult__tabs {}
-
-.register__tab {}
-
-.consult__tab {}

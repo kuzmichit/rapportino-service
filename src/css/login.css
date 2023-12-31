@@ -24,7 +24,9 @@
   box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109), 0 1px 1px rgba(128, 128, 128, 0.155), 0 2.1px 2.1px rgba(128, 128, 128, 0.195), 0 4.4px 4.4px rgba(128, 128, 128, 0.241), 0 12px 12px rgba(128, 128, 128, 0.35);
 }
 
-.login-form h1 {}
+.login-form h1 {
+  font-size: 45px;
+}
 
 .btn {
   margin: 2rem 0 0.5rem 0;
@@ -97,9 +99,10 @@
   overflow: hidden;
   color: var(--btn-color);
   border: 1px solid var(--btn-border-color);
-  margin-top: 5rem;
+  margin-top: 3rem;
   width: 40%;
   border-radius: 16px;
+  cursor: pointer;
 }
 
 .btn-ghost:hover {
@@ -110,22 +113,32 @@
   transform: translateX(100%);
 }
 
-/* .register__container {
-  margin: 50px 0;
-  text-align: center;
+.password__lost {
+  margin-top: 2rem;
+  margin-bottom: 0;
 }
 
-.register__title {}
+hr {
+  width: 100%;
+  margin-top: 1rem;
+  color: #fff;
+}
 
 .register__text {
-  margin-top: 30px;
+
+  a {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    line-height: 1.5;
+  }
+
+  margin-top: 1rem;
   max-width: 90%;
 }
 
-.register__button {} */
 
-
-@media(max-width: 600px) {
+*/ @media(max-width: 576px) {
 
   .login__container {
     width: 90vw;
