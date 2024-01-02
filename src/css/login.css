@@ -116,6 +116,7 @@
 .password__lost {
   margin-top: 2rem;
   margin-bottom: 0;
+  cursor: pointer;
 }
 
 hr {
@@ -138,7 +139,7 @@ hr {
 }
 
 
-*/ @media(max-width: 576px) {
+@media(max-width: 576px) {
 
   .login__container {
     width: 90vw;
