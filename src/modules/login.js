@@ -1,8 +1,11 @@
 /* 
 * aggiungere la croce di chiusura del modal
 * registrazione recupero della password 
-* sistemare doppio login
-*/
+* premendo login controllare se validi dati
+  validi ===> chiudere la finestra, aprire calendario o la finestra consultare
+  non validi il messaggio fare conto dei tentativi dopo di tre bloccare
+
+   */
 
 import { isValid, deleteNodes, autoClickOnElement } from './support.js';
 import {asyncConfirm} from './modal.js';
@@ -46,7 +49,7 @@ function UserData(email, password) {
 }
 
 const saveUserDataInSessionStorage = userData => {
-  localStorage.setItem('userData', JSON.stringify(userData) );
+  sessionStorage.setItem('userData', JSON.stringify(userData) );
 }
 
 async function btnLoginHandler(btnLogin) {
@@ -71,21 +74,15 @@ async function btnLoginHandler(btnLogin) {
   const userData = new UserData(email, password),
     getToken = authWithEmailAndPassword(),
     idToken = await getToken(userData);
+
   if(!idToken) { btnLogin.disabled = false; }
   else {
     deleteNodes(insertNode)
     document.getElementById('calendar').classList.remove('visually-hidden')
     headerToHidden.classList.remove('visually-hidden')
+    saveUserDataInSessionStorage(userData)
   }
 
-  console.log('clickbtn')  
-
-  /* premendo login controllare se validi dati
-  validi ===> chiudere la finestra, aprire calendario o la finestra consultare
-  non validi il messaggio fare conto dei tentativi dopo di tre bloccare
-
-   */
-  
   // document.querySelector('.submit__button').style.display = '';
   // document.querySelector('.modal__container').style.display = 'none';
   // document.querySelector('.main__container').style = 'filter: blur(10px)';

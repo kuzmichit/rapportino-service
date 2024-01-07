@@ -1,5 +1,5 @@
 /*
-*   aggiungere lo stato active
+*  aggiungere lo stato active
 */
 
 import {renderModalSignIn} from './login';
@@ -7,19 +7,36 @@ import { autoClickOnElement } from './support';
 
 const bindHandler = () => {
   
-  const registrazione = document.querySelector('.register__tab');
-  const consultazione = document.querySelector('.consult__tab');
+  const registrazione = document.querySelector('.register__tab'),
+    consultazione = document.querySelector('.consult__tab'),
+    headerToHidden = document.querySelector('.header__hidden');
+
+  const checkUserInStorage = () => {
+    let result = (JSON.parse(sessionStorage.getItem('userData') ) !== null) ? true : false
+    
+    return result
+    
+  }
 
   const callHandler = (element, fn) => {
     element.addEventListener('click', fn);
   };
 
   const onRegistrazioneClick = () => {
-    renderModalSignIn();
-    // console.log('register__tab'); 
+
+    if(checkUserInStorage() ) {
+      document.getElementById('calendar').classList.remove('visually-hidden')
+      headerToHidden.classList.remove('visually-hidden')
+      
+    }
+    else {
+      renderModalSignIn();
+    }
   }
 
   const onConsultazioneClick = () => {
+    if(checkUserInStorage() ) return
+    renderModalSignIn();
     console.log('consult__tab');
   }
 

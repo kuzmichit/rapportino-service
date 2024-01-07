@@ -26,6 +26,7 @@ const emulatorConfigURLs = {
 // };
 
 export const authWithEmailAndPassword = () => {
+  console.log(process._API_KEY)
 
   let timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
   let idToken = JSON.parse(sessionStorage.getItem('idToken') );

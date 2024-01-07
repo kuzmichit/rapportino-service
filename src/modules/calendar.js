@@ -3,6 +3,7 @@ export function CreateCalendar(place) {
 
   // TODO: sistemare mese che precede
   // quando si sceglie il  giorno si chiude il calendar
+  // bloccare il tasto register__tab
    
   return function (date) {
     let currentDate = new Date(+date);
@@ -25,7 +26,7 @@ export function CreateCalendar(place) {
       currentDate.setDate(currentDate.getDate() + 1);
     }
   
-    // La compilazione con i giorni che seguono dopo l' ultimo di mese
+    // La compilazione con i giorni che seguono dopo l'ultimo di mese
     if (dayGet(currentDate) !== 0) {
       for (let i = dayGet(currentDate); i < 7; i++) {
         listDay += `<li class="day__item_opacity day ">${currentDate.getDate()}</li>`;

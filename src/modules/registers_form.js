@@ -36,7 +36,6 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
     let resource = getResourceFromDatabase(idToken);
     console.log(resource.json(), '--------resource');
-    alert(111111111);
     const currentData = await getScheduleFromDatabase(idToken, currentMonth);
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda
