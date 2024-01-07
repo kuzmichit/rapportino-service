@@ -1,5 +1,5 @@
 import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
-import { renderModalSignIn } from './renders.js';
+import { renderModalSignIn } from './login';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { getScheduleFromDatabase, authWithEmailAndPassword, submitScheduleInDatabase, getResourceFromDatabase} from './service';
 

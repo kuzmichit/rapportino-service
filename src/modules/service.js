@@ -2,9 +2,6 @@ import config from './../config';
 import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { renderModalSignIn } from './renders.js';
-const promise = new Promise( (resolve, reject) => {
-  resolve('ok');
-} );
 
 //const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
 const emulatorConfigURLs = {
@@ -39,7 +36,7 @@ export const authWithEmailAndPassword = () => {
       return idToken ;
     }
     try {
-      let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${config._API_KEY}`, {
+      let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${process._API_KEY}`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify( {

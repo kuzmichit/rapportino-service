@@ -7,13 +7,14 @@ import './css/login.css';
 import './css/modal.css';
 
 import header from './img/header_img.jpeg';
-import bindHandler from '../src/modules/bindHandler';
+import bindHandler from '../src/modules/chooseTab';
 
-// import { MainHandler } from './modules/mainHandler.js';
-// import { CreateCalendar } from './modules/calendar.js';
-// import { calendarsElements } from './modules/support.js';
+import { MainHandler } from './modules/mainHandler.js';
+import { CreateCalendar } from './modules/calendar.js';
+import { calendarsElements } from './modules/support.js';
 
-// let appLocal = new MainHandler(date, calendarsElements);
+const date = new Date();
+const appLocal = new MainHandler(date, calendarsElements);
 // MainHandler.test();
 
 bindHandler();

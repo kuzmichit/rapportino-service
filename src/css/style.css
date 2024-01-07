@@ -1,9 +1,8 @@
 /*---------------------*/
-.wrapper,
 [class*="__container"] {
   max-width: 940px;
   margin: 0 auto;
-  padding: 0 2px;
+  padding: 0 10px;
 }
 
 body {
@@ -123,10 +122,9 @@ body {
 
 @media(max-width: 1280px) {
 
-  .main__container {
-    max-width: 840px;
+  /* .main__container {
     margin: 0 auto;
-  }
+  } */
 
   html {
     font-size: calc(20 * (100vw / 1280));

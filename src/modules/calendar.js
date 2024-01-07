@@ -2,6 +2,8 @@ export function CreateCalendar(place) {
   const placeToInsert = place;
 
   // TODO: sistemare mese che precede
+  // quando si sceglie il  giorno si chiude il calendar
+   
   return function (date) {
     let currentDate = new Date(+date);
     currentDate.setDate(1);

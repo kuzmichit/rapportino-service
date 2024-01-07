@@ -3,7 +3,7 @@ import { ConfirmBox, asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 
 // uncomment dopp index calendar
-/* export const calendarsElements = {
+export const calendarsElements = {
   buttonRight: calendar.querySelector('.button__right'),
   buttonLeft: calendar.querySelector('.button__left'),
   targetCurrent: calendar,
@@ -14,7 +14,7 @@ const calendar = document.getElementById('calendar');
   listHour: calendar.querySelector('.list__hour'),
   inputHour: calendar.querySelector('.input__hour'),
   listHourContainer: calendar.querySelector('.list__hour-container')
-}; */
+};
 
 export function camelizeClass(nameClass) {
   let str = nameClass;
@@ -155,9 +155,9 @@ export async function checkHoursOverflow(rapportino, dateFormatted, {workedHours
   return true;
 }
 
-export async function showModalError(option) {
-  asyncConfirm(option);
-}
+// export async function showModalError(option) {
+//   asyncConfirm(option);
+// }
 
 export async function showReport (dateFormatted, workForm) {
   if(await asyncConfirm(
@@ -176,5 +176,7 @@ export const autoClickOnElement = element => {
   function click() { 
     const clickEvent = new Event('click');
     element.dispatchEvent(clickEvent);
+    console.log('autoClickOnElement')
+    
   } 
 };

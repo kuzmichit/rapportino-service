@@ -10,7 +10,7 @@ class ConfirmBox {
   #bodyStyle = document.body;
 
   #closeModal() {
-    this.#btnSubmit.disabled = false;
+    if(this.#btnSubmit) this.#btnSubmit.disabled = false; // sistemare in loginForm
     this.#containerStyle.style = 'filter: blur(0)';
     this.#bodyStyle.style = 'overflow: visible';
     this.modal.remove();
@@ -92,7 +92,7 @@ class ConfirmBox {
     // Append Event Listener to Yes Button
     this.modalYes.addEventListener('click', () => {
       this.onBtnYes(true);
-      this.#closeModal();
+      this.#closeModal();  
     } );
 
     this.modalNo.addEventListener('click', () => {

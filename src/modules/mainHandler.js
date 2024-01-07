@@ -1,6 +1,7 @@
 import { camelizeClass, isObject, deleteNodes, isUserDataInLocalStorage} from './support.js';
 import { CreateCalendar } from './calendar.js';
-import { renderDay, renderModalSignIn } from './renders.js';
+import { renderDay} from './renders.js';
+import { renderModalSignIn } from './login';
 import {btnRegisterFormHandler} from './registers_form.js';
 
 export class MainHandler {
@@ -11,8 +12,8 @@ export class MainHandler {
     this.currentDate = date;
     this.btnSubmit = document.getElementById('btnSubmit');
     this.elems.targetCurrent.addEventListener('pointerdown', this.clickOnHandler.bind(this) );
-    renderDay(date);
     this.addSubmit();
+    renderDay(date);
     // this.test();
   }
   addSubmit() {
