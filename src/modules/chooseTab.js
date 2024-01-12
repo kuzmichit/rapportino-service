@@ -5,6 +5,8 @@
 import {renderModalSignIn} from './login';
 import { autoClickOnElement } from './support';
 
+const apiKey = process.env.API_KEY;
+
 const bindHandler = () => {
   
   const registrazione = document.querySelector('.register__tab'),
@@ -23,6 +25,7 @@ const bindHandler = () => {
   };
 
   const onRegistrazioneClick = () => {
+    console.log(process.env)
 
     if(checkUserInStorage() ) {
       document.getElementById('calendar').classList.remove('visually-hidden')

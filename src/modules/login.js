@@ -1,5 +1,5 @@
 /* 
-* aggiungere la croce di chiusura del modal
+* aggiungere la croce di chiusura del modal????
 * registrazione recupero della password 
 * premendo login controllare se validi dati
   validi ===> chiudere la finestra, aprire calendario o la finestra consultare
