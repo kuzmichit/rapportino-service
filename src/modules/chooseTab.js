@@ -5,7 +5,7 @@
 import {renderModalSignIn} from './login';
 import { autoClickOnElement } from './support';
 
-const apiKey = process.env.API_KEY;
+const apiKey = process.env._API_KEY;
 
 const bindHandler = () => {
   
@@ -25,7 +25,7 @@ const bindHandler = () => {
   };
 
   const onRegistrazioneClick = () => {
-    console.log(process.env)
+    console.log(apiKey)
 
     if(checkUserInStorage() ) {
       document.getElementById('calendar').classList.remove('visually-hidden')
