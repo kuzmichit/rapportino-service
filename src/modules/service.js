@@ -1,4 +1,3 @@
-import config from './../config';
 import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { renderModalSignIn } from './renders.js';
