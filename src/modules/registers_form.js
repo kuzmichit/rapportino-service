@@ -30,12 +30,9 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   try{
     
-    const idToken = authWithEmailAndPassword(userData)
-    // idToken = await getToken(userData);
+    const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
 
-    let resource = getResourceFromDatabase(idToken);
-    console.log(resource.json(), '--------resource');
     const currentData = await getScheduleFromDatabase(idToken, currentMonth);
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda

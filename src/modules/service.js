@@ -1,3 +1,6 @@
+/*
+**controllare request
+*/
 import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { renderModalSignIn } from './renders.js';
@@ -27,9 +30,10 @@ const emulatorConfigURLs = {
 export const authWithEmailAndPassword = async ( {email, password} ) => {
   const apiKey = process.env._API_KEY;
   const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
+  let idToken = '';
 
   if(timePreviousRun > (Date.now() - 350000) ) { 
-    const idToken = JSON.parse(sessionStorage.getItem('idToken') );
+    idToken = JSON.parse(sessionStorage.getItem('idToken') );
       
     return idToken ;
   }
@@ -55,7 +59,7 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
     let data = await response.json();
     if(data && data.error) throw data.error; 
       
-    const idToken = data.idToken;
+    idToken = data.idToken;
     sessionStorage.setItem('idToken', JSON.stringify(idToken) );
     sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
 
@@ -68,7 +72,7 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
     else(showTranslatedError(error.message) );
   }
 
-  return null
+  return null;
 }; 
 
 export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {

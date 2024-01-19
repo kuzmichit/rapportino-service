@@ -1,5 +1,5 @@
 /*
-*  aggiungere lo stato active
+* aggiungere contenuto active
 */
 
 import {renderModalSignIn} from './login'
