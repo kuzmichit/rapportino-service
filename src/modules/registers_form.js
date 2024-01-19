@@ -30,8 +30,8 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   try{
     
-    const getToken = authWithEmailAndPassword(),
-      idToken = await getToken(userData);
+    const idToken = authWithEmailAndPassword(userData)
+    // idToken = await getToken(userData);
     if(!idToken) throw Error(); 
 
     let resource = getResourceFromDatabase(idToken);

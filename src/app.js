@@ -6,7 +6,7 @@ import './css/reset.css';
 import './css/login.css';
 import './css/modal.css';
 
-// import header from './img/header_img.jpeg';
+import header from './img/header_img.jpeg';
 import bindHandler from '../src/modules/chooseTab';
 
 import { MainHandler } from './modules/mainHandler.js';

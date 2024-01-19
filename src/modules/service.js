@@ -24,48 +24,52 @@ const emulatorConfigURLs = {
 //   }
 // };
 
-export const authWithEmailAndPassword = () => {
-  console.log(process._API_KEY)
+export const authWithEmailAndPassword = async ( {email, password} ) => {
+  const apiKey = process.env._API_KEY;
+  const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
 
-  let timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
-  let idToken = JSON.parse(sessionStorage.getItem('idToken') );
-
-  return async function( {email, password} ) {
-    if(timePreviousRun > (Date.now() - 350000) ) { 
+  if(timePreviousRun > (Date.now() - 350000) ) { 
+    const idToken = JSON.parse(sessionStorage.getItem('idToken') );
       
-      return idToken ;
-    }
-    try {
-      let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${process._API_KEY}`, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify( {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        } ) ,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      } );
-      let data = await response.json();
-      if(data && data.error) throw data.error; 
-      
-      idToken = data.idToken;
-      sessionStorage.setItem('idToken', JSON.stringify(idToken) );
-      sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
+    return idToken ;
+  }
 
-      return idToken;
-    }
-    catch (error) {
-      if(400 <= error.code && 500 > error.code) {
-        showTranslatedError(error.message);     
+  // return async function( {email, password} ) {
+  //   if(timePreviousRun > (Date.now() - 350000) ) { 
+      
+  //     return idToken ;
+  //   }
+  try {
+    let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${apiKey}`, {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify( {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      } ) ,
+      headers: {
+        'Content-Type': 'application/json'
       }
-      else(showTranslatedError(error.message) );
+    } );
+    let data = await response.json();
+    if(data && data.error) throw data.error; 
+      
+    const idToken = data.idToken;
+    sessionStorage.setItem('idToken', JSON.stringify(idToken) );
+    sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
+
+    return idToken;
+  }
+  catch (error) {
+    if(400 <= error.code && 500 > error.code) {
+      showTranslatedError(error.message);     
     }
- 
-  }; 
-};
+    else(showTranslatedError(error.message) );
+  }
+
+  return null
+}; 
 
 export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
   try {
@@ -99,7 +103,9 @@ export const getScheduleFromDatabase = async (idToken, currentMonth) => {
     return true;
   }
   catch (error) {
-    showTranslatedError(error.message); 
+    showTranslatedError(error.message);
+ 
+    return null;
   } 
 }; 
 
@@ -121,6 +127,8 @@ export const getResourceFromDatabase = async (idToken) => {
     return true;
   }
   catch (error) {
-    showTranslatedError(error.message); 
+    showTranslatedError(error.message);
+ 
+    return null;
   } 
 };
