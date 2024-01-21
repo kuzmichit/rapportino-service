@@ -38,11 +38,6 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
     return idToken ;
   }
 
-  // return async function( {email, password} ) {
-  //   if(timePreviousRun > (Date.now() - 350000) ) { 
-      
-  //     return idToken ;
-  //   }
   try {
     let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${apiKey}`, {
       method: 'POST',

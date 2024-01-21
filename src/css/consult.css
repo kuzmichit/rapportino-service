@@ -1,0 +1,62 @@
+.consulting-tab {
+	height: 43px;
+	width: 100%;
+	margin-top: 3vh;
+	display: flex;
+	justify-content: center;
+	flex: 1 1 100%;
+	border: 1px solid #f50a0a;
+}
+	.search-panel__btn {
+		background: rgb(118, 118, 118);
+		border: none;
+		border-bottom: solid 4px #b4b4b4;
+		color: white;
+		text-shadow: 0 -1px 0 #b4b4b4;
+		font-size: 1.5rem;
+		font-weight: bold;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		border-radius: 0.5em;
+	}
+
+	.search-panel__btn:hover {
+		background: #323232;
+		border: none;
+		border-bottom: solid 4px #323232;
+		color: white;
+		font-size: 1.5rem;
+		font-weight: bold;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		border-radius: 0.5em;
+	}
+
+
+	.search-panel__input {
+		width: 50vw;
+		height: 3rem;
+		font-size: 1.5rem;
+		padding-left: 1rem;
+		margin-right: 5%;
+	}
+
+@media (max-width: 490.98px) {
+
+	.search-panel {
+		min-width: 455px;
+		overflow: hidden;
+	}
+}
+
+.btn {
+	display: flex;
+	height: 3rem;
+	padding: 1rem 3rem;
+	display: flex;
+	align-items: center;
+	border-radius: 5%;
+	cursor: pointer;
+}
