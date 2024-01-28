@@ -1,9 +1,11 @@
 /*
-* aggiungere contenuto active
+** sistemare render fra le tab
+** settare il mese precedente
 */
 
 import {renderModalSignIn} from './login'
 import { autoClickOnElement } from './support'
+import consultHandle from './consult-handle'
 
 const apiKey = process.env._API_KEY
 const setActive = elem => {
@@ -20,7 +22,9 @@ const bindHandler = () => {
   
   const registrazione = document.querySelector('.register__tab'),
     consultazione = document.querySelector('.consult__tab'),
-    headerToHidden = document.querySelector('.header__hidden')
+    headerToHidden = document.querySelector('.header__hidden'),
+    calendar = document.getElementById('calendar'),
+    consultazioneForm = document.getElementById('consulting');
 
   const checkUserInStorage = () => {
     let result = (JSON.parse(sessionStorage.getItem('userData') ) !== null) ? true : false
@@ -29,8 +33,11 @@ const bindHandler = () => {
     
   }
 
-  const callHandler = (element, fn) => {
+  const addHandler = (element, fn) => {
     element.addEventListener('click', fn)
+  }
+  const rmHandler = (element, fn) => {
+    element.removeEventListener('click', fn)
   }
 
   const onRegistrazioneClick = () => {
@@ -38,8 +45,12 @@ const bindHandler = () => {
     setActive(registrazione)
 
     if(checkUserInStorage() ) {
-      document.getElementById('calendar').classList.remove('visually-hidden')
+      calendar.classList.remove('visually-hidden')
       headerToHidden.classList.remove('visually-hidden')
+      consultazioneForm.classList.add('visually-hidden')
+      rmHandler(registrazione, onRegistrazioneClick)
+      addHandler(consultazione, onRegistrazioneClick)
+      console.log('222')
       
     }
     else {
@@ -48,15 +59,23 @@ const bindHandler = () => {
   }
 
   const onConsultazioneClick = () => {
+    consultHandle()
     removeActive()
     setActive(consultazione)
-    if(checkUserInStorage() ) return
-    renderModalSignIn()
+    
+    if(checkUserInStorage() )  {
+      consultazioneForm.classList.remove('visually-hidden')
+      calendar.classList.add('visually-hidden')
+      rmHandler(consultazione, onRegistrazioneClick)
+      addHandler(registrazione, onRegistrazioneClick)
+
+    }
+    else renderModalSignIn()
+ 
   }
 
-  callHandler(registrazione, onRegistrazioneClick)
-  callHandler(consultazione, onConsultazioneClick)
-  //autoClickOnElement(registrazione); // --------------------------------------------
+  addHandler(registrazione, onRegistrazioneClick)
+  addHandler(consultazione, onConsultazioneClick)
+  autoClickOnElement(consultazione); // --------------------------------------------
 }
-
-export default bindHandler
+export default bindHandler;

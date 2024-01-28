@@ -1,6 +1,12 @@
 {
   "rules": {
     ".read": true,
-    ".write": "auth != null"
+    ".write": "auth != null",
+    "dinosaurs": {
+      ".indexOn": ["height", "length"]
+    },
+    "scores": {
+      ".indexOn": [".value"]
+    }
   }
 }

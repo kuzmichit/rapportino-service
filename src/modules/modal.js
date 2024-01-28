@@ -3,10 +3,15 @@
  * @param Object {title,Message,yes,no,yesCallback,noCallback}
  *  this.title:"Test Confirm Window",
  *  this.yesCallback = resolve(true) || function() {};
+ * 
+ * Per rendere messaggio senza aspettare 
+ * @esempio await asyncConfirm( {messageBody: 'Scegli la data o il mese!', no: null} )
+ * 
+ * Con la condizione usure il @confirmBox
  */
 class ConfirmBox {
   #btnSubmit= document.getElementById('btnSubmit');
-  #containerStyle = document.querySelector('.main__container');
+  #containerStyle = document.querySelector('.wrapper');
   #bodyStyle = document.body;
 
   #closeModal() {

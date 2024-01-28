@@ -117,7 +117,7 @@ function saveDataInLocalStorage(data, dateFormatted) {
 
 export const getResourceFromDatabase = async (idToken) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}/dinosaurs.json?orderBy="height"&startAt=3&print=pretty`);
+    const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"&startAt=50`);
     if(!response.ok) throw Error();
     const data = await response.json();
     console.log(data);

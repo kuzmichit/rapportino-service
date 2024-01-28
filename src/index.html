@@ -2,94 +2,112 @@
 <html lang="en">
 
 <head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Rapportino</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapportino</title>
 </head>
 
 <body>
- <div class="wrapper">
-  <header class="header__container">
-   <h1 class="header__title">Rapportino di lavoro giornaliero</h1>
-   <div class="header__hidden">
-    <div class="header__img"><img src="../src/img/header_img.jpeg" alt="Imagine di fondo"></div>
-     <div class="register-consult__tabs">
-      <div class="register__tab">Registrazione</div>
-      <div class="consult__tab">Consultazione</div>
-     </div>
-    </div>
-  </header>
-  <main class="main__container">
-   <!-- main page login -->
-   <!-- calender page -->
-   <div class="calendar visually-hidden" id="calendar">
-    <div class="calendar__container">
-     <div class="calendar__header">
-      <div class="button__left button-array hidden"></div>
-      <h1 class="calendar-header__text"></h1>
-      <div class="button__right button-array hidden"></div>
-     </div>
-     <div class="month visually-hidden">
-      <div class="list-dayname__container">
-       <ul class="list-dayname">
-        <li class="dayname">lu</li>
-        <li class="dayname">ma</li>
-        <li class="dayname">me</li>
-        <li class="dayname">gi</li>
-        <li class="dayname">ve</li>
-        <li class="dayname">sa</li>
-        <li class="dayname">do</li>
-       </ul>
-      </div>
-      <div class="day__container">
-       <ul class="list__day">
-       </ul>
-      </div>
-     </div>
-    </div>
-    <form id="work-data">
-     <div class="hour__container">
-      <div class="hour__btn-left button__left button-array"></div>
-      <div class="list__hour-container">
-       <ul class="list__hour">
-        <li class="hour">0.5</li>
-        <li class="hour">1</li>
-        <li class="hour item_checked">2</li>
-        <li class="hour">3</li>
-        <li class="hour">4</li>
-        <li class="hour">5</li>
-        <li class="hour">6</li>
-        <li class="hour">7</li>
-        <li class="hour">8</li>
-        <li class="hour">8.5</li>
-        <li class="hour">9</li>
-        <li class="hour">9.5</li>
-        <li class="hour">10</li>
-       </ul>
-      </div>
-      <div class="hour__btn-right button__right button-array"></div>
-     </div>
-     <div class="name-building building">
-      <h4 class="name-building__title title">Il nome di cantiere</h4>
-      <input value="Hostage" name="building" type="text" class="name-building__input" required>
+  <div class="wrapper">
+    <header class="header__container container">
+      <h1 class="header__title">Rapportino di lavoro giornaliero</h1>
+      <div class="header__hidden">
+        <div class="header__img"><img src="../src/img/header_img.jpeg" alt="Imagine di fondo"></div>
+          <div class="register-consult__tabs">
+            <div class="register__tab">Registrazione</div>
+            <div class="consult__tab">Consultazione</div>
+          </div>
+        </div>
+    </header>
+    <main class="main">
+      <!-- main page login -->
+      <!-- calender page -->
+      <div class="calendar visually-hidden container" id="calendar">
+        <div class="calendar__container">
+          <div class="calendar__header">
+            <div class="button__left button-array hidden"></div>
+            <h1 class="calendar-header__text"></h1>
+            <div class="button__right button-array hidden"></div>
+          </div>
+          <div class="month visually-hidden">
+            <div class="list-dayname__container">
+              <ul class="list-dayname">
+                <li class="dayname">lu</li>
+                <li class="dayname">ma</li>
+                <li class="dayname">me</li>
+                <li class="dayname">gi</li>
+                <li class="dayname">ve</li>
+                <li class="dayname">sa</li>
+                <li class="dayname">do</li>
+              </ul>
             </div>
-      <div class="description-work building">
-       <h4 class="description-work__title title">Descrizione di lavoro</h4>
-       <textarea  name="description" id="description" cols="20" rows="5" required>Lavoro fatto 1</textarea>
+            <div class="day__container">
+              <ul class="list__day">
+              </ul>
+            </div>
+          </div>
+        </div>
+        <form id="work-data">
+          <div class="hour__container">
+            <div class="hour__btn-left button__left button-array"></div>
+            <div class="list__hour-container">
+              <ul class="list__hour">
+                <li class="hour">0.5</li>
+                <li class="hour">1</li>
+                <li class="hour item_checked">2</li>
+                <li class="hour">3</li>
+                <li class="hour">4</li>
+                <li class="hour">5</li>
+                <li class="hour">6</li>
+                <li class="hour">7</li>
+                <li class="hour">8</li>
+                <li class="hour">8.5</li>
+                <li class="hour">9</li>
+                <li class="hour">9.5</li>
+                <li class="hour">10</li>
+              </ul>
+            </div>
+            <div class="hour__btn-right button__right button-array"></div>
+          </div>
+          <div class="name-building building">
+            <h4 class="name-building__title title">Il nome di cantiere</h4>
+            <input value="Hostage" name="building" type="text" class="name-building__input" required>
+            </div>
+            <div class="description-work building">
+              <h4 class="description-work__title title">Descrizione di lavoro</h4>
+              <textarea  name="description" id="description" cols="20" rows="5" required>Lavoro fatto 1</textarea>
+            </div>
+            <button type="button" name="btnSubmit" class="submit__button" id="btnSubmit">Registra la scheda</button>
+        </form>
       </div>
-      <button type="button" name="btnSubmit" class="submit__button" id="btnSubmit">Registra la scheda</button>
-    </form>
-   </div>
-   <section class="consulting-tab tab__container">
-    <input type = 'text' className = "search-panel__input" placeholder = 'Inserire giorno o mese'/>
-    <button className = 'search-panel__btn btn'>
-		 Cerca
- 	 </button>
-   </section>
-   <div class="temp__container"></div>
-  </main>
- </div>
+      <form class="container visually-hidden" id="consulting">
+        <div class="consulting">
+          <h3 class="consulting__title">Scegli la data o il mese:</h3>
+          <div class="consulting__fields">
+            <input class="consulting__date" type = 'date' name="date"/>
+            <select class="consulting__month" size="1" id="mesi" name="mesi">
+              <option>Scegliere il mese</option>
+              <option>Gennaio</option>
+              <option>Febbraio</option>
+              <option>Marzo</option>
+              <option>Aprile</option>
+              <option>Maggio</option>
+              <option>Giugno</option>
+              <option>Luglio</option>
+              <option>Agosto</option>
+              <option>Settembre</option>
+              <option>Ottobre</option>
+              <option>Novembre</option>
+              <option>Dicembre</option>
+            </select>
+            <button class ='consulting__btn' id="cerca">Cerca</button>
+          </div>
+        </div>
+      </form>
+      <div class="temp__container container"></div>
+    </main>
+  </div>
 </body>
 
 </html>
