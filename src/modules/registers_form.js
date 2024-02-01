@@ -8,7 +8,8 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   const workForm = evt.target.form,
     userData = JSON.parse(localStorage.getItem('userData') ),
     dateFormatted = currentDate.toLocaleString('it', dateFormat),
-    currentMonth = currentDate.toLocaleString('it', { month: 'long'} );
+    currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
+    currentYear = currentDate.getFullYear();
   
   const dataForm = {
     building : workForm.building.value,
@@ -30,18 +31,19 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   try{
     
+    const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth;
     const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
 
-    const currentData = await getScheduleFromDatabase(idToken, currentMonth);
+    const currentData = await getScheduleFromDatabase(idToken, _pathname);
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda
     }
     const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
     if(!itsOverflow) throw Error();
     if(await showPopupToConfirmPutData(optionConfirm, workForm) ) {
-      
-      submitScheduleInDatabase(dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm);
+
+      submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, idToken, workForm);
     } 
 
   }       

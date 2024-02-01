@@ -1,5 +1,6 @@
 /*
 **controllare request
+** finire post di dati
 */
 import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
@@ -8,7 +9,7 @@ import { renderModalSignIn } from './renders.js';
 //const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
 const emulatorConfigURLs = {
   _hostname: 'http://127.0.0.1:9000/',
-  _pathname: 'rapportino-service',
+  _pathname: 'zucca@gmailcom',
   _search: '?search',
   _hash: '#hash',
   _URL() { return this._hostname + this._pathname; },
@@ -70,9 +71,10 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
   return null;
 }; 
 
-export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormatted, currentMonth, idToken, workForm) => {
-  try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${emulatorConfigURLs._pathname}/${currentMonth}.json?auth=${idToken}`,
+export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, idToken, workForm) => 
+{
+ try {
+    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}.json?auth=${idToken}`,
       {
         method: 'PATCH',
         body: JSON.stringify(dataForSaveInDatabase),
@@ -84,16 +86,16 @@ export const submitScheduleInDatabase = async (dataForSaveInDatabase, dateFormat
     );
     if(!response.ok) throw Error();
     showReport(dateFormatted, workForm);
-    saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted); 
+    // saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted);
   }
   catch(error) { 
     showTranslatedError(error.message); 
   } 
 };
 
-export const getScheduleFromDatabase = async (idToken, currentMonth) => {
+export const getScheduleFromDatabase = async (idToken, _pathname) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${emulatorConfigURLs._pathname}/${currentMonth}.json?auth=${idToken}`);
+    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}.json?auth=${idToken}`);
     if(!response.ok) throw Error();
     const data = await response.json();
 

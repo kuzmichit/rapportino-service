@@ -5,7 +5,7 @@
 
 import {renderModalSignIn} from './login'
 import { autoClickOnElement } from './support'
-import consultHandle from './consult-handle'
+import consultHandle from './consult_handle'
 
 const apiKey = process.env._API_KEY
 const setActive = elem => {
@@ -76,6 +76,6 @@ const bindHandler = () => {
 
   addHandler(registrazione, onRegistrazioneClick)
   addHandler(consultazione, onConsultazioneClick)
-  autoClickOnElement(consultazione); // --------------------------------------------
+  autoClickOnElement(registrazione); // --------------------------------------------
 }
 export default bindHandler;

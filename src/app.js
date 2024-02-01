@@ -8,7 +8,7 @@ import './css/modal.css';
 import './css/consult.css'
 
 import header from './img/header_img.jpeg';
-import bindHandler from '../src/modules/chooseTab';
+import bindHandler from '../src/modules/choose_tab';
 
 import { MainHandler } from './modules/mainHandler.js';
 import { CreateCalendar } from './modules/calendar.js';
