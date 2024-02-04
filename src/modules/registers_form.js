@@ -9,8 +9,10 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     userData = JSON.parse(localStorage.getItem('userData') ),
     dateFormatted = currentDate.toLocaleString('it', dateFormat),
     currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
-    currentYear = currentDate.getFullYear();
-  
+    currentYear = currentDate.getFullYear(),
+    main = document.querySelector('.main'),
+    registerConsultTabs = document.querySelector('.register-consult__tabs');
+
   const dataForm = {
     building : workForm.building.value,
     description : workForm.description.value,           
@@ -18,6 +20,8 @@ export async function btnRegisterFormHandler(currentDate, evt) {
                   workForm.querySelector('.hour.item_checked').textContent
   };
 
+  main.style.display = 'none';
+  registerConsultTabs.style.display = 'none';
   const dataForSaveInDatabase = new CreateObjectForDatabase(dateFormatted, dataForm);
   
   if(!validateForm(dataForm) ) return; // controllo riempimento dei campi
@@ -29,26 +33,36 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     yes: 'Si'
   }; 
 
+  const refreshCalendar = () => {
+  document.getElementById('btnSubmit').style.display = ''
+  main.style.display = '';
+  registerConsultTabs.style.display = '';
+  }
+
   try{
-    
-    const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth;
     const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
+    const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
 
-    const currentData = await getScheduleFromDatabase(idToken, _pathname);
+    console.log(_pathname);
+
+    const currentData = await getScheduleFromDatabase(_pathname);
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda
     }
+
     const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
     if(!itsOverflow) throw Error();
-    if(await showPopupToConfirmPutData(optionConfirm, workForm) ) {
 
-      submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, idToken, workForm);
-    } 
+    if(await showPopupToConfirmPutData(optionConfirm, workForm) ) {
+      submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
+    } else { 
+      refreshCalendar();
+    }
 
   }       
   catch (error) {
-    document.getElementById('btnSubmit').disabled = false;
+    refreshCalendar();
   }
 }
 

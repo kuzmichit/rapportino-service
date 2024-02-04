@@ -101,14 +101,8 @@ export class MainHandler {
 
   //la registrazione della scheda o apertura la finestra Login
   handleSubmit(evt) {
-    this.btnSubmit.disabled = true;
-    if(isUserDataInLocalStorage() ) {
-      btnRegisterFormHandler(this.currentDate, evt);
-    }
-    else {
-      evt.target.style.display = 'none';
-      renderModalSignIn();
-    } 
+    this.btnSubmit.style.display = 'none';
+    btnRegisterFormHandler(this.currentDate, evt);
   }
   static test() {
 

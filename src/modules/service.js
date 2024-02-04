@@ -71,10 +71,10 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
   return null;
 }; 
 
-export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, idToken, workForm) => 
+export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, workForm) => 
 {
  try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}.json?auth=${idToken}`,
+    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`,
       {
         method: 'PATCH',
         body: JSON.stringify(dataForSaveInDatabase),
@@ -93,9 +93,9 @@ export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname,
   } 
 };
 
-export const getScheduleFromDatabase = async (idToken, _pathname) => {
+export const getScheduleFromDatabase = async (_pathname) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}.json?auth=${idToken}`);
+    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`);
     if(!response.ok) throw Error();
     const data = await response.json();
 
@@ -117,10 +117,11 @@ function saveDataInLocalStorage(data, dateFormatted) {
   localStorage.setItem('rapportino', JSON.stringify(rapportino) );
 } 
 
-export const getResourceFromDatabase = async (idToken) => {
+export const getResourceFromDatabase = async (_pathname) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"&startAt=50`);
+    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`);
     if(!response.ok) throw Error();
+
     const data = await response.json();
     console.log(data);
     if(data !== null) return data;
@@ -133,3 +134,5 @@ export const getResourceFromDatabase = async (idToken) => {
     return null;
   } 
 };
+
+// ricerca dinosauri const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"&startAt=50`);
