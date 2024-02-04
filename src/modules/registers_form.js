@@ -8,6 +8,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   const workForm = evt.target.form,
     userData = JSON.parse(localStorage.getItem('userData') ),
     dateFormatted = currentDate.toLocaleString('it', dateFormat),
+    dateToIndexFirebase = currentDate.toISOString().slice(0, 10),
     currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
     currentYear = currentDate.getFullYear(),
     main = document.querySelector('.main'),
@@ -22,7 +23,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   main.style.display = 'none';
   registerConsultTabs.style.display = 'none';
-  const dataForSaveInDatabase = new CreateObjectForDatabase(dateFormatted, dataForm);
+  const dataForSaveInDatabase = new CreateObjectForDatabase(dateFormatted, dataForm, dateToIndexFirebase);
   
   if(!validateForm(dataForm) ) return; // controllo riempimento dei campi
 
@@ -46,7 +47,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
     console.log(_pathname);
 
-    const currentData = await getScheduleFromDatabase(_pathname);
+    const currentData = await getScheduleFromDatabase(_pathname); //// TODO: 
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda
     }
@@ -66,13 +67,14 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   }
 }
 
-function CreateObjectForDatabase(date, {building, description, workedHours} ) {
+function CreateObjectForDatabase(date, {building, description, workedHours}, dateToIndexFirebase ) {
 
   this[`${date}`] =
      {
        building,
        description,
        workedHours,
+       date: dateToIndexFirebase,
      };
 }
 
