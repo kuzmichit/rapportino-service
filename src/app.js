@@ -6,6 +6,7 @@ import './css/reset.css';
 import './css/login.css';
 import './css/modal.css';
 import './css/consult.css'
+import './css/render.css'
 
 import header from './img/header_img.jpeg';
 import bindHandler from '../src/modules/choose_tab';

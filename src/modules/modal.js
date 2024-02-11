@@ -22,10 +22,11 @@ class ConfirmBox {
   }
   
   constructor( {
-    title, messageBody, messageWorkedHour, yes, no, onBtnYes, onBtnNo, remove 
+    title, messageDate, messageBody, messageWorkedHour, yes, no, onBtnYes, onBtnNo, remove 
   }, onClick) {
     this.title = title || 'Errore';
     this.messageBody = messageBody || 'La scheda  non è stata registrata';
+    this.messageDate = messageDate || null;
     this.messageWorkedHour = messageWorkedHour || null;
     this.yes = yes || 'Ok';
     this.no = (no !== null) && 'No';
@@ -51,13 +52,17 @@ class ConfirmBox {
     modalTitle.classList.add('confirm-modal-title');
     modalTitle.innerHTML = this.title;
 
-    let modalMessageDate = document.createElement('p');
-    modalMessageDate.classList.add('confirm-modal-message');
-    modalMessageDate.textContent = this.messageBody;
+    let modalmessageBody = document.createElement('p');
+    modalmessageBody.classList.add('confirm-modal-message');
+    modalmessageBody.textContent = this.messageBody;
       
     let modalMessageWorkedHour = document.createElement('p');
     modalMessageWorkedHour.classList.add('confirm-modal-message');
     modalMessageWorkedHour.textContent = this.messageWorkedHour;
+    
+    let modalMessageDate = document.createElement('p');
+    modalMessageDate.classList.add('confirm-modal-message');
+    modalMessageDate.textContent = this.messageDate;
 
     let modalFooter = document.createElement('div');
     modalFooter.classList.add('confirm-modal-footer');
@@ -75,8 +80,9 @@ class ConfirmBox {
     modalBody.appendChild(modalHeader);
     modalHeader.appendChild(modalTitle);
    
-    modalBody.appendChild(modalMessageDate);
+    modalBody.appendChild(modalmessageBody);
     modalBody.appendChild(modalMessageWorkedHour);
+    modalBody.appendChild(modalMessageDate);
     modalBody.appendChild(modalFooter);
     modalFooter.appendChild(modalYes);
     if(this.no) modalFooter.appendChild(modalNo);

@@ -29,8 +29,9 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   const optionConfirm = {
     title:'Registrare la scheda?',
-    messageBody: 'Cantiere: ' + dataForm.building,
+    messageBuild: 'Cantiere: ' + dataForm.building,
     messageWorkedHour:'Ore effettuate: ' + dataForm.workedHours,
+    messageDate: 'La data: ' + dateToIndexFirebase,
     yes: 'Si'
   }; 
 
@@ -47,7 +48,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
     console.log(_pathname);
 
-    const currentData = await getScheduleFromDatabase(_pathname); //// TODO: 
+    const currentData = await getResourceFromDatabase(_pathname);
     if(!currentData) {
       throw Error(); //controllo se si puo memorizzare la scheda
     }
@@ -55,7 +56,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
     if(!itsOverflow) throw Error();
 
-    if(await showPopupToConfirmPutData(optionConfirm, workForm) ) {
+    if(await showPopupToConfirmPutData(optionConfirm) ) { 
       submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
     } else { 
       refreshCalendar();

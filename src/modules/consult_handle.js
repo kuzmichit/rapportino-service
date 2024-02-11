@@ -17,15 +17,50 @@ const consultHandle = () => {
   const onBtnHandler = async (e) => {
     e.preventDefault()
     let URL_pathname;
+    let dataToRender;
+    
+    const render = dataToRender => {
+
+      const tempContainer = document.querySelector('.temp__container');
+      const createTbody = () => {
+
+        let tbody = '<tbody><tr>'
+        const values = Object.values(dataToRender)
+          console.log(values);
+        let rows = values.reduce( (row,item) => {
+          row += `<td>${item.date}</td><td>${item.workedHours}</td><td>${item.building}</td><td>${item.description}</td>`;
+          return row;
+        }, '' )
+
+        tbody += rows + '</tr></tbody>'
+
+        return tbody;
+      }
+      
+      let totalHours = 0;
+      for(let item in dataToRender) {
+        totalHours += +item.hours;
+      }
+
+      let table = `<table><thead><tr><th>Data</th><th class="render__hours">Ore </th><th class="render__building">Cantiere</th><th>Discrezione</th></tr></thead>`
+
+      table += createTbody();
+      
+      table += `</tr></tbody><tfoot><tr><th scope="row" colspan="3">Ore totale</th><td class="total__hours">${totalHours}</td></tr></tfoot></table>`
+
+      console.log(table);
+    }
 
     if(inputDate.value !== '') {
       const date = new Date(inputDate.value),
         localeDate = date.toLocaleString('it', dateFormat ),
         posForTrim = localeDate.indexOf('alle'),
-        searchDate = localeDate.slice(0, posForTrim - 1).replaceAll(' ', '%20'),
-        currentYear = date.getFullYear();
+        searchingDate = date.getDate(),
+        currentYear = date.getFullYear(),
+        currentMonth = date.toLocaleString('it', {month: 'long'} ),
+        _queryPath = `orderBy="$key"&startAt="${searchingDate} "&endAt="${searchingDate + 1 } "`
 
-        URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + searchDate + '.json?auth=';
+        URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?' + _queryPath + '&auth='; 
     }
     else if(selectMesi.value !== 'Scegliere il mese') { 
 
@@ -41,25 +76,24 @@ const consultHandle = () => {
       if(!idToken) throw Error(); 
        
       URL_pathname += idToken;
-      // TODO: 
-      //let searchData = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;;
-
-      const currentData = await getResourceFromDatabase(URL_pathname);
-      if(!currentData) {
+  
+      dataToRender = await getResourceFromDatabase(URL_pathname);
+      if(!dataToRender) {
         throw Error();
       }
 
-      console.log(currentData)
+      render(dataToRender);
+      console.log();
       
     }       
     catch (error) {
       // document.getElementById('btnCerca').disabled = false;
-      console.log('errore');
+      console.log('errore-------', error);
     }
 
-    // btnCerca.disabled = true
+    
 
-    // console.log(inputDate.value === 'a')
+    // btnCerca.disabled = true
   }
 
   btnCerca.addEventListener('click', onBtnHandler);

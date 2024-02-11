@@ -1,6 +1,5 @@
 /*
-**controllare request
-** finire post di dati
+** 
 */
 import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
@@ -123,7 +122,7 @@ export const getResourceFromDatabase = async (_pathname) => {
     if(!response.ok) throw Error();
 
     const data = await response.json();
-    console.log(data);
+    //console.log(data); //==================================== log
     if(data !== null) return data;
     
     return true;

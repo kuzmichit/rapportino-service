@@ -128,10 +128,6 @@ body {
 
 @media(max-width: 1280px) {
 
-  /* .main__container {
-    margin: 0 auto;
-  } */
-
   html {
     font-size: calc(20 * (100vw / 1280));
   }
@@ -143,11 +139,8 @@ body {
   html {
     font-size: calc(20 * (100vw/768));
   }
-
-  .wrapper {
-    /* max-width: 100%; */
-  }
 }
+
 
 @media(max-width: 480px) {
 

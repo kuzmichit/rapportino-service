@@ -4,9 +4,6 @@
     ".write": "auth != null",
     "dinosaurs": {
       ".indexOn": ["height", "length"]
-    },
-    "scores": {
-      ".indexOn": [".value"]
     }
   }
 }

@@ -91,20 +91,6 @@ export function getRapportinoFromLocal() {
   return rapportino;
 }
 
-// export function validateForm( {workedHours, building, description} ) {
-//   if(!workedHours) {
-//     return showModalError( {messageBody: 'Scegli le ore effettuate'} );
-//   }
-//   else if(!isValid(building) ) {
-//     return showModalError( {messageBody:'Inserire il nome di cantiere valido'} );
-//   }
-//   else if(!isValid(description, /(\w|\s){10,}/) ) {
-//     return showModalError( {messageBody:'Inserire il lavoro svolto valido' } );
-//   }
-
-//   return true;
-// }
-
 export function validateForm( {workedHours, building, description} ) {
 
   let errorMessage = '';

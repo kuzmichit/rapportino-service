@@ -1,0 +1,52 @@
+table {
+  width: 100%;
+  margin-top: 50px;
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  letter-spacing: 1px;
+}
+
+thead,
+tfoot {
+  background-color: rgb(228 240 245);
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+}
+
+td:last-of-type {
+  text-align: center;
+  width: 60%;
+}
+
+@media(max-width: 768px) {
+  td:last-of-type {
+    width: 45%;
+  }
+}
+
+tbody>tr:nth-of-type(even) {
+  background-color: rgb(237 238 242);
+}
+
+.render__building,
+.render__hours {
+  width: 10%;
+  text-align: center;
+}
+
+tfoot th {
+  text-align: right;
+}
+
+tfoot td {
+  font-weight: bold;
+  color: red;
+  text-align: left !important;
+  padding-left: 15px;
+}
+
+.total__hours {}

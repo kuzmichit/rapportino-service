@@ -1,9 +1,8 @@
-export function CreateCalendar(place) {
-  const placeToInsert = place;
+export function CreateCalendar(node) {
+  const placeToInsert = node;
 
   // TODO: sistemare mese che precede
-  // quando si sceglie il  giorno si chiude il calendar
-  // bloccare il tasto register__tab
+
    
   return function (date) {
     let currentDate = new Date(+date);
