@@ -78,6 +78,6 @@ const bindHandler = () => {
 
   addHandler(registrazione, onRegistrazioneClick)
   addHandler(consultazione, onConsultazioneClick)
-  autoClickOnElement(consultazione); // --------------------------------------------
+  //autoClickOnElement(consultazione); // --------------------------------------------
 }
 export default bindHandler;

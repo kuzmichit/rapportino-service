@@ -24,15 +24,16 @@ const consultHandle = () => {
       const tempContainer = document.querySelector('.temp__container');
       const createTbody = () => {
 
-        let tbody = '<tbody><tr>'
-        const values = Object.values(dataToRender)
-          console.log(values);
-        let rows = values.reduce( (row,item) => {
-          row += `<td>${item.date}</td><td>${item.workedHours}</td><td>${item.building}</td><td>${item.description}</td>`;
+        let tbody = '<tbody>'
+        const entries = Object.entries(dataToRender)
+
+        let rows = entries.reduce( (row,item) => {
+          row += `<tr><td>${item[0].slice(0, item[0].indexOf('alle') - 6)}</td><td>${item[1].workedHours}</td><td>${item[1].building}</td><td>${item[1].description}</td></tr>`;
+
           return row;
         }, '' )
 
-        tbody += rows + '</tr></tbody>'
+        tbody += rows + '</tbody>'
 
         return tbody;
       }
@@ -49,6 +50,7 @@ const consultHandle = () => {
       table += `</tr></tbody><tfoot><tr><th scope="row" colspan="3">Ore totale</th><td class="total__hours">${totalHours}</td></tr></tfoot></table>`
 
       console.log(table);
+      tempContainer.insertAdjacentHTML('beforeend', table)
     }
 
     if(inputDate.value !== '') {
@@ -82,22 +84,18 @@ const consultHandle = () => {
         throw Error();
       }
 
-      render(dataToRender);
-      console.log();
-      
+      //render(dataToRender);  
     }       
     catch (error) {
       // document.getElementById('btnCerca').disabled = false;
       console.log('errore-------', error);
     }
 
-    
-
     // btnCerca.disabled = true
   }
 
   btnCerca.addEventListener('click', onBtnHandler);
-  autoClickOnElement(btnCerca)
+  // autoClickOnElement(btnCerca)
 
 }
 
