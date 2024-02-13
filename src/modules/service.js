@@ -124,8 +124,6 @@ export const getResourceFromDatabase = async (_pathname) => {
     const data = await response.json();
     //console.log(data); //==================================== log
     if(data !== null) return data;
-    
-    return true;
   }
   catch (error) {
     showTranslatedError(error.message);

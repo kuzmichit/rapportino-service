@@ -1,13 +1,13 @@
 /*
-** sistemare render fra le tab
+** sistemare render fra le tab 
 ** settare il mese precedente
+** crea nuove istanze consult
 */
 
 import {renderModalSignIn} from './login'
 import { autoClickOnElement } from './support'
 import consultHandle from './consult_handle'
 
-const apiKey = process.env._API_KEY
 const setActive = elem => {
   elem.classList.add('active-tab')
 }
@@ -49,7 +49,7 @@ const bindHandler = () => {
       headerToHidden.classList.remove('visually-hidden')
       consultazioneForm.classList.add('visually-hidden')
       rmHandler(registrazione, onRegistrazioneClick)
-      addHandler(consultazione, onRegistrazioneClick)
+      addHandler(consultazione, onConsultazioneClick)
       console.log('reg__tab')
       
     }
@@ -59,14 +59,13 @@ const bindHandler = () => {
   }
 
   const onConsultazioneClick = () => {
-    consultHandle()
     removeActive()
     setActive(consultazione)
     
     if(checkUserInStorage() )  {
       consultazioneForm.classList.remove('visually-hidden')
       calendar.classList.add('visually-hidden')
-      rmHandler(consultazione, onRegistrazioneClick)
+      rmHandler(consultazione, onConsultazioneClick)
       addHandler(registrazione, onRegistrazioneClick)
       console.log('consult__tab')
 
@@ -78,6 +77,6 @@ const bindHandler = () => {
 
   addHandler(registrazione, onRegistrazioneClick)
   addHandler(consultazione, onConsultazioneClick)
-  //autoClickOnElement(consultazione); // --------------------------------------------
+  autoClickOnElement(consultazione); // --------------------------------------------
 }
 export default bindHandler;
