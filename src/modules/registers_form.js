@@ -29,7 +29,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   const optionConfirm = {
     title:'Registrare la scheda?',
-    messageBuild: 'Cantiere: ' + dataForm.building,
+    messageBody: 'Cantiere: ' + dataForm.building,
     messageWorkedHour:'Ore effettuate: ' + dataForm.workedHours,
     messageDate: 'La data: ' + dateToIndexFirebase,
     yes: 'Si'
@@ -45,8 +45,6 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
-
-    console.log(_pathname);
 
     const currentData = await getResourceFromDatabase(_pathname);
     if(!currentData) {

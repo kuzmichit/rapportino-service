@@ -50,8 +50,6 @@ const bindHandler = () => {
       consultazioneForm.classList.add('visually-hidden')
       rmHandler(registrazione, onRegistrazioneClick)
       addHandler(consultazione, onConsultazioneClick)
-      console.log('reg__tab')
-      
     }
     else {
       renderModalSignIn()
@@ -67,9 +65,6 @@ const bindHandler = () => {
       calendar.classList.add('visually-hidden')
       rmHandler(consultazione, onConsultazioneClick)
       addHandler(registrazione, onRegistrazioneClick)
-      console.log('consult__tab')
-
-
     }
     else renderModalSignIn()
  

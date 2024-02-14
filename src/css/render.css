@@ -52,10 +52,10 @@ tfoot th {
 }
 
 tfoot td {
-  font-weight: bold;
+  padding-left: 15px;
+  font-size: 1.5rem;
   color: red;
   text-align: left !important;
-  padding-left: 15px;
 }
 
 .total__hours {}

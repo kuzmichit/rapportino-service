@@ -21,8 +21,7 @@ class ConfirmBox {
     this.modal.remove();
   }
   
-  constructor( {
-    title, messageDate, messageBody, messageWorkedHour, yes, no, onBtnYes, onBtnNo, remove 
+  constructor( { title, messageBody, messageWorkedHour, messageDate, yes, no, onBtnYes, onBtnNo, remove 
   }, onClick) {
     this.title = title || 'Errore';
     this.messageBody = messageBody || 'La scheda  non è stata registrata';

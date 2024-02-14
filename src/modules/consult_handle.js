@@ -1,6 +1,6 @@
 /* 
-** fare la fetch alla data base con gli argomenti scelti
-** rendere i dati ricevuti
+** 
+** 
  */
 import {asyncConfirm} from './modal.js';
 import { getResourceFromDatabase, authWithEmailAndPassword } from './service.js';
@@ -39,10 +39,7 @@ const consultHandle = () => {
         return tbody;
       }
       
-      let totalHours = 0;
-      for(let item in dataToRender) {
-        totalHours += +item.hours;
-      }
+      const totalHours = Object.values(dataToRender).reduce((acc, item) => acc + +item.workedHours, 0 )
 
       let table = `<table><thead><tr><th>Data</th><th class="render__hours">Ore </th><th class="render__building">Cantiere</th><th>Discrezione</th></tr></thead>`
 
@@ -50,7 +47,6 @@ const consultHandle = () => {
       
       table += `</tr></tbody><tfoot><tr><th scope="row" colspan="3">Ore totale</th><td class="total__hours">${totalHours}</td></tr></tfoot></table>`
 
-      console.log(table);
       tempContainer.insertAdjacentHTML('beforeend', table)
     }
 
