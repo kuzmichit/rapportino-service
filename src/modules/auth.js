@@ -1,10 +1,13 @@
 /* 
-* aggiungere la croce di chiusura del modal????
 * registrazione recupero della password 
 * premendo login controllare se validi dati
-  validi ===> chiudere la finestra, aprire calendario o la finestra consultare
-  non validi il messaggio fare conto dei tentativi dopo di tre bloccare
 
+  validi ===> chiudere la finestra, aprire calendario o la finestra consultare 
+  non validi il messaggio fare conto dei tentativi dopo di tre bloccare
+  doppia finestra
+  
+** logout
+dopo errore render login
    */
 
 import { isValid, deleteNodes, autoClickOnElement } from './support.js';
@@ -12,9 +15,12 @@ import {asyncConfirm} from './modal.js';
 import {authWithEmailAndPassword} from './service.js';
 
 const insertNode = document.querySelector('.temp__container'),
+  loader = document.querySelector('.loader'),
   headerToHidden = document.querySelector('.header__hidden');
+let tabToShow = '';
 
-export function renderModalSignIn() {
+export function renderModalSignIn(chosenTab) {
+  tabToShow = chosenTab;
   let modalSignIn = `<section class="login__container">
     <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
       <div class="form-input-material">
@@ -68,23 +74,45 @@ async function btnLoginHandler(btnLogin) {
   if(!isValid(password) ) {
     if(await asyncConfirm( {messageBody: 'La password non è corretta', no: null} ) ) insertNode.classList.toggle('visually-hidden');
     
-    return;
+    return null;
   }
 
-  const userData = new UserData(email, password),
-    getToken = authWithEmailAndPassword(),
-    idToken = await getToken(userData);
+  const userData = new UserData(email, password);
+  try {
+    loader.classList.remove('visually-hidden')
+  
+    const idToken = await authWithEmailAndPassword(userData);
+  if(!idToken) throw Error(); 
+  }
+  catch (error) {
+    loader.classList.add('visually-hidden')
+    btnLogin.disabled = false;
 
-  if(!idToken) { btnLogin.disabled = false; }
-  else {
-    deleteNodes(insertNode)
-    document.getElementById('calendar').classList.remove('visually-hidden')
+    return null;
+  } 
+
+    loader.classList.add('visually-hidden')
     headerToHidden.classList.remove('visually-hidden')
+    deleteNodes(insertNode)
+    tabToShow.classList.remove('visually-hidden')
     saveUserDataInSessionStorage(userData)
-  }
 
   // document.querySelector('.submit__button').style.display = '';
   // document.querySelector('.modal__container').style.display = 'none';
   // document.querySelector('.main__container').style = 'filter: blur(10px)';
   
 }
+
+export const bindLogout = () => {
+  const logout = document.querySelector('.logout');
+
+  const onLogoutHandler = () => {
+    sessionStorage.removeItem('userData');
+    location.reload();
+    console.log('ok');
+
+  }
+  logout.addEventListener('click', onLogoutHandler);
+}
+
+

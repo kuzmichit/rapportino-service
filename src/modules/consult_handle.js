@@ -13,7 +13,8 @@ const consultHandle = () => {
   inputDate = form.elements.date,
   selectMesi = form.elements.mesi,
   userData = JSON.parse(localStorage.getItem('userData') ),
-  tempContainer = document.querySelector('.temp__container');
+  tempContainer = document.querySelector('.temp__container'),
+  loader = document.querySelector('.loader');
 
   const onBtnHandler = async (e) => {
     deleteNodes(tempContainer)
@@ -47,7 +48,8 @@ const consultHandle = () => {
       
       table += `</tr></tbody><tfoot><tr><th scope="row" colspan="3">Ore totale</th><td class="total__hours">${totalHours}</td></tr></tfoot></table>`
 
-      tempContainer.insertAdjacentHTML('beforeend', table)
+      loader.classList.add('visually-hidden')
+      tempContainer.insertAdjacentHTML('beforeend', table);
     }
 
     if(inputDate.value !== '') {
@@ -76,6 +78,8 @@ const consultHandle = () => {
     }
 
     try{
+       loader.classList.remove('visually-hidden')
+
       const idToken = await authWithEmailAndPassword(userData);
       if(!idToken) throw Error(); 
        
@@ -87,10 +91,11 @@ const consultHandle = () => {
       }
     }       
     catch (error) {
-      // document.getElementById('btnCerca').disabled = false;
-      console.log('errore-------', error);
+        loader.classList.add('visually-hidden')
+
+        return null;
     }
-    
+
     render(dataToRender);
     btnCerca.textContent = 'Nuova ricerca'  
   }

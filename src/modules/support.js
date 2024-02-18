@@ -1,4 +1,4 @@
-import { renderModalSignIn } from './login';
+import { renderModalSignIn } from './auth';
 import { ConfirmBox, asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 

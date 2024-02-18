@@ -3,7 +3,7 @@
 */
 import {showTranslatedError, getRapportinoFromLocal, showReport} from './support.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
-import { renderModalSignIn } from './renders.js';
+import { renderModalSignIn } from './auth.js';
 
 //const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
 const emulatorConfigURLs = {

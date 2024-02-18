@@ -4,7 +4,7 @@
 ** crea nuove istanze consult
 */
 
-import {renderModalSignIn} from './login'
+import {renderModalSignIn} from './auth'
 import { autoClickOnElement } from './support'
 import consultHandle from './consult_handle'
 
@@ -52,7 +52,7 @@ const bindHandler = () => {
       addHandler(consultazione, onConsultazioneClick)
     }
     else {
-      renderModalSignIn()
+      renderModalSignIn(calendar)
     }
   }
 
@@ -61,17 +61,18 @@ const bindHandler = () => {
     setActive(consultazione)
     
     if(checkUserInStorage() )  {
+      headerToHidden.classList.remove('visually-hidden')
       consultazioneForm.classList.remove('visually-hidden')
       calendar.classList.add('visually-hidden')
       rmHandler(consultazione, onConsultazioneClick)
       addHandler(registrazione, onRegistrazioneClick)
     }
-    else renderModalSignIn()
- 
+    else { renderModalSignIn(consultazioneForm)
+    }
   }
 
   addHandler(registrazione, onRegistrazioneClick)
   addHandler(consultazione, onConsultazioneClick)
-  autoClickOnElement(consultazione); // --------------------------------------------
+  //autoClickOnElement(consultazione); // --------------------------------------------
 }
 export default bindHandler;

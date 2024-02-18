@@ -1,7 +1,7 @@
 import { camelizeClass, isObject, deleteNodes, isUserDataInLocalStorage} from './support.js';
 import { CreateCalendar } from './calendar.js';
 import { renderDay} from './renders.js';
-import { renderModalSignIn } from './login';
+import { renderModalSignIn } from './auth.js';
 import {btnRegisterFormHandler} from './registers_form.js';
 
 export class MainHandler {

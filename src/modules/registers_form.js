@@ -1,5 +1,5 @@
 import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
-import { renderModalSignIn } from './login';
+import { renderModalSignIn } from './auth.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { getScheduleFromDatabase, authWithEmailAndPassword, submitScheduleInDatabase, getResourceFromDatabase} from './service';
 
@@ -12,6 +12,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
     currentYear = currentDate.getFullYear(),
     main = document.querySelector('.main'),
+    loader = document.querySelector('.loader'),
     registerConsultTabs = document.querySelector('.register-consult__tabs');
 
   const dataForm = {
@@ -42,6 +43,8 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   }
 
   try{
+    loader.classList.remove('visually-hidden')
+    
     const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
@@ -54,8 +57,12 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
     if(!itsOverflow) throw Error();
 
+    loader.classList.add('visually-hidden')
+    
     if(await showPopupToConfirmPutData(optionConfirm) ) { 
+      loader.classList.remove('visually-hidden')
       submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
+      loader.classList.add('visually-hidden')
     } else { 
       refreshCalendar();
     }
@@ -63,6 +70,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   }       
   catch (error) {
     refreshCalendar();
+    loader.classList.add('visually-hidden')
   }
 }
 
