@@ -1,8 +1,7 @@
-import { renderModalSignIn } from './auth';
+import { renderModalSignIn } from './login';
 import { ConfirmBox, asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 
-// uncomment dopp index calendar
 export const calendarsElements = {
   buttonRight: calendar.querySelector('.button__right'),
   buttonLeft: calendar.querySelector('.button__left'),

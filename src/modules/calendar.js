@@ -1,19 +1,18 @@
 export function CreateCalendar(node) {
   const placeToInsert = node;
 
-  // TODO: sistemare mese che precede
-
-   
   return function (date) {
     let currentDate = new Date(+date);
     currentDate.setDate(1);
     let month = currentDate.getMonth();
     let listDay = '';
+    
+    
   
     // I giorni che precedono il promo di mese
     // с понедельника до первого дня месяца
     for (let i = 0; i < dayGet(currentDate); i++) {
-      let previousMonth = new Date();
+      let previousMonth = new Date(+date);
       previousMonth.setDate(1);
       previousMonth.setDate(-(previousMonth.getDay() - i) + 2);
       listDay += `<li class="day__item_opacity day">${previousMonth.getDate()}</li>`;

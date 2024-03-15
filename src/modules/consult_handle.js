@@ -2,9 +2,11 @@
 ** 
 ** 
  */
-import {asyncConfirm} from './modal.js';
-import { getResourceFromDatabase, authWithEmailAndPassword } from './service.js';
 import { dateFormat, autoClickOnElement, deleteNodes } from './support.js';
+import { renderModalSignIn } from './login.js';
+import {asyncConfirm} from './modal.js';
+import { getResourceFromDatabase} from './firebase/service.js';
+import {authWithEmailAndPassword} from './firebase/auth_service.js'
 
 const consultHandle = () => {
 
@@ -60,12 +62,15 @@ const consultHandle = () => {
         _queryPath = `orderBy="$key"&startAt="${searchingDate} "&endAt="${searchingDate + 1 } "`
 
         URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?' + _queryPath + '&auth='; 
+        
+        inputDate.value = '';
     }
     else if(selectMesi.value !== '') { 
 
       const currentYear = new Date().getFullYear();
       URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + selectMesi.value.toLowerCase() + '.json?auth=';
 
+      selectMesi.value = '';
     } else { 
       document.querySelector('.register-consult__tabs').classList.add('visually-hidden')
       form.classList.add('visually-hidden')
@@ -86,12 +91,14 @@ const consultHandle = () => {
       URL_pathname += idToken;
   
       dataToRender = await getResourceFromDatabase(URL_pathname);
-      if(!dataToRender) {
+      if( Object.keys(dataToRender).length === 0 || dataToRender === undefined) {
         throw Error();
       }
     }       
     catch (error) {
         loader.classList.add('visually-hidden')
+        console.log('empty')
+        asyncConfirm( {messageBody: 'La data selezionata non presente in database!', messageDate: 'Scegliere un altra data.' ,  no: null} )
 
         return null;
     }

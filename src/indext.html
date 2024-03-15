@@ -5,92 +5,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://accounts.google.com/gsi/client" defer></script>
   <title>Rapportino</title>
 </head>
 
 <body>
   <div class="main__container">
     <header class="header">
-      <h1 class="header__title">Rapportino di lavoro giornaliero</h1>
-      <div class="header__img"><img src="#" alt="Imagine di fondo"></div>
+
     </header>
     <main>
-      <!-- <div class="login-page visually-hidden">
-        <div class="login__container">
-          <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
-            <div class="form-input-material">
-              <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-              <label for="username">Email</label></div>
-            <div class="form-input-material">
-              <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-              <label for="password">Password</label>
-            </div>
-            <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
-          </form>
-        </div>
-        <div class="register__container login-form">
-          <h3 class="register__title">Non hai un account?</h3>
-          <p class="register__text">Crea un account per accedere a tutti i servizi online</p>
-          <button class="register__button btn btn-ghost" id="btn-register" type="submit" onclick="return false">Registrati</button>
-        </div>
-      </div> -->
-      <div class="calendar" id="calendar">
-        <div class="calendar__container">
-          <div class="calendar__header">
-            <div class="button__left button-array hidden"></div>
-            <h1 class="calendar-header__text"></h1>
-            <div class="button__right button-array hidden"></div>
-          </div>
-          <div class="month visually-hidden">
-            <div class="list-dayname__container">
-              <ul class="list-dayname">
-                <li class="dayname">lu</li>
-                <li class="dayname">ma</li>
-                <li class="dayname">me</li>
-                <li class="dayname">gi</li>
-                <li class="dayname">ve</li>
-                <li class="dayname">sa</li>
-                <li class="dayname">do</li>
-              </ul>
-            </div>
-            <div class="day__container">
-              <ul class="list__day">
-              </ul>
-            </div>
-          </div>
-        </div>
-        <form id="work-data">
-          <div class="hour__container">
-            <div class="hour__btn-left button__left button-array"></div>
-            <div class="list__hour-container">
-              <ul class="list__hour">
-                <li class="hour">0.5</li>
-                <li class="hour">1</li>
-                <li class="hour">2</li>
-                <li class="hour">3</li>
-                <li class="hour">4</li>
-                <li class="hour">5</li>
-                <li class="hour">6</li>
-                <li class="hour">7</li>
-                <li class="hour">8</li>
-                <li class="hour">8.5</li>
-                <li class="hour">9</li>
-                <li class="hour">9.5</li>
-                <li class="hour">10</li>
-              </ul>
-            </div>
-            <div class="hour__btn-right button__right button-array"></div>
-          </div>
-          <div class="name-building building">
-            <h4 class="name-building__title title">Il nome di cantiere</h4>
-            <input value="" name="building" type="text" class="name-building__input" required>
-          </div>
-            <div class="description-work building">
-              <h4 class="description-work__title title">Descrizione di lavoro</h4>
-              <textarea  name="description" id="description" cols="20" rows="5" required></textarea>
-            </div>
-            <button type="button" name="btnSubmit" class="submit__button" id="btnSubmit">Registra la scheda</button>
-        </form>
+      <div id="g_id_onload" data-client_id="482515197259-4kfbochdgiikcpgkivj6jcthvocetpbc.apps.googleusercontent.com"
+        data-login_uri="https://la-sceda-di-lavoro.firebaseapp.com" data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="left">
       </div>
     </main>
   </div>

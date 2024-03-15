@@ -12,7 +12,7 @@ dopo errore render login
 
 import { isValid, deleteNodes, autoClickOnElement } from './support.js';
 import {asyncConfirm} from './modal.js';
-import {authWithEmailAndPassword} from './service.js';
+import {authWithEmailAndPassword} from './firebase/auth_service.js';
 
 const insertNode = document.querySelector('.temp__container'),
   loader = document.querySelector('.loader'),
@@ -107,7 +107,7 @@ export const bindLogout = () => {
   const logout = document.querySelector('.logout');
 
   const onLogoutHandler = () => {
-    sessionStorage.removeItem('userData');
+    sessionStorage.clear();
     location.reload();
     console.log('ok');
 

@@ -1,7 +1,8 @@
 import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
-import { renderModalSignIn } from './auth.js';
+import { renderModalSignIn } from './login.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
-import { getScheduleFromDatabase, authWithEmailAndPassword, submitScheduleInDatabase, getResourceFromDatabase} from './service';
+import { getScheduleFromDatabase, submitScheduleInDatabase, getResourceFromDatabase} from './firebase/service.js';
+import { authWithEmailAndPassword } from './firebase/auth_service.js';
 
 export async function btnRegisterFormHandler(currentDate, evt) {
 
@@ -31,8 +32,8 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   const optionConfirm = {
     title:'Registrare la scheda?',
     messageBody: 'Cantiere: ' + dataForm.building,
+    secondRow: 'La data: ' + dateToIndexFirebase,
     messageWorkedHour:'Ore effettuate: ' + dataForm.workedHours,
-    messageDate: 'La data: ' + dateToIndexFirebase,
     yes: 'Si'
   }; 
 
@@ -47,15 +48,16 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     
     const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
+
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
+     const currentData = await getResourceFromDatabase(_pathname);
+    if(currentData) {
+       //controllo se si puo memorizzare la scheda
 
-    const currentData = await getResourceFromDatabase(_pathname);
-    if(!currentData) {
-      throw Error(); //controllo se si puo memorizzare la scheda
+       const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
+       if(!itsOverflow) throw Error();
     }
-
-    const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
-    if(!itsOverflow) throw Error();
+    
 
     loader.classList.add('visually-hidden')
     

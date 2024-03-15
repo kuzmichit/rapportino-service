@@ -170,7 +170,7 @@ body {
 }
 
 .loader {
-  width: 50px;
+  width: 80px;
   margin: 20px auto;
   aspect-ratio: 1;
   border-radius: 50%;

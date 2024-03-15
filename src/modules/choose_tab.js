@@ -1,10 +1,10 @@
 /*
 ** sistemare render fra le tab 
 ** settare il mese precedente
-** crea nuove istanze consult
+** 
 */
 
-import {renderModalSignIn} from './auth'
+import {renderModalSignIn} from './login'
 import { autoClickOnElement } from './support'
 import consultHandle from './consult_handle'
 
@@ -18,7 +18,7 @@ const removeActive = () => {
   } )
 }
 
-const bindHandler = () => {
+const bindHandlerChooseTab = () => {
   
   const registrazione = document.querySelector('.register__tab'),
     consultazione = document.querySelector('.consult__tab'),
@@ -75,4 +75,4 @@ const bindHandler = () => {
   addHandler(consultazione, onConsultazioneClick)
   //autoClickOnElement(consultazione); // --------------------------------------------
 }
-export default bindHandler;
+export default bindHandlerChooseTab;
