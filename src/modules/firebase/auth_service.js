@@ -9,9 +9,17 @@ const emulatorConfigURLs = {
 };
 const apiKey = process.env._API_KEY;
 
+const saveIdTokenDateInSessionStorage = (data) => {
+    sessionStorage.setItem('idToken', JSON.stringify(data.idToken) );
+    sessionStorage.setItem('refreshToken', JSON.stringify(data.refreshToken) );
+    sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
+    
+}
+
 export const authWithEmailAndPassword = async ( {email, password} ) => {
  
   let idToken = '';
+  let refreshToken = '';
   const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
 
   if(timePreviousRun > (Date.now() - 350000) ) { 
@@ -41,8 +49,7 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
       
     idToken = data.idToken;
     // Salvare i dati di idToken
-    sessionStorage.setItem('idToken', JSON.stringify(idToken) );
-    sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
+    saveIdTokenDateInSessionStorage(data);
 
     return idToken;
   }
@@ -56,66 +63,69 @@ export const authWithEmailAndPassword = async ( {email, password} ) => {
   return null;
 }; 
 
-export const signInWithIdp = (access_token, providerId ='google.com') => {
-  let idToken;
+export const signInWithIdp = async (access_token, providerId ='google.com') => {
+  let idToken = '';
   
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${apiKey}`;
-  const postData = {
-    'postBody': `id_token=${access_token}&providerId=${providerId}`,
-    'requestUri': 'http://localhost',
-    'returnIdpCredential': true,
-    'returnSecureToken': true
-  };
-
-  fetch(url, {
+  const fetchData = {
     method: 'POST',
+    mode: 'cors',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(postData)
-  })
-  .then(response => response.json())
-  .then(data => {
-    idToken = data.access_token;
-    console.log('Sign-in with IdP successful:', idToken);
-    // Handle user authentication success
-  })
-  .catch(error => {
-    console.error('Error signing in with IdP:', error); // TODO: render modal error
-    // Handle error
-  });
+    body: JSON.stringify( {
+    'postBody': `id_token=${access_token}&providerId=${providerId}`,
+    'requestUri': 'http://localhost',
+    'returnIdpCredential': true,
+    'returnSecureToken': true }, 
+    ) };
+
+  try {
+    let response = await fetch(url, fetchData);
+    let data = await response.json();
+    if(data && data.error) throw data.error; 
+      
+    idToken = data.idToken;
+    // Salvare i dati di idToken
+    saveIdTokenDateInSessionStorage(data)
+
+    // return idToken;
+  }
+  catch (error) {
+    if(400 <= error.code && 500 > error.code) {
+      showTranslatedError(error.message);     
+    }
+    else(showTranslatedError(error.message) );
+  }
+
+  return null;
+  ;
 }
 export const bindHandleGoogle = () => {
   const googleBtn = document.querySelector('.google-btn-wrapper');
-  window.addEventListener('click', initGoogleAuth);
-  console.log("bind");
+  googleBtn.addEventListener('click', initGoogleAuth);
 }
 
-const initGoogleAuth = () => {
+const initGoogleAuth = async() => {
+
   
-    google.accounts.id.initialize({
+    const handleCredentialResponse = async (res) => {
+    const access_token = await res.credential
+    const tokenId = await signInWithIdp(access_token)
+
+    console.log(tokenId);
+     }
+
+    const response = await google.accounts.id.initialize({
       client_id: "482515197259-4kfbochdgiikcpgkivj6jcthvocetpbc.apps.googleusercontent.com",
       callback: handleCredentialResponse,
       auto_select: true,
     });
 
-    google.accounts.id.renderButton(
-      document.getElementById("buttonGoogle"),
-      { theme: "outline", size: "small" }  // customization attributes
-    );
     google.accounts.id.prompt(); // also display the One Tap dialog
-    }
+}
 
-  const handleCredentialResponse = async (res) => {
-    const getToken = () => {
-      let access_token = res.credential;
-      return access_token;
-    }
-    let access_token =  await getToken();
-
-    console.log(access_token);
-    // signInWithIdp(access_token)
-  }
+  
 
 
 

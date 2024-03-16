@@ -3,7 +3,7 @@
 ** settare il mese precedente
 ** 
 */
-
+import { bindHandleGoogle } from './firebase/auth_service';
 import {renderModalSignIn} from './login'
 import { autoClickOnElement } from './support'
 import consultHandle from './consult_handle'
@@ -53,6 +53,7 @@ const bindHandlerChooseTab = () => {
     }
     else {
       renderModalSignIn(calendar)
+      // bindHandleGoogle();
     }
   }
 
@@ -67,7 +68,9 @@ const bindHandlerChooseTab = () => {
       rmHandler(consultazione, onConsultazioneClick)
       addHandler(registrazione, onRegistrazioneClick)
     }
-    else { renderModalSignIn(consultazioneForm)
+    else {
+      renderModalSignIn(consultazioneForm)
+      // bindHandleGoogle();
     }
   }
 

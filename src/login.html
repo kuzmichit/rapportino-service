@@ -36,11 +36,11 @@
           <p>Oppure</p>
           <button type="button" class="login-with-btn google-btn-wrapper" >
             Accedi con Google
-            <span id="buttonGoogle" type="button" class="button-google"></span>
           </button>
           <button id='facebook-btn' type="button" class="login-with-btn facebook-btn" onclick="console.log('inclick')" >
             Accedi con Facebook 
           </button>
+          <div id="buttonGoogle" type="button" class="button-google"></div>
           <hr />
           <p class="register__text">Non hai un account? <a href="#" id="new-account"> Crea un account</a> per accedere a
             tutti i servizi
@@ -51,9 +51,9 @@
   </div>
   <script src="https://accounts.google.com/gsi/client"></script>
   <script>
-    function handleCredentialResponse(response) {
-      console.log("Encoded JWT ID token: " + response.credential);
-    }
+    // function handleCredentialResponse(response) {
+    //   console.log("Encoded JWT ID token: " + response.credential);
+    // }
     // window.onload = function () {
     //   google.accounts.id.initialize({
     //     client_id: "482515197259-4kfbochdgiikcpgkivj6jcthvocetpbc.apps.googleusercontent.com",
