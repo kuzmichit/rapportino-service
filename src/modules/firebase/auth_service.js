@@ -101,14 +101,24 @@ export const signInWithIdp = async (access_token, providerId ='google.com') => {
   return null;
   ;
 }
+
+const loadGoogleIdentityServices = () => {
+  // Create a script element
+  let script = document.createElement('script');
+  // Set the source of the script to the Google Identity Services library
+  script.src = 'https://accounts.google.com/gsi/client';
+
+  document.head.append('beforeend', script);  
+}
+
 export const bindHandleGoogle = () => {
   const googleBtn = document.querySelector('.google-btn-wrapper');
+  loadGoogleIdentityServices();
   googleBtn.addEventListener('click', initGoogleAuth);
 }
 
 const initGoogleAuth = async() => {
 
-  
     const handleCredentialResponse = async (res) => {
     const access_token = await res.credential
     const tokenId = await signInWithIdp(access_token)

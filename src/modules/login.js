@@ -12,7 +12,7 @@ dopo errore render login
 
 import { isValid, deleteNodes, autoClickOnElement } from './support.js';
 import {asyncConfirm} from './modal.js';
-import {authWithEmailAndPassword} from './firebase/auth_service.js';
+import {authWithEmailAndPassword, bindHandleGoogle} from './firebase/auth_service.js';
 
 const insertNode = document.querySelector('.temp__container'),
   loader = document.querySelector('.loader'),
@@ -22,31 +22,43 @@ let tabToShow = '';
 export function renderModalSignIn(chosenTab) {
   tabToShow = chosenTab;
   let modalSignIn = `<section class="login__container">
-    <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
-      <div class="form-input-material">
-        <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-        <label for="username">Email</label></div>
-      <div class="form-input-material">
-        <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-        <label for="password">Password</label>
-      </div>
-      <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
-      <h4 class="password__lost">Password dimenticata?</h4>
-      <hr />
-      <p class="register__text">Non hai un account? <a href="#" id="new-account"> Crea un account</a> per accedere a
-        tutti i servizi
-        online</p>
-    </form></section>`;
+  <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
+    <div class="form-input-material">
+      <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
+      <label for="username">Email</label></div>
+    <div class="form-input-material">
+      <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
+      <span class="visualizzare-password"></span>
+      <label for="password">Password</label>
+    </div>
+    <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
+    <h4 class="password__lost">Password dimenticata?</h4>
+    <p>Oppure</p>
+    <button type="button" class="login-with-btn google-btn-wrapper" >
+      Accedi con Google
+    </button>
+    <button id='facebook-btn' type="button" class="login-with-btn facebook-btn" onclick="console.log('inclick')" >
+      Accedi con Facebook 
+    </button>
+    <div id="buttonGoogle" type="button" class="button-google"></div>
+    <hr />
+    <p class="register__text">Non hai un account? <a href="#" id="new-account"> Crea un account</a> per accedere a
+      tutti i servizi
+      online</p>
+  </form>
+</section>`;
 
   insertNode.insertAdjacentHTML('beforeend', modalSignIn);
   headerToHidden.classList.add('visually-hidden');
-  
+
   initLoginForm();
+  bindHandleGoogle();
 }
 
 function initLoginForm() {
   const btnLogin = document.getElementById('sign-in');
   btnLogin.addEventListener('click', () => btnLoginHandler(btnLogin) );
+
 }
 
 function UserData(email, password) {
