@@ -16,8 +16,12 @@ import {authWithEmailAndPassword, bindHandleGoogle} from './firebase/auth_servic
 
 const insertNode = document.querySelector('.temp__container'),
   loader = document.querySelector('.loader'),
-  headerToHidden = document.querySelector('.header__hidden');
-let tabToShow = '';
+  headerToHidden = document.querySelector('.header__hidden'),
+  signBlock = document.querySelector('.sign-block'),
+  signBlockSpan = signBlock.querySelector('.sign__name > span'),
+  headerTitle = document.querySelector('.header__title'); 
+  let tabToShow = '';
+
 
 export function renderModalSignIn(chosenTab) {
   tabToShow = chosenTab;
@@ -52,13 +56,12 @@ export function renderModalSignIn(chosenTab) {
   headerToHidden.classList.add('visually-hidden');
 
   initLoginForm();
-  bindHandleGoogle();
-}
+  }
 
 function initLoginForm() {
+  bindHandleGoogle();
   const btnLogin = document.getElementById('sign-in');
   btnLogin.addEventListener('click', () => btnLoginHandler(btnLogin) );
-
 }
 
 function UserData(email, password) {
@@ -76,7 +79,8 @@ async function btnLoginHandler(btnLogin) {
   const formLogin = document.getElementById('login-form'),
     email = formLogin.email.value,
     password = formLogin.password.value,
-    expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
+    expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/,
+    logoutBtn = document.querySelector('.logout');
     
   if(!isValid(email, expForEmail) ) {
     if(await asyncConfirm( {messageBody: 'L\'email non è corretta', no: null} ) ) insertNode.classList.toggle('visually-hidden');
@@ -108,21 +112,27 @@ async function btnLoginHandler(btnLogin) {
     deleteNodes(insertNode)
     tabToShow.classList.remove('visually-hidden')
     saveUserDataInSessionStorage(userData)
+    logoutBtn.classList.remove('visually-hidden');
 
-  // document.querySelector('.submit__button').style.display = '';
-  // document.querySelector('.modal__container').style.display = 'none';
-  // document.querySelector('.main__container').style = 'filter: blur(10px)';
-  
+    const showSignedUser = () => {
+      signBlock.classList.remove('visually-hidden');
+      signBlockSpan.textContent = JSON.parse(sessionStorage.getItem('userData')).email.slice(0,email.indexOf('@'))
+      headerTitle.style.justifyContent = 'space-between';
+    }
+
+    showSignedUser();
 }
 
 export const bindLogout = () => {
-  const logout = document.querySelector('.logout');
+  const logout = document.querySelector('.logout')
 
   const onLogoutHandler = () => {
     sessionStorage.clear();
     location.reload();
-    console.log('ok');
-
+    console.log('logout ok');
+    signBlock.classList('visually-hidden');
+    signBlockSpan.textContent = '';
+    headerTitle.style.justifyContent = 'center'
   }
   logout.addEventListener('click', onLogoutHandler);
 }

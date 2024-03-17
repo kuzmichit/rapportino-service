@@ -53,7 +53,6 @@ const bindHandlerChooseTab = () => {
     }
     else {
       renderModalSignIn(calendar)
-      bindHandleGoogle();
     }
   }
 
@@ -70,7 +69,6 @@ const bindHandlerChooseTab = () => {
     }
     else {
       renderModalSignIn(consultazioneForm)
-      bindHandleGoogle();
     }
   }
 

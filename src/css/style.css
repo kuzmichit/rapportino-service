@@ -40,8 +40,11 @@ body {
 }
 
 .header__title {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 2rem;
+  padding-right: 15px;
 }
 
 .header__text {}
@@ -52,17 +55,31 @@ body {
   /* transform: scaleY(0.5); */
 }
 
-.logout {
-  position: absolute;
-  right: 10px;
-  top: 0;
+.sign-block {
+  text-align: right;
   font-size: 1.5rem;
-  color: red;
-  font-weight: 700;
   letter-spacing: 1.5px;
-  text-shadow: 0px 1px 2px black;
+  font-weight: 700;
+}
+
+.sign__name {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.sign__name span {
+  font-size: 1.5rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+.logout {
+  justify-self: start;
   border: none;
   background-color: transparent;
+  letter-spacing: inherit;
+  color: red;
+  text-shadow: 0px 1px 2px black;
   cursor: pointer;
 }
 
@@ -162,11 +179,6 @@ body {
   html {
     font-size: calc(16*(100vw/480));
   }
-
-  .header__title {
-    font-size: 1.3rem;
-  }
-
 }
 
 .loader {
