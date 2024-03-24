@@ -11,16 +11,16 @@ dopo errore render login
    */
 
 import { isValid, deleteNodes, autoClickOnElement } from './support.js';
-import {asyncConfirm} from './modal.js';
-import {authWithEmailAndPassword, bindHandleGoogle} from './firebase/auth_service.js';
+import { asyncConfirm } from './modal.js';
+import { authWithEmailAndPassword, bindHandleGoogle } from './firebase/auth_service.js';
 
 const insertNode = document.querySelector('.temp__container'),
   loader = document.querySelector('.loader'),
   headerToHidden = document.querySelector('.header__hidden'),
   signBlock = document.querySelector('.sign-block'),
   signBlockSpan = signBlock.querySelector('.sign__name > span'),
-  headerTitle = document.querySelector('.header__title'); 
-  let tabToShow = '';
+  headerTitle = document.querySelector('.header__title');
+let tabToShow = '';
 
 
 export function renderModalSignIn(chosenTab) {
@@ -35,13 +35,13 @@ export function renderModalSignIn(chosenTab) {
       <span class="visualizzare-password"></span>
       <label for="password">Password</label>
     </div>
-    <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false">Login</button>
+    <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false" data-action='login'>Login</button>
     <h4 class="password__lost">Password dimenticata?</h4>
     <p>Oppure</p>
-    <button type="button" class="login-with-btn google-btn-wrapper" >
+    <button type="button" data-action='google' class="login-with-btn google-btn-wrapper" >
       Accedi con Google
     </button>
-    <button id='facebook-btn' type="button" class="login-with-btn facebook-btn" onclick="console.log('inclick')" >
+    <button id='facebook-btn' data-action='facebook' type="button" class="login-with-btn facebook-btn">
       Accedi con Facebook 
     </button>
     <div id="buttonGoogle" type="button" class="button-google"></div>
@@ -56,85 +56,130 @@ export function renderModalSignIn(chosenTab) {
   headerToHidden.classList.add('visually-hidden');
 
   initLoginForm();
-  }
+}
 
 function initLoginForm() {
-  bindHandleGoogle();
-  const btnLogin = document.getElementById('sign-in');
-  btnLogin.addEventListener('click', () => btnLoginHandler(btnLogin) );
+  const loginForm = document.getElementById('login-form')
+  new FormLoginHandler(loginForm)
 }
 
 function UserData(email, password) {
   this.email = email,
-  this.password = password;
+    this.password = password;
 }
 
-const saveUserDataInSessionStorage = userData => {
-  sessionStorage.setItem('userData', JSON.stringify(userData) );
+export const showSignedUser = () => {
+  const userEmail = JSON.parse(sessionStorage.getItem('userData'));
+
+  if (userEmail) {
+    signBlock.classList.remove('visually-hidden');
+    signBlockSpan.textContent = userEmail.email.slice(0, userEmail.email.indexOf('@'))
+    headerTitle.style.justifyContent = 'space-between';
+  }
+}
+
+const deleteCookie = (name) => {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 async function btnLoginHandler(btnLogin) {
-  insertNode.classList.toggle('visually-hidden');
+  insertNode.classList.add('visually-hidden');
 
   const formLogin = document.getElementById('login-form'),
     email = formLogin.email.value,
     password = formLogin.password.value,
-    expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/,
-    logoutBtn = document.querySelector('.logout');
-    
-  if(!isValid(email, expForEmail) ) {
-    if(await asyncConfirm( {messageBody: 'L\'email non è corretta', no: null} ) ) insertNode.classList.toggle('visually-hidden');
-    
-    return;
+    expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
+
+  if (!isValid(email, expForEmail)) {
+    if (await asyncConfirm({ messageBody: 'L\'email non è corretta', no: null })) insertNode.classList.remove('visually-hidden');
+
+    return null;
   }
-  if(!isValid(password) ) {
-    if(await asyncConfirm( {messageBody: 'La password non è corretta', no: null} ) ) insertNode.classList.toggle('visually-hidden');
-    
+  if (!isValid(password)) {
+    if (await asyncConfirm({ messageBody: 'La password non è corretta', no: null })) insertNode.classList.remove('visually-hidden');
+
     return null;
   }
 
   const userData = new UserData(email, password);
+
+
   try {
     loader.classList.remove('visually-hidden')
-  
     const idToken = await authWithEmailAndPassword(userData);
-  if(!idToken) throw Error(); 
-  }
-  catch (error) {
-    loader.classList.add('visually-hidden')
-    btnLogin.disabled = false;
-
-    return null;
-  } 
+    if (!idToken) throw Error();
 
     loader.classList.add('visually-hidden')
     headerToHidden.classList.remove('visually-hidden')
     deleteNodes(insertNode)
     tabToShow.classList.remove('visually-hidden')
-    saveUserDataInSessionStorage(userData)
     logoutBtn.classList.remove('visually-hidden');
-
-    const showSignedUser = () => {
-      signBlock.classList.remove('visually-hidden');
-      signBlockSpan.textContent = JSON.parse(sessionStorage.getItem('userData')).email.slice(0,email.indexOf('@'))
-      headerTitle.style.justifyContent = 'space-between';
-    }
-
     showSignedUser();
+    return true;
+  }
+  catch (error) {
+    console.error(error);
+    loader.classList.add('visually-hidden')
+
+    return null;
+  }
 }
 
 export const bindLogout = () => {
   const logout = document.querySelector('.logout')
-
-  const onLogoutHandler = () => {
-    sessionStorage.clear();
-    location.reload();
-    console.log('logout ok');
-    signBlock.classList('visually-hidden');
-    signBlockSpan.textContent = '';
-    headerTitle.style.justifyContent = 'center'
-  }
   logout.addEventListener('click', onLogoutHandler);
 }
 
+const onLogoutHandler = () => {
+  try {
+    signBlock.classList.add('visually-hidden');
+    signBlockSpan.textContent = '';
+    headerTitle.style.justifyContent = 'center';
+    sessionStorage.clear();
+    deleteCookie('g_state');
+    location.reload();
+    console.log('logout ok');
+
+  } catch (error) { () => console.error(error) }
+}
+
+class FormLoginHandler {
+  constructor(form) {
+    this._form = form
+    this.onClick = this.onClick.bind(this); // Bind del metodo onClick
+    this._form.addEventListener('click', this.onClick);
+  }
+
+  async login() {
+    this.rmClick();
+    const result = await btnLoginHandler();
+    if (!result) this.restoreStateOfForm();
+  }
+
+  async google() {
+    this.rmClick();
+    const result = await bindHandleGoogle();
+    if (!result) this.restoreStateOfForm();
+  }
+
+  facebook() {
+    console.log('facebook')
+  }
+
+  rmClick() {
+    this._form.removeEventListener('click', this.onClick);
+  }
+
+  restoreStateOfForm() {
+    this._form.addEventListener('click', this.onClick);
+    console.log('restore')
+  }
+
+  onClick(event) {
+    let action = event.target.dataset.action;
+    if (action) {
+      this[action]();
+    }
+  }
+}
 

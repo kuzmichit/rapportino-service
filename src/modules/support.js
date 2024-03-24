@@ -22,14 +22,14 @@ export function camelizeClass(nameClass) {
   let camelizeStr = str[0];
 
   for (let i = 1; i < str.length; i++) {
-    camelizeStr += (str[i][0].toUpperCase() + str[i].slice(1) );
+    camelizeStr += (str[i][0].toUpperCase() + str[i].slice(1));
   }
 
   return camelizeStr;
 }
 
 export function deleteNodes(collection) {
-  while(collection.firstChild) {
+  while (collection.firstChild) {
     collection.firstChild.remove();
   }
 }
@@ -43,100 +43,100 @@ export function isUserDataInLocalStorage() {
 }
 
 export function isValid(str, regExp = /(\w+\b){1,}/g) {
-  return regExp.test(str)?true:false;        
+  return regExp.test(str) ? true : false;
 }
 
 export async function showTranslatedError(message) {
-  let errorMessage = ''; 
+  let errorMessage = '';
 
   switch (message) {
-  case 'EMAIL_NOT_FOUND':
-    errorMessage = 'L\'email non è corretta, inserire nuovamente.';
-    if(await asyncConfirm( {messageBody: errorMessage, no: null} ) )
-      renderModalSignIn();
-    break;
-     
-  case 'INVALID_PASSWORD':
-    errorMessage = 'La password non è corretta, inserire nuovamente.';
-    if(await asyncConfirm( {messageBody: errorMessage, no: null} ) )
-      renderModalSignIn();
-    break;
+    case 'EMAIL_NOT_FOUND':
+      errorMessage = 'L\'email non è corretta, inserire nuovamente.';
+      if (await asyncConfirm({ messageBody: errorMessage, no: null }))
+        renderModalSignIn();
+      break;
 
-  case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-    errorMessage = 'Fatti troppi tentativi, riprova più tardi';
-    break;
-    
-  case 'NetworkError when attempting to fetch resource.':
-    errorMessage = 'Errore di rete, riprova più tardi';
-    break;
+    case 'INVALID_PASSWORD':
+      errorMessage = 'La password non è corretta, inserire nuovamente.';
+      if (await asyncConfirm({ messageBody: errorMessage, no: null }))
+        renderModalSignIn();
+      break;
 
-  default: 
-    errorMessage = 'Errore generico, riprova più tardi';
+    case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+      errorMessage = 'Fatti troppi tentativi, riprova più tardi';
+      break;
+
+    case 'NetworkError when attempting to fetch resource.':
+      errorMessage = 'Errore di rete, riprova più tardi';
+      break;
+
+    default:
+      errorMessage = 'Errore generico, riprova più tardi';
   }
-  
-  if(await asyncConfirm( {messageBody: errorMessage, no: null} ) );
+
+  if (await asyncConfirm({ messageBody: errorMessage, no: null }));
 }
 
 export const dateFormat = {
   dateStyle: 'long',
   timeStyle: 'medium',
-}; 
+};
 
 export function getRapportinoFromLocal() {
 
-  if(localStorage.getItem('rapportino') === null) localStorage.setItem('rapportino', '{}');
+  if (localStorage.getItem('rapportino') === null) localStorage.setItem('rapportino', '{}');
   let rapportino = localStorage.getItem('rapportino');
 
   return rapportino;
 }
 
-export function validateForm( {workedHours, building, description} ) {
+export function validateForm({ workedHours, building, description }) {
 
   let errorMessage = '';
-  if(!workedHours) { 
-    errorMessage = 'Scegli le ore effettuate.' ;
+  if (!workedHours) {
+    errorMessage = 'Scegli le ore effettuate.';
   }
 
-  else if(!isValid(building) ) { 
+  else if (!isValid(building)) {
     errorMessage = 'Inserire il nome di cantiere valido.';
   }
-  
-  else if(!isValid(description, /(\w|\s){10,}/) ) { 
+
+  else if (!isValid(description, /(\w|\s){10,}/)) {
     errorMessage = 'Inserire il lavoro svolto valido.';
   }
 
-  if(errorMessage) {
-    asyncConfirm( {messageBody: errorMessage, no: null} );
-    
+  if (errorMessage) {
+    asyncConfirm({ messageBody: errorMessage, no: null });
+
     return false;
   }
 
   return true;
-  
+
 }
 
 function isIncludingCurrentDate(rapportino, dateForCompare) {
-    
-  if(rapportino && JSON.stringify(rapportino).includes(dateForCompare) ) return true;
+
+  if (rapportino && JSON.stringify(rapportino).includes(dateForCompare)) return true;
 }
 
-export async function checkHoursOverflow(rapportino, dateFormatted, {workedHours} ) {
+export async function checkHoursOverflow(rapportino, dateFormatted, { workedHours }) {
 
-  const dateForCompare = dateFormatted.slice(0, (dateFormatted.indexOf(202) + 4) );
-  if (!isIncludingCurrentDate(rapportino, dateForCompare) ) return true;
+  const dateForCompare = dateFormatted.slice(0, (dateFormatted.indexOf(202) + 4));
+  if (!isIncludingCurrentDate(rapportino, dateForCompare)) return true;
 
   let rapParsed = rapportino;
   let tmpHours = +workedHours;
 
   for (let key in rapParsed) {
-    if(key.includes(dateForCompare) ) {
+    if (key.includes(dateForCompare)) {
       tmpHours += +rapParsed[key]['workedHours'];
     }
   }
-  if(tmpHours >= 12) {
-    if(await asyncConfirm( {messageBody: 'E stato superato il limite delle ore', no: null} ) ) return false;
+  if (tmpHours >= 12) {
+    if (await asyncConfirm({ messageBody: 'E stato superato il limite delle ore', no: null })) return false;
   }
-  
+
   return true;
 }
 
@@ -144,13 +144,14 @@ export async function checkHoursOverflow(rapportino, dateFormatted, {workedHours
 //   asyncConfirm(option);
 // }
 
-export async function showReport (dateFormatted, workForm) {
-  if(await asyncConfirm(
-    {title: 'Tutto ok', 
+export async function showReport(dateFormatted, workForm) {
+  if (await asyncConfirm(
+    {
+      title: 'Tutto ok',
       messageBody: 'La scheda del ' + dateFormatted + ' è stata inserita',
       no: null,
     }
-  ) )
+  ))
     workForm.submit();
 }
 
@@ -158,10 +159,13 @@ export const autoClickOnElement = element => {
 
   window.addEventListener('DOMContentLoaded', click);
 
-  function click() { 
+  function click() {
     const clickEvent = new Event('click');
     element.dispatchEvent(clickEvent);
     console.log('autoClickOnElement')
-    
-  } 
+
+  }
 };
+
+
+
