@@ -6,8 +6,6 @@ export function CreateCalendar(node) {
     currentDate.setDate(1);
     let month = currentDate.getMonth();
     let listDay = '';
-    
-    
   
     // I giorni che precedono il promo di mese
     // с понедельника до первого дня месяца

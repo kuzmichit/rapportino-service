@@ -4,19 +4,19 @@
 ** 
 */
 import { bindHandleGoogle } from './firebase/auth_service';
-import { renderModalSignIn } from './login'
-import { autoClickOnElement } from './support'
-import consultHandle from './consult_handle'
+import { renderModalSignIn } from './login';
+import { autoClickOnElement } from './support';
+import consultHandle from './consult_handle';
 
 const setActive = elem => {
-  elem.classList.add('active-tab')
-}
+  elem.classList.add('active-tab');
+};
 const removeActive = () => {
-  const activeTab = document.querySelectorAll('.active-tab')
+  const activeTab = document.querySelectorAll('.active-tab');
   activeTab.forEach(elem => {
-    elem.classList.remove('active-tab')
-  })
-}
+    elem.classList.remove('active-tab');
+  } );
+};
 
 const bindHandlerChooseTab = () => {
 
@@ -27,53 +27,53 @@ const bindHandlerChooseTab = () => {
     consultazioneForm = document.getElementById('consulting');
 
   const checkUserInStorage = () => {
-    let result = (JSON.parse(sessionStorage.getItem('userData')) !== null) ? true : false
+    let result = (JSON.parse(sessionStorage.getItem('userData') ) !== null) ? true : false;
 
-    return result
+    return result;
 
-  }
+  };
 
   const addHandler = (element, fn) => {
-    element.addEventListener('click', fn)
-  }
+    element.addEventListener('click', fn);
+  };
   const rmHandler = (element, fn) => {
-    element.removeEventListener('click', fn)
-  }
+    element.removeEventListener('click', fn);
+  };
 
   const onRegistrazioneClick = () => {
-    removeActive()
-    setActive(registrazione)
+    removeActive();
+    setActive(registrazione);
 
-    if (checkUserInStorage()) {
-      calendar.classList.remove('visually-hidden')
-      headerToHidden.classList.remove('visually-hidden')
-      consultazioneForm.classList.add('visually-hidden')
-      rmHandler(registrazione, onRegistrazioneClick)
-      addHandler(consultazione, onConsultazioneClick)
+    if (checkUserInStorage() ) {
+      calendar.classList.remove('visually-hidden');
+      headerToHidden.classList.remove('visually-hidden');
+      consultazioneForm.classList.add('visually-hidden');
+      rmHandler(registrazione, onRegistrazioneClick);
+      addHandler(consultazione, onConsultazioneClick);
     }
     else {
-      renderModalSignIn(calendar)
+      renderModalSignIn(calendar);
     }
-  }
+  };
 
   const onConsultazioneClick = () => {
-    removeActive()
-    setActive(consultazione)
+    removeActive();
+    setActive(consultazione);
 
-    if (checkUserInStorage()) {
-      headerToHidden.classList.remove('visually-hidden')
-      consultazioneForm.classList.remove('visually-hidden')
-      calendar.classList.add('visually-hidden')
-      rmHandler(consultazione, onConsultazioneClick)
-      addHandler(registrazione, onRegistrazioneClick)
+    if (checkUserInStorage() ) {
+      headerToHidden.classList.remove('visually-hidden');
+      consultazioneForm.classList.remove('visually-hidden');
+      calendar.classList.add('visually-hidden');
+      rmHandler(consultazione, onConsultazioneClick);
+      addHandler(registrazione, onRegistrazioneClick);
     }
     else {
-      renderModalSignIn(consultazioneForm)
+      renderModalSignIn(consultazioneForm);
     }
-  }
+  };
 
-  addHandler(registrazione, onRegistrazioneClick)
-  addHandler(consultazione, onConsultazioneClick)
+  addHandler(registrazione, onRegistrazioneClick);
+  addHandler(consultazione, onConsultazioneClick);
   autoClickOnElement(registrazione); // --------------------------------------------
-}
+};
 export default bindHandlerChooseTab;

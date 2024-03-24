@@ -5,8 +5,8 @@ import './css/calendar.css';
 import './css/reset.css';
 import './css/login.css';
 import './css/modal.css';
-import './css/consult.css'
-import './css/render.css'
+import './css/consult.css';
+import './css/render.css';
 
 import header from './img/header_img.jpeg';
 import bindHandlerChooseTab from '../src/modules/choose_tab';
@@ -16,7 +16,6 @@ import { calendarsElements } from './modules/support.js';
 import consultHandle from './modules/consult_handle.js';
 import { bindLogout, showSignedUser } from './modules/login.js';
 
-
 const date = new Date();
 new MainHandler(date, calendarsElements);
 
@@ -24,5 +23,4 @@ bindHandlerChooseTab();
 consultHandle();
 bindLogout();
 showSignedUser();
-
 

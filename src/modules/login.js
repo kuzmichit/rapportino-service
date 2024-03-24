@@ -1,31 +1,31 @@
-/* 
-* registrazione recupero della password 
+/*
+* registrazione recupero della password
 * premendo login controllare se validi dati
 
-  validi ===> chiudere la finestra, aprire calendario o la finestra consultare 
+  validi ===> chiudere la finestra, aprire calendario o la finestra consultare
   non validi il messaggio fare conto dei tentativi dopo di tre bloccare
   doppia finestra
-  
+
 ** logout
 dopo errore render login
    */
 
-import { isValid, deleteNodes, autoClickOnElement } from './support.js';
+import { isValid, deleteNodes /* autoClickOnElement */ } from './support.js';
 import { asyncConfirm } from './modal.js';
 import { authWithEmailAndPassword, bindHandleGoogle } from './firebase/auth_service.js';
 
-const insertNode = document.querySelector('.temp__container'),
-  loader = document.querySelector('.loader'),
-  headerToHidden = document.querySelector('.header__hidden'),
-  signBlock = document.querySelector('.sign-block'),
-  signBlockSpan = signBlock.querySelector('.sign__name > span'),
-  headerTitle = document.querySelector('.header__title');
+const insertNode = document.querySelector('.temp__container');
+const loader = document.querySelector('.loader');
+const headerToHidden = document.querySelector('.header__hidden');
+const signBlock = document.querySelector('.sign-block');
+const signBlockSpan = signBlock.querySelector('.sign__name > span');
+const logoutBtn = document.querySelector('.logout');
+const headerTitle = document.querySelector('.header__title');
 let tabToShow = '';
-
 
 export function renderModalSignIn(chosenTab) {
   tabToShow = chosenTab;
-  let modalSignIn = `<section class="login__container">
+  const modalSignIn = `<section class="login__container">
   <form onsubmit="return false;" id="login-form" class="login-form "><h1>Login</h1>
     <div class="form-input-material">
       <input type="text" name="email" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
@@ -59,76 +59,76 @@ export function renderModalSignIn(chosenTab) {
 }
 
 function initLoginForm() {
-  const loginForm = document.getElementById('login-form')
-  new FormLoginHandler(loginForm)
+  const loginForm = document.getElementById('login-form');
+  new FormLoginHandler(loginForm);
 }
 
 function UserData(email, password) {
   this.email = email,
-    this.password = password;
+  this.password = password;
 }
 
 export const showSignedUser = () => {
-  const userEmail = JSON.parse(sessionStorage.getItem('userData'));
+  const userEmail = JSON.parse(sessionStorage.getItem('userData') );
 
   if (userEmail) {
     signBlock.classList.remove('visually-hidden');
-    signBlockSpan.textContent = userEmail.email.slice(0, userEmail.email.indexOf('@'))
+    signBlockSpan.textContent = userEmail.email.slice(0, userEmail.email.indexOf('@') );
     headerTitle.style.justifyContent = 'space-between';
   }
-}
+};
 
 const deleteCookie = (name) => {
-  document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
 
-async function btnLoginHandler(btnLogin) {
+async function btnLoginHandler() {
   insertNode.classList.add('visually-hidden');
 
-  const formLogin = document.getElementById('login-form'),
-    email = formLogin.email.value,
-    password = formLogin.password.value,
-    expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
+  const formLogin = document.getElementById('login-form');
+  const email = formLogin.email.value;
+  const password = formLogin.password.value;
+  const expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
 
-  if (!isValid(email, expForEmail)) {
-    if (await asyncConfirm({ messageBody: 'L\'email non è corretta', no: null })) insertNode.classList.remove('visually-hidden');
+  if (!isValid(email, expForEmail) ) {
+    if (await asyncConfirm( { messageBody: 'L\'email non è corretta', no: null } ) ) insertNode.classList.remove('visually-hidden');
 
     return null;
   }
-  if (!isValid(password)) {
-    if (await asyncConfirm({ messageBody: 'La password non è corretta', no: null })) insertNode.classList.remove('visually-hidden');
+  if (!isValid(password) ) {
+    if (await asyncConfirm( { messageBody: 'La password non è corretta', no: null } ) ) insertNode.classList.remove('visually-hidden');
 
     return null;
   }
 
   const userData = new UserData(email, password);
 
-
   try {
-    loader.classList.remove('visually-hidden')
+    loader.classList.remove('visually-hidden');
     const idToken = await authWithEmailAndPassword(userData);
     if (!idToken) throw Error();
 
-    loader.classList.add('visually-hidden')
-    headerToHidden.classList.remove('visually-hidden')
-    deleteNodes(insertNode)
-    tabToShow.classList.remove('visually-hidden')
+    loader.classList.add('visually-hidden');
+    headerToHidden.classList.remove('visually-hidden');
+    deleteNodes(insertNode);
+    tabToShow.classList.remove('visually-hidden');
     logoutBtn.classList.remove('visually-hidden');
     showSignedUser();
+    
     return true;
   }
   catch (error) {
     console.error(error);
-    loader.classList.add('visually-hidden')
+    loader.classList.add('visually-hidden');
 
     return null;
   }
 }
 
 export const bindLogout = () => {
-  const logout = document.querySelector('.logout')
+  const logout = document.querySelector('.logout');
   logout.addEventListener('click', onLogoutHandler);
-}
+};
 
 const onLogoutHandler = () => {
   try {
@@ -139,13 +139,13 @@ const onLogoutHandler = () => {
     deleteCookie('g_state');
     location.reload();
     console.log('logout ok');
-
-  } catch (error) { () => console.error(error) }
-}
+  }
+  catch (error) { () => console.error(error); }
+};
 
 class FormLoginHandler {
   constructor(form) {
-    this._form = form
+    this._form = form;
     this.onClick = this.onClick.bind(this); // Bind del metodo onClick
     this._form.addEventListener('click', this.onClick);
   }
@@ -163,7 +163,7 @@ class FormLoginHandler {
   }
 
   facebook() {
-    console.log('facebook')
+    console.log('facebook');
   }
 
   rmClick() {
@@ -172,14 +172,13 @@ class FormLoginHandler {
 
   restoreStateOfForm() {
     this._form.addEventListener('click', this.onClick);
-    console.log('restore')
+    console.log('restore');
   }
 
   onClick(event) {
-    let action = event.target.dataset.action;
+    const { action } = event.target.dataset;
     if (action) {
       this[action]();
     }
   }
 }
-

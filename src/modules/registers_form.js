@@ -38,45 +38,45 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   }; 
 
   const refreshCalendar = () => {
-  document.getElementById('btnSubmit').style.display = ''
-  main.style.display = '';
-  registerConsultTabs.style.display = '';
-  }
+    document.getElementById('btnSubmit').style.display = '';
+    main.style.display = '';
+    registerConsultTabs.style.display = '';
+  };
 
   try{
-    loader.classList.remove('visually-hidden')
+    loader.classList.remove('visually-hidden');
     
     const idToken = await authWithEmailAndPassword(userData);
     if(!idToken) throw Error(); 
 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
-     const currentData = await getResourceFromDatabase(_pathname);
+    const currentData = await getResourceFromDatabase(_pathname);
     if(currentData) {
-       //controllo se si puo memorizzare la scheda
+      //controllo se si puo memorizzare la scheda
 
-       const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
-       if(!itsOverflow) throw Error();
+      const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
+      if(!itsOverflow) throw Error();
     }
-    
 
-    loader.classList.add('visually-hidden')
+    loader.classList.add('visually-hidden');
     
     if(await showPopupToConfirmPutData(optionConfirm) ) { 
-      loader.classList.remove('visually-hidden')
+      loader.classList.remove('visually-hidden');
       submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
-      loader.classList.add('visually-hidden')
-    } else { 
+      loader.classList.add('visually-hidden');
+    }
+    else { 
       refreshCalendar();
     }
 
   }       
   catch (error) {
     refreshCalendar();
-    loader.classList.add('visually-hidden')
+    loader.classList.add('visually-hidden');
   }
 }
 
-function CreateObjectForDatabase(date, {building, description, workedHours}, dateToIndexFirebase ) {
+function CreateObjectForDatabase(date, {building, description, workedHours}, dateToIndexFirebase) {
 
   this[`${date}`] =
      {
