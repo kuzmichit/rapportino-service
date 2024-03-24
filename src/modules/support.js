@@ -118,6 +118,8 @@ export function validateForm( { workedHours, building, description } ) {
 function isIncludingCurrentDate(rapportino, dateForCompare) {
 
   if (rapportino && JSON.stringify(rapportino).includes(dateForCompare) ) return true;
+  
+  return null;
 }
 
 export async function checkHoursOverflow(rapportino, dateFormatted, { workedHours } ) {
