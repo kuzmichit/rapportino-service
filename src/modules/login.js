@@ -10,17 +10,17 @@
 dopo errore render login
    */
 
-import { isValid, deleteNodes /* autoClickOnElement */ } from './support.js';
+import { isValid, deleteNodes, deleteCookie /* autoClickOnElement */ } from './support.js';
 import { asyncConfirm } from './modal.js';
-import { authWithEmailAndPassword, bindHandleGoogle } from './firebase/auth_service.js';
+import { authWithEmailAndPassword, btnGoogleHandler } from './firebase/auth_service.js';
 
-const insertNode = document.querySelector('.temp__container');
-const loader = document.querySelector('.loader');
-const headerToHidden = document.querySelector('.header__hidden');
-const signBlock = document.querySelector('.sign-block');
-const signBlockSpan = signBlock.querySelector('.sign__name > span');
-const logoutBtn = document.querySelector('.logout');
-const headerTitle = document.querySelector('.header__title');
+const insertNode = document.querySelector('.temp__container'),
+      loader = document.querySelector('.loader'),
+      headerToHidden = document.querySelector('.header__hidden'),
+      signBlock = document.querySelector('.sign-block'),
+      signBlockSpan = signBlock.querySelector('.sign__name > span'),
+      logoutBtn = document.querySelector('.logout'),
+      headerTitle = document.querySelector('.header__title');
 let tabToShow = '';
 
 export function renderModalSignIn(chosenTab) {
@@ -32,16 +32,16 @@ export function renderModalSignIn(chosenTab) {
       <label for="username">Email</label></div>
     <div class="form-input-material">
       <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-      <span class="visualizzare-password"></span>
+      <span class="visualizzare-password" data-action='showPassword'></span>
       <label for="password">Password</label>
     </div>
-    <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false" data-action='login'>Login</button>
-    <h4 class="password__lost">Password dimenticata?</h4>
+    <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false" data-action='onLogin'>Login</button>
+    <h4 class="password__lost" data-action='lostPassword'>Password dimenticata?</h4>
     <p>Oppure</p>
-    <button type="button" data-action='google' class="login-with-btn google-btn-wrapper" >
+    <button type="button" data-action='onGoogle' class="login-with-btn google-btn-wrapper" >
       Accedi con Google
     </button>
-    <button id='facebook-btn' data-action='facebook' type="button" class="login-with-btn facebook-btn">
+    <button id='facebook-btn' data-action='onFacebook' type="button" class="login-with-btn facebook-btn">
       Accedi con Facebook 
     </button>
     <div id="buttonGoogle" type="button" class="button-google"></div>
@@ -78,17 +78,13 @@ export const showSignedUser = () => {
   }
 };
 
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
-
 async function btnLoginHandler() {
   insertNode.classList.add('visually-hidden');
 
-  const formLogin = document.getElementById('login-form');
-  const email = formLogin.email.value;
-  const password = formLogin.password.value;
-  const expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
+  const formLogin = document.getElementById('login-form'),
+        email = formLogin.elements.email.value,
+        password = formLogin.elements.password.value,
+        expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
 
   if (!isValid(email, expForEmail) ) {
     if (await asyncConfirm( { messageBody: 'L\'email non è corretta', no: null } ) ) insertNode.classList.remove('visually-hidden');
@@ -144,25 +140,34 @@ const onLogoutHandler = () => {
 };
 
 class FormLoginHandler {
-  constructor(form) {
+  constructor(form, activeTab) {
     this._form = form;
+    this._activeTab = activeTab
+    this.eye = form.querySelector('.visualizzare-password')
+    this.password = form.elements.password
     this.onClick = this.onClick.bind(this); // Bind del metodo onClick
     this._form.addEventListener('click', this.onClick);
   }
 
-  async login() {
+  async onLogin() {
     this.rmClick();
     const result = await btnLoginHandler();
     if (!result) this.restoreStateOfForm();
   }
 
-  async google() {
+  async onGoogle() {
     this.rmClick();
-    const result = await bindHandleGoogle();
-    if (!result) this.restoreStateOfForm();
+    try {
+      const result = await btnGoogleHandler()
+      if (!result) this.restoreStateOfForm();
+    }
+    catch (error) {
+      console.log('error onGoogle');
+    }
+    // TODO: fare restore google
   }
 
-  facebook() {
+  onFacebook() {
     console.log('facebook');
   }
 
@@ -180,5 +185,14 @@ class FormLoginHandler {
     if (action) {
       this[action]();
     }
+  }
+
+  showPassword() {
+    this.password.type = (this.password.type === 'text') ? 'password' : 'text';
+    console.log(this.password.type);
+  }
+
+  lostPassword() {
+    console.log('Password dimenticata');
   }
 }

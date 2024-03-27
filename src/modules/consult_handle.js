@@ -11,12 +11,12 @@ import {authWithEmailAndPassword} from './firebase/auth_service.js';
 const consultHandle = () => {
 
   const form = document.querySelector('#consulting'),
-    btnCerca = form.elements.cerca,
-    inputDate = form.elements.date,
-    selectMesi = form.elements.mesi,
-    userData = JSON.parse(localStorage.getItem('userData') ),
-    tempContainer = document.querySelector('.temp__container'),
-    loader = document.querySelector('.loader');
+        btnCerca = form.elements.cerca,
+        inputDate = form.elements.date,
+        selectMesi = form.elements.mesi,
+        userData = JSON.parse(localStorage.getItem('userData') ),
+        tempContainer = document.querySelector('.temp__container'),
+        loader = document.querySelector('.loader');
 
   const onBtnHandler = async (e) => {
     deleteNodes(tempContainer);
@@ -56,10 +56,10 @@ const consultHandle = () => {
 
     if(inputDate.value !== '') {
       const date = new Date(inputDate.value),
-        searchingDate = date.getDate(),
-        currentYear = date.getFullYear(),
-        currentMonth = date.toLocaleString('it', {month: 'long'} ),
-        _queryPath = `orderBy="$key"&startAt="${searchingDate} "&endAt="${searchingDate + 1 } "`;
+            searchingDate = date.getDate(),
+            currentYear = date.getFullYear(),
+            currentMonth = date.toLocaleString('it', {month: 'long'} ),
+            _queryPath = `orderBy="$key"&startAt="${searchingDate} "&endAt="${searchingDate + 1 } "`;
 
       URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?' + _queryPath + '&auth='; 
         

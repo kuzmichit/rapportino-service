@@ -142,10 +142,6 @@ export async function checkHoursOverflow(rapportino, dateFormatted, { workedHour
   return true;
 }
 
-// export async function showModalError(option) {
-//   asyncConfirm(option);
-// }
-
 export async function showReport(dateFormatted, workForm) {
   if (await asyncConfirm(
     {
@@ -167,5 +163,9 @@ export const autoClickOnElement = element => {
     console.log('autoClickOnElement');
 
   }
+};
+
+export const deleteCookie = (name) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
