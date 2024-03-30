@@ -7,14 +7,14 @@ import { authWithEmailAndPassword } from './firebase/auth_service.js';
 export async function btnRegisterFormHandler(currentDate, evt) {
 
   const workForm = evt.target.form,
-    userData = JSON.parse(localStorage.getItem('userData') ),
-    dateFormatted = currentDate.toLocaleString('it', dateFormat),
-    dateToIndexFirebase = currentDate.toISOString().slice(0, 10),
-    currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
-    currentYear = currentDate.getFullYear(),
-    main = document.querySelector('.main'),
-    loader = document.querySelector('.loader'),
-    registerConsultTabs = document.querySelector('.register-consult__tabs');
+        userData = JSON.parse(localStorage.getItem('userData') ),
+        dateFormatted = currentDate.toLocaleString('it', dateFormat),
+        dateToIndexFirebase = currentDate.toISOString().slice(0, 10),
+        currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
+        currentYear = currentDate.getFullYear(),
+        main = document.querySelector('.main'),
+        loader = document.querySelector('.loader'),
+        registerConsultTabs = document.querySelector('.register-consult__tabs');
 
   const dataForm = {
     building : workForm.building.value,
@@ -27,7 +27,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   registerConsultTabs.style.display = 'none';
   const dataForSaveInDatabase = new CreateObjectForDatabase(dateFormatted, dataForm, dateToIndexFirebase);
   
-  if(!validateForm(dataForm) ) return; // controllo riempimento dei campi
+  if(!validateForm(dataForm) ) return null; // controllo riempimento dei campi
 
   const optionConfirm = {
     title:'Registrare la scheda?',
@@ -74,6 +74,8 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     refreshCalendar();
     loader.classList.add('visually-hidden');
   }
+
+  return null
 }
 
 function CreateObjectForDatabase(date, {building, description, workedHours}, dateToIndexFirebase) {

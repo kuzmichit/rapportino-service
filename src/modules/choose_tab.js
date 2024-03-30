@@ -44,7 +44,7 @@ const bindHandlerChooseTab = () => {
     removeActive();
     setActive(registrazione);
 
-    if (checkUserInStorage() ) { // TODO: check fefresh tokon
+    if (checkUserInStorage() ) { // TODO: check refresh token
       showSignedUser();
       calendar.classList.remove('visually-hidden');
       headerToHidden.classList.remove('visually-hidden');

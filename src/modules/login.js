@@ -172,7 +172,6 @@ class FormLoginHandler {
       console.log('error onGoogle');
       this.restoreStateOfForm();
     }
-    // TODO: finire on google save saveIdTokenDataInSessionStorage, 
   }
 
   onFacebook() {
