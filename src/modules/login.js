@@ -12,7 +12,7 @@ dopo errore render login
 
 import { isValid, deleteNodes, deleteCookie /* autoClickOnElement */ } from './support.js';
 import { asyncConfirm } from './modal.js';
-import { authWithEmailAndPassword, btnGoogleHandler } from './firebase/auth_service.js';
+import { authWithEmailAndPassword, signInWithGoogle } from './firebase/auth_service.js';
 
 const insertNode = document.querySelector('.temp__container'),
       loader = document.querySelector('.loader'),
@@ -78,12 +78,28 @@ export const showSignedUser = () => {
   }
 };
 
-async function btnLoginHandler() {
-  insertNode.classList.add('visually-hidden');
+const btnHandle = async (callback, arg) => {
 
-  const formLogin = document.getElementById('login-form'),
-        email = formLogin.elements.email.value,
-        password = formLogin.elements.password.value,
+  insertNode.classList.add('visually-hidden');
+  loader.classList.remove('visually-hidden');
+  const idToken = await callback(arg);
+  if (!idToken) return null;
+
+  loader.classList.add('visually-hidden');
+  headerToHidden.classList.remove('visually-hidden');
+  deleteNodes(insertNode);
+  tabToShow.classList.remove('visually-hidden');
+  logoutBtn.classList.remove('visually-hidden');
+  showSignedUser();
+
+  return true;
+}
+
+async function btnLoginHandler() {
+  
+  const loginForm = document.getElementById('login-form'),
+        email = loginForm.elements.email.value,
+        password = loginForm.elements.password.value,
         expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
 
   if (!isValid(email, expForEmail) ) {
@@ -98,27 +114,9 @@ async function btnLoginHandler() {
   }
 
   const userData = new UserData(email, password);
+  const result = await btnHandle(authWithEmailAndPassword, userData)
 
-  try {
-    loader.classList.remove('visually-hidden');
-    const idToken = await authWithEmailAndPassword(userData);
-    if (!idToken) throw Error();
-
-    loader.classList.add('visually-hidden');
-    headerToHidden.classList.remove('visually-hidden');
-    deleteNodes(insertNode);
-    tabToShow.classList.remove('visually-hidden');
-    logoutBtn.classList.remove('visually-hidden');
-    showSignedUser();
-    
-    return true;
-  }
-  catch (error) {
-    console.error(error);
-    loader.classList.add('visually-hidden');
-
-    return null;
-  }
+  return result
 }
 
 export const bindLogout = () => {
@@ -132,7 +130,7 @@ const onLogoutHandler = () => {
     signBlockSpan.textContent = '';
     headerTitle.style.justifyContent = 'center';
     sessionStorage.clear();
-    deleteCookie('g_state');
+    deleteCookie('g_state');  
     location.reload();
     console.log('logout ok');
   }
@@ -151,20 +149,30 @@ class FormLoginHandler {
 
   async onLogin() {
     this.rmClick();
-    const result = await btnLoginHandler();
-    if (!result) this.restoreStateOfForm();
+
+    try {
+      const result = await btnLoginHandler();
+      if (!result) this.restoreStateOfForm();
+    }
+    catch (error) {
+      console.log('error onLogin');
+      this.restoreStateOfForm();
+    }
+    // const res = await exchangeRefreshTokenForIdToken();
   }
 
   async onGoogle() {
     this.rmClick();
+  
     try {
-      const result = await btnGoogleHandler()
+      const result = await btnHandle(signInWithGoogle)
       if (!result) this.restoreStateOfForm();
     }
     catch (error) {
       console.log('error onGoogle');
+      this.restoreStateOfForm();
     }
-    // TODO: fare restore google
+    // TODO: finire on google save saveIdTokenDataInSessionStorage, 
   }
 
   onFacebook() {
@@ -177,6 +185,8 @@ class FormLoginHandler {
 
   restoreStateOfForm() {
     this._form.addEventListener('click', this.onClick);
+    loader.classList.add('visually-hidden');
+    insertNode.classList.remove('visually-hidden')
     console.log('restore');
   }
 
@@ -189,7 +199,6 @@ class FormLoginHandler {
 
   showPassword() {
     this.password.type = (this.password.type === 'text') ? 'password' : 'text';
-    console.log(this.password.type);
   }
 
   lostPassword() {

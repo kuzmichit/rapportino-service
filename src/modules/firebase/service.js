@@ -16,63 +16,8 @@ const emulatorConfigURLs = {
   _orderByDay: '21 settembre 2023'
 };
 
-// const fetchArguments = {
-//   _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com',
-//   _pathToResource: 'rapportinoBorys',
-//   method: 'GET',
-//   body: null,
-//   headers: {'Content-Type': 'application/json'},
-//   getURL() {
-//     return this._baseURL + this._pathToResource;
-//   }
-// };
-
-// export const authWithEmailAndPassword = async ( {email, password} ) => {
-//   const apiKey = process.env._API_KEY;
-//   const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
-//   let idToken = '';
-
-//   if(timePreviousRun > (Date.now() - 350000) ) { 
-//     idToken = JSON.parse(sessionStorage.getItem('idToken') );
-      
-//     return idToken ;
-//   }
-
-//   try {
-//     let response = await fetch(`${emulatorConfigURLs._urlAuth}?key=${apiKey}`, {
-//       method: 'POST',
-//       mode: 'cors',
-//       body: JSON.stringify( {
-//         email: email,
-//         password: password,
-//         returnSecureToken: true
-//       } ) ,
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     } );
-//     let data = await response.json();
-//     if(data && data.error) throw data.error; 
-      
-//     idToken = data.idToken;
-//     sessionStorage.setItem('idToken', JSON.stringify(idToken) );
-//     sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
-
-//     return idToken;
-//   }
-//   catch (error) {
-//     if(400 <= error.code && 500 > error.code) {
-//       showTranslatedError(error.message);     
-//     }
-//     else(showTranslatedError(error.message) );
-//   }
-
-//   return null;
-// }; 
-
-export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, workForm) => 
-{
- try {
+export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, workForm) => {
+  try {
     const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`,
       {
         method: 'PATCH',
@@ -109,20 +54,6 @@ export const getScheduleFromDatabase = async (_pathname) => {
   } 
 }; 
 
-export const fetchWithAccessToken = (params) => {
-                  
-  fetch('https://rapportino-service-default-rtdb.asia-southeast1.firebasedatabase.app/dinosaurs.json?access_token=' + access_token)
-.then(response => response.json())
-.then(data => {
-// Usa i dati della risposta qui
-console.log(data);
-})
-.catch(error => {
-// Gestisci gli errori qui
-console.error(error);
-});
-}
-
 export const getResourceFromDatabase = async (_pathname) => {
   try {
     const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`);
@@ -136,14 +67,10 @@ export const getResourceFromDatabase = async (_pathname) => {
     showTranslatedError(error.message);
  
     return null;
-  } 
+  }
+  
+  return null
+  
 };
 
-/* function saveDataInLocalStorage(data, dateFormatted) {
-  let rapportino = JSON.parse(getRapportinoFromLocal() );
-  
-  rapportino[dateFormatted] = {...data[dateFormatted]};
-  localStorage.setItem('rapportino', JSON.stringify(rapportino) );
-}
-
-ricerca dinosauri const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"& startAt=50`);*/
+//ricerca dinosauri const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"& startAt=50`);*/

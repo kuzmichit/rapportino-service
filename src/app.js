@@ -19,7 +19,7 @@ import { bindLogout, showSignedUser } from './modules/login.js';
 const date = new Date();
 new MainHandler(date, calendarsElements);
 
-deleteCookie('g_state')
+deleteCookie('g_state') // da controllare
 bindHandlerChooseTab();
 consultHandle();
 bindLogout();

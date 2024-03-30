@@ -67,7 +67,7 @@ export async function showTranslatedError(message) {
     break;
 
   case 'NetworkError when attempting to fetch resource.':
-    errorMessage = 'Errore di rete, riprova più tardi';
+    errorMessage = 'Manca il collegamento, riprovare più tardi';
     break;
 
   default:

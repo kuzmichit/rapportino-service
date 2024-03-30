@@ -3,8 +3,8 @@
 ** settare il mese precedente
 ** 
 */
-import { bindHandleGoogle } from './firebase/auth_service';
 import { renderModalSignIn } from './login';
+import { showSignedUser } from './login';
 import { autoClickOnElement } from './support';
 import consultHandle from './consult_handle';
 
@@ -21,10 +21,10 @@ const removeActive = () => {
 const bindHandlerChooseTab = () => {
 
   const registrazione = document.querySelector('.register__tab'),
-    consultazione = document.querySelector('.consult__tab'),
-    headerToHidden = document.querySelector('.header__hidden'),
-    calendar = document.getElementById('calendar'),
-    consultazioneForm = document.getElementById('consulting');
+        consultazione = document.querySelector('.consult__tab'),
+        headerToHidden = document.querySelector('.header__hidden'),
+        calendar = document.getElementById('calendar'),
+        consultazioneForm = document.getElementById('consulting');
 
   const checkUserInStorage = () => {
     let result = (JSON.parse(sessionStorage.getItem('userData') ) !== null) ? true : false;
@@ -44,7 +44,8 @@ const bindHandlerChooseTab = () => {
     removeActive();
     setActive(registrazione);
 
-    if (checkUserInStorage() ) {
+    if (checkUserInStorage() ) { // TODO: check fefresh tokon
+      showSignedUser();
       calendar.classList.remove('visually-hidden');
       headerToHidden.classList.remove('visually-hidden');
       consultazioneForm.classList.add('visually-hidden');
@@ -61,6 +62,7 @@ const bindHandlerChooseTab = () => {
     setActive(consultazione);
 
     if (checkUserInStorage() ) {
+      showSignedUser();
       headerToHidden.classList.remove('visually-hidden');
       consultazioneForm.classList.remove('visually-hidden');
       calendar.classList.add('visually-hidden');

@@ -20,6 +20,13 @@ const saveIdTokenDataInSessionStorage = (data, userData = null) => {
 
 }
 
+const showError = (error) => {
+  if (400 <= error.code && 500 > error.code) {
+    showTranslatedError(error.message);
+  }
+  else (showTranslatedError(error.message) );
+}
+
 export const authWithEmailAndPassword = async ( { email, password } ) => {
 
   let idToken = '';
@@ -52,17 +59,11 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
     if (data && data.error) throw data.error;
 
     idToken = data.idToken;
-    // Salvare i dati di idToken
     saveIdTokenDataInSessionStorage(data, { email, password } );
 
     return idToken;
   }
-  catch (error) {
-    if (400 <= error.code && 500 > error.code) {
-      showTranslatedError(error.message);
-    }
-    else { showTranslatedError(error.message) }
-  }
+  catch (error) { showError(error) }
 
   return null;
 };
@@ -97,12 +98,7 @@ export const signInWithIdp = async (access_token, providerId = 'google.com') => 
 
     return idToken;
   }
-  catch (error) {
-    if (400 <= error.code && 500 > error.code) {
-      showTranslatedError(error.message);
-    }
-    else (showTranslatedError(error.message) );
-  }
+  catch (error) { showError(error) }
 
   return null;
   
@@ -119,7 +115,7 @@ const loadGoogleIdentityServices = () => {
   } )
 }
     
-export const btnGoogleHandler = async () => {
+export const signInWithGoogle = async () => {
   return new Promise( (resolve, reject) => {
     const handleCredentialResponse = async (res) => {
       try {
@@ -145,10 +141,45 @@ export const btnGoogleHandler = async () => {
         // eslint-disable-next-line no-undef
         google.accounts.id.prompt(); // Visualizza anche il dialogo One Tap
       } )
-      .catch( (error) => {
-        console.error('Errore durante il caricamento delle risorse di Google Identity Services:', error);
+      .catch( () => {
+        if(showTranslatedError('NetworkError when attempting to fetch resource.') );
         reject(false); // Indica che l'operazione non è riuscita
       } );
   } );
 };
+
+let refreshToken = sessionStorage.getItem('refreshToken')
+// console.log(refreshToken == 'undefined');
+if (refreshToken !== 'undefined' && refreshToken !== null && refreshToken !== '') {
+  refreshToken = JSON.parse(refreshToken)
+}
+
+export const exchangeRefreshTokenForIdToken = async () => {
+
+  const url = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
+  const fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}`
+  };
+  
+  try {
+    const response = await fetch(url, fetchData);
+    const data = await response.json();
+    if (data && data.error) throw data.error;
+    const newData = {
+      idToken: data.id_token,
+      refreshToken: data.refresh_token
+    }
+    saveIdTokenDataInSessionStorage(newData)
+    
+    return data;
+  }
+  catch (error) { showError(error) }
+  
+  return null;
+}
 
