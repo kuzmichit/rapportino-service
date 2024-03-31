@@ -54,22 +54,30 @@ export class MainHandler {
   //le frecce per spostare le ore
   hourBtnLeft(e) {
     e.preventDefault();
-    if(this.elems.listHour.getBoundingClientRect().left <= 0 && this.elems.listHour.getBoundingClientRect().left + 150 <= 0) {
-      this.elems.listHour.style.left = this.elems.listHour.getBoundingClientRect().left - 150 + 'px'
+    const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left,
+          maxLeft = this.elems.listHourContainer.getBoundingClientRect().left
+    if (listHourStyleLeft < maxLeft) {
+      let newLeft = listHourStyleLeft - maxLeft + 150;
+      if (newLeft > 0) {
+        newLeft = 0;
+      }
+      this.elems.listHour.style.left = newLeft + 'px';
     }
-    else (this.elems.listHour.style.left = 0 + 'px')
-    console.log(this.elems.listHour.getBoundingClientRect().left);
+    console.log(this.elems.listHour.getBoundingClientRect().left +150);
   }
 
   hourBtnRight(e) {
     e.preventDefault();
     const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
     const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
-    if(listHourStyleLeft >= leftMax && listHourStyleLeft - 150 >= leftMax) { 
-      this.elems.listHour.style.left = listHourStyleLeft - 150 + 'px';
+    if (listHourStyleLeft > leftMax) {
+      let newLeft = listHourStyleLeft - 150;
+      if (newLeft < leftMax) {
+        newLeft = leftMax;
+      }
+      this.elems.listHour.style.left = newLeft + 'px';
       console.log(this.elems.listHour.getBoundingClientRect().left);
-    } 
-    else(this.elems.listHour.style.left = leftMax + 'px')
+    }
   }
   //accerchiamento giorno
   dayItem(evt) {
