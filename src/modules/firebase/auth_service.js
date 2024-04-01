@@ -1,4 +1,5 @@
 
+import * as jose from 'jose'
 import { showTranslatedError } from '../support.js';
 const emulatorConfigURLs = {
   _hostname: 'http://127.0.0.1:9000/',
@@ -20,17 +21,18 @@ const saveIdTokenDataInSessionStorage = (data, userData = null) => {
 
 }
 
-const showError = (error) => {
+const showError = async (error) => {
   if (400 <= error.code && 500 > error.code) {
-    showTranslatedError(error.message);
+    await showTranslatedError(error.message)
   }
-  else (showTranslatedError(error.message) );
+  else await showTranslatedError(error.message)
+
+  return null;
 }
 
 export const authWithEmailAndPassword = async ( { email, password } ) => {
 
   let idToken = '';
-  let refreshToken = '';
   const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
 
   if (timePreviousRun > (Date.now() - 350000) ) {
@@ -63,8 +65,10 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
 
     return idToken;
   }
-  catch (error) { showError(error) }
-
+  catch (error) {
+    await showError(error) 
+  }
+  
   return null;
 };
 
@@ -88,17 +92,24 @@ export const signInWithIdp = async (access_token, providerId = 'google.com') => 
   };
 
   try {
+    const decodedJWT = jose.decodeJwt(access_token)
+    const userData = {
+      email: decodedJWT.email
+    }
+    console.log(userData)
     let response = await fetch(url, fetchData);
     let data = await response.json();
     if (data && data.error) throw data.error;
 
     idToken = data.idToken;
     // Salvare i dati di idToken
-    saveIdTokenDataInSessionStorage(data)
+    saveIdTokenDataInSessionStorage(data, userData)
 
     return idToken;
   }
-  catch (error) { showError(error) }
+  catch (error) {
+    await showError(error)
+  }
 
   return null;
   
@@ -116,22 +127,25 @@ const loadGoogleIdentityServices = () => {
 }
     
 export const signInWithGoogle = async () => {
+
   return new Promise( (resolve, reject) => {
     const handleCredentialResponse = async (res) => {
       try {
-        const access_token = await res.credential;
-        const tokenId = await signInWithIdp(access_token);
+        const JWT = await res.credential;
+        const tokenId = await signInWithIdp(JWT);
         resolve(true); // Indica che l'operazione è riuscita
       }
       catch (error) {
+
         console.error('Errore durante la gestione della risposta delle credenziali:', error);
         reject(false); // Indica che l'operazione non è riuscita
       }
     };
 
     loadGoogleIdentityServices()
+      .then(console.log('object') )
       .then( () => {
-      // eslint-disable-next-line no-undef
+        // eslint-disable-next-line no-undef
         google.accounts.id.initialize( {
           client_id: '482515197259-4kfbochdgiikcpgkivj6jcthvocetpbc.apps.googleusercontent.com',
           callback: handleCredentialResponse,
@@ -142,19 +156,20 @@ export const signInWithGoogle = async () => {
         google.accounts.id.prompt(); // Visualizza anche il dialogo One Tap
       } )
       .catch( () => {
-        if(showTranslatedError('NetworkError when attempting to fetch resource.') );
-        reject(false); // Indica che l'operazione non è riuscita
+        if (showError( { message: 'NetworkError when attempting to fetch resource.' } ) ) {
+          
+          reject(false); // Indica che l'operazione non è riuscita
+        }
       } );
   } );
 };
 
-let refreshToken = sessionStorage.getItem('refreshToken')
-// console.log(refreshToken == 'undefined');
-if (refreshToken !== 'undefined' && refreshToken !== null && refreshToken !== '') {
-  refreshToken = JSON.parse(refreshToken)
-}
-
 export const exchangeRefreshTokenForIdToken = async () => {
+
+  let refreshToken = sessionStorage.getItem('refreshToken')
+  if (refreshToken !== 'undefined' && refreshToken !== null && refreshToken !== '') {
+    refreshToken = JSON.parse(refreshToken)
+  }
 
   const url = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
   const fetchData = {
@@ -170,6 +185,7 @@ export const exchangeRefreshTokenForIdToken = async () => {
     const response = await fetch(url, fetchData);
     const data = await response.json();
     if (data && data.error) throw data.error;
+
     const newData = {
       idToken: data.id_token,
       refreshToken: data.refresh_token
@@ -178,7 +194,9 @@ export const exchangeRefreshTokenForIdToken = async () => {
     
     return data;
   }
-  catch (error) { showError(error) }
+  catch (error) {
+    if (await showError(error) ) return null;
+  }
   
   return null;
 }

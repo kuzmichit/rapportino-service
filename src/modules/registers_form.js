@@ -2,7 +2,6 @@ import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, sh
 import { renderModalSignIn } from './login.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
 import { getScheduleFromDatabase, submitScheduleInDatabase, getResourceFromDatabase} from './firebase/service.js';
-import { authWithEmailAndPassword } from './firebase/auth_service.js';
 
 export async function btnRegisterFormHandler(currentDate, evt) {
 
@@ -46,7 +45,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   try{
     loader.classList.remove('visually-hidden');
     
-    const idToken = await authWithEmailAndPassword(userData);
+    const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
     if(!idToken) throw Error(); 
 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
@@ -73,20 +72,24 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   catch (error) {
     refreshCalendar();
     loader.classList.add('visually-hidden');
+    renderModalSignIn();
+    console.log('btnRegisterFormHandler ++++++', error);
   }
 
   return null
 }
 
-function CreateObjectForDatabase(date, {building, description, workedHours}, dateToIndexFirebase) {
+class CreateObjectForDatabase {
+  constructor(date, { building, description, workedHours }, dateToIndexFirebase) {
 
-  this[`${date}`] =
-     {
-       building,
-       description,
-       workedHours,
-       date: dateToIndexFirebase,
-     };
+    this[`${date}`] =
+    {
+      building,
+      description,
+      workedHours,
+      date: dateToIndexFirebase,
+    };
+  }
 }
 
 const showPopupToConfirmPutData = async (optionConfirm, workForm) => {

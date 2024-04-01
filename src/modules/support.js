@@ -74,7 +74,9 @@ export async function showTranslatedError(message) {
     errorMessage = 'Errore generico, riprova più tardi';
   }
 
-  if (await asyncConfirm( { messageBody: errorMessage, no: null } ) );
+  let tmp = await asyncConfirm( { messageBody: errorMessage, no: null } );
+  
+  return true;
 }
 
 export const dateFormat = {

@@ -26,11 +26,15 @@ const bindHandlerChooseTab = () => {
         calendar = document.getElementById('calendar'),
         consultazioneForm = document.getElementById('consulting');
 
-  const checkUserInStorage = () => {
-    let result = (JSON.parse(sessionStorage.getItem('userData') ) !== null) ? true : false;
+  const checkUserSignedIn = () => {
+    const isExisted = (value) => {
+      return value !== null && value !== undefined;
+    }
 
-    return result;
-
+    const userEmail = JSON.parse(sessionStorage.getItem('userData.email') ),
+          idToken = JSON.parse(sessionStorage.getItem('idToken') );
+          
+    return (isExisted(userEmail) && isExisted(idToken) ) ? true : false
   };
 
   const addHandler = (element, fn) => {
@@ -44,7 +48,7 @@ const bindHandlerChooseTab = () => {
     removeActive();
     setActive(registrazione);
 
-    if (checkUserInStorage() ) { // TODO: check refresh token
+    if (checkUserSignedIn() ) { // TODO: check refresh token
       showSignedUser();
       calendar.classList.remove('visually-hidden');
       headerToHidden.classList.remove('visually-hidden');
@@ -61,7 +65,7 @@ const bindHandlerChooseTab = () => {
     removeActive();
     setActive(consultazione);
 
-    if (checkUserInStorage() ) {
+    if (checkUserSignedIn() ) {
       showSignedUser();
       headerToHidden.classList.remove('visually-hidden');
       consultazioneForm.classList.remove('visually-hidden');
@@ -76,6 +80,6 @@ const bindHandlerChooseTab = () => {
 
   addHandler(registrazione, onRegistrazioneClick);
   addHandler(consultazione, onConsultazioneClick);
-  autoClickOnElement(registrazione); // --------------------------------------------
+  // autoClickOnElement(registrazione); // --------------------------------------------
 };
 export default bindHandlerChooseTab;

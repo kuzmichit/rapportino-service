@@ -86,9 +86,8 @@ const consultHandle = () => {
     try{
       loader.classList.remove('visually-hidden');
 
-      const idToken = await authWithEmailAndPassword(userData);
+      const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
       if(!idToken) throw Error(); 
-       
       URL_pathname += idToken;
   
       dataToRender = await getResourceFromDatabase(URL_pathname);
@@ -98,8 +97,8 @@ const consultHandle = () => {
     }       
     catch (error) {
       loader.classList.add('visually-hidden');
-      console.log('empty');
       asyncConfirm( {messageBody: 'La data selezionata non presente in database!', messageDate: 'Scegliere un altra data.' , no: null} );
+      console.log('consultHandle +++++', error);
 
       return null;
     }

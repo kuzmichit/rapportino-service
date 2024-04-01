@@ -10,8 +10,8 @@ import './css/render.css';
 
 import header from './img/header_img.jpeg';
 import bindHandlerChooseTab from '../src/modules/choose_tab';
+import { exchangeRefreshTokenForIdToken } from './modules/firebase/auth_service.js';
 import { MainHandler } from './modules/mainHandler.js';
-import { CreateCalendar } from './modules/calendar.js';
 import { calendarsElements, deleteCookie } from './modules/support.js';
 import consultHandle from './modules/consult_handle.js';
 import { bindLogout, showSignedUser } from './modules/login.js';
