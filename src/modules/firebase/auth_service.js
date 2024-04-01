@@ -2,12 +2,14 @@
 import * as jose from 'jose'
 import { showTranslatedError } from '../support.js';
 const emulatorConfigURLs = {
-  _hostname: 'http://127.0.0.1:9000/',
+  _hostname: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts',
+  _hostnameToken: 'http://localhost:9090/securetoken.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
   _search: '?search',
   _hash: '#hash',
   _URL() { return this._hostname + this._pathname; },
-  _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
+  _urlAuthWithPsd: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
+  _urlAuthWithGoogleAcc: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accountstoken',
   _orderByDay: '21 settembre 2023'
 };
 // eslint-disable-next-line no-undef
@@ -33,15 +35,15 @@ const showError = async (error) => {
 export const authWithEmailAndPassword = async ( { email, password } ) => {
 
   let idToken = '';
-  const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
+  // const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
 
-  if (timePreviousRun > (Date.now() - 350000) ) {
-    idToken = JSON.parse(sessionStorage.getItem('idToken') );
+  // if (timePreviousRun > (Date.now() - 350000) ) {
+  //   idToken = JSON.parse(sessionStorage.getItem('idToken') );
 
-    return idToken;
-  }
+  //   return idToken;
+  // }
 
-  const url = `${emulatorConfigURLs._urlAuth}?key=${apiKey}`
+  const url = `${emulatorConfigURLs._hostname}:signInWithPassword?key=${apiKey}`
   const body = {
     method: 'POST',
     mode: 'cors',
@@ -61,7 +63,7 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
     if (data && data.error) throw data.error;
 
     idToken = data.idToken;
-    saveIdTokenDataInSessionStorage(data, { email, password } );
+    saveIdTokenDataInSessionStorage(data, { email } );
 
     return idToken;
   }
@@ -75,7 +77,7 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
 export const signInWithIdp = async (access_token, providerId = 'google.com') => {
   let idToken = '';
 
-  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${apiKey}`;
+  const url = `${emulatorConfigURLs._hostname}:signInWithIdp?key=${apiKey}`;
   const fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -96,7 +98,7 @@ export const signInWithIdp = async (access_token, providerId = 'google.com') => 
     const userData = {
       email: decodedJWT.email
     }
-    console.log(userData)
+
     let response = await fetch(url, fetchData);
     let data = await response.json();
     if (data && data.error) throw data.error;
@@ -127,6 +129,8 @@ const loadGoogleIdentityServices = () => {
 }
     
 export const signInWithGoogle = async () => {
+
+  // return result = null
 
   return new Promise( (resolve, reject) => {
     const handleCredentialResponse = async (res) => {
@@ -171,7 +175,7 @@ export const exchangeRefreshTokenForIdToken = async () => {
     refreshToken = JSON.parse(refreshToken)
   }
 
-  const url = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
+  const url = `${emulatorConfigURLs._hostnameToken}token?key=${apiKey}`;
   const fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -195,7 +199,8 @@ export const exchangeRefreshTokenForIdToken = async () => {
     return data;
   }
   catch (error) {
-    if (await showError(error) ) return null;
+    await showError(error)
+    console.log('object');
   }
   
   return null;

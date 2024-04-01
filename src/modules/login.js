@@ -115,7 +115,7 @@ async function btnLoginHandler() {
 
   const userData = new UserData(email, password);
   const result = await btnHandle(authWithEmailAndPassword, userData)
-
+  
   return result
 }
 
@@ -152,13 +152,13 @@ class FormLoginHandler {
 
     try {
       const result = await btnLoginHandler();
-      if (!result) this.restoreStateOfForm();
+      if (!result) throw 'Result undefined'
+      bindLogout()
     }
     catch (error) {
       console.log('error onLogin');
       this.restoreStateOfForm();
     }
-    // const res = await exchangeRefreshTokenForIdToken();
   }
 
   async onGoogle() {
@@ -167,6 +167,7 @@ class FormLoginHandler {
     try {
       const result = await btnHandle(signInWithGoogle)
       if (!result) this.restoreStateOfForm();
+      bindLogout()
     }
     catch (error) {
       console.log('error onGoogle');

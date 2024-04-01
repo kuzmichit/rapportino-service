@@ -7,7 +7,9 @@ import { renderModalSignIn } from './login';
 import { showSignedUser } from './login';
 import { autoClickOnElement } from './support';
 import consultHandle from './consult_handle';
+import { exchangeRefreshTokenForIdToken } from './firebase/auth_service';
 
+showSignedUser()
 const setActive = elem => {
   elem.classList.add('active-tab');
 };
@@ -27,14 +29,17 @@ const bindHandlerChooseTab = () => {
         consultazioneForm = document.getElementById('consulting');
 
   const checkUserSignedIn = () => {
-    const isExisted = (value) => {
-      return value !== null && value !== undefined;
+   
+    let userData = JSON.parse(sessionStorage.getItem('userData') ),
+          timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
+    let idToken = JSON.parse(sessionStorage.getItem('idToken') );
+  
+    if (userData && timePreviousRun && idToken) {
+      // if (timePreviousRun > (Date.now() - 3500000) ) return true;
+      if (exchangeRefreshTokenForIdToken() ) return true;
     }
 
-    const userEmail = JSON.parse(sessionStorage.getItem('userData.email') ),
-          idToken = JSON.parse(sessionStorage.getItem('idToken') );
-          
-    return (isExisted(userEmail) && isExisted(idToken) ) ? true : false
+    return null
   };
 
   const addHandler = (element, fn) => {

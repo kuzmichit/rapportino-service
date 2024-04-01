@@ -52,14 +52,14 @@ export async function showTranslatedError(message) {
   switch (message) {
   case 'EMAIL_NOT_FOUND':
     errorMessage = 'L\'email non è corretta, inserire nuovamente.';
-    if (await asyncConfirm( { messageBody: errorMessage, no: null } ) )
-      renderModalSignIn();
+    // if (await asyncConfirm( { messageBody: errorMessage, no: null } ) )
+    //   renderModalSignIn();
     break;
 
   case 'INVALID_PASSWORD':
     errorMessage = 'La password non è corretta, inserire nuovamente.';
-    if (await asyncConfirm( { messageBody: errorMessage, no: null } ) )
-      renderModalSignIn();
+    // if (await asyncConfirm( { messageBody: errorMessage, no: null } ) )
+    //   renderModalSignIn();
     break;
 
   case 'TOO_MANY_ATTEMPTS_TRY_LATER':
@@ -74,7 +74,7 @@ export async function showTranslatedError(message) {
     errorMessage = 'Errore generico, riprova più tardi';
   }
 
-  let tmp = await asyncConfirm( { messageBody: errorMessage, no: null } );
+  await asyncConfirm( { messageBody: errorMessage, no: null } );
   
   return true;
 }
