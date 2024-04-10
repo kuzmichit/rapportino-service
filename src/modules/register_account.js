@@ -1,7 +1,6 @@
 
 /* export const signInWithGoogle = async () => {
 
-
 fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=[API_KEY]', {
   method: 'POST',
   headers: {

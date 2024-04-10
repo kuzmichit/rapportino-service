@@ -14,7 +14,7 @@ const consultHandle = () => {
         btnCerca = form.elements.cerca,
         inputDate = form.elements.date,
         selectMesi = form.elements.mesi,
-        userData = JSON.parse(localStorage.getItem('userData') ),
+        userData = JSON.parse(sessionStorage.getItem('userData') ),
         tempContainer = document.querySelector('.temp__container'),
         loader = document.querySelector('.loader');
 
@@ -54,36 +54,36 @@ const consultHandle = () => {
       tempContainer.insertAdjacentHTML('beforeend', table);
     };
 
-    if(inputDate.value !== '') {
-      const date = new Date(inputDate.value),
-            searchingDate = date.getDate(),
-            currentYear = date.getFullYear(),
-            currentMonth = date.toLocaleString('it', {month: 'long'} ),
-            _queryPath = `orderBy="$key"&startAt="${searchingDate} "&endAt="${searchingDate + 1 } "`;
-
-      URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?' + _queryPath + '&auth='; 
-        
-      inputDate.value = '';
-    }
-    else if(selectMesi.value !== '') { 
-
-      const currentYear = new Date().getFullYear();
-      URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + selectMesi.value.toLowerCase() + '.json?auth=';
-
-      selectMesi.value = '';
-    }
-    else { 
-      document.querySelector('.register-consult__tabs').classList.add('visually-hidden');
-      form.classList.add('visually-hidden');
-      if (await asyncConfirm( {messageBody: 'Scegli la data o il mese!', no: null} ) ) {
-        document.querySelector('.register-consult__tabs').classList.remove('visually-hidden');
-        form.classList.remove('visually-hidden');
-      } 
-
-      return null;
-    }
-
     try{
+      if(inputDate.value !== '') {
+        const date = new Date(inputDate.value),
+              searchingDate = date.getDate(),
+              currentYear = date.getFullYear(),
+              currentMonth = date.toLocaleString('it', {month: 'long'} ),
+              _queryPath = `orderBy="$key"&startAt="${searchingDate} "&endAt="${searchingDate + 1 } "`;
+
+        URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?' + _queryPath + '&auth='; 
+        
+        inputDate.value = '';
+      }
+      else if(selectMesi.value !== '') { 
+
+        const currentYear = new Date().getFullYear();
+        URL_pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + selectMesi.value.toLowerCase() + '.json?auth=';
+
+        selectMesi.value = '';
+      }
+      else { 
+        document.querySelector('.register-consult__tabs').classList.add('visually-hidden');
+        form.classList.add('visually-hidden');
+        if (await asyncConfirm( {messageBody: 'Scegli la data o il mese!', no: null} ) ) {
+          document.querySelector('.register-consult__tabs').classList.remove('visually-hidden');
+          form.classList.remove('visually-hidden');
+        } 
+
+        return null;
+      }
+    
       loader.classList.remove('visually-hidden');
 
       const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
@@ -92,12 +92,13 @@ const consultHandle = () => {
   
       dataToRender = await getResourceFromDatabase(URL_pathname);
       if(Object.keys(dataToRender).length === 0 || dataToRender === undefined) {
+        asyncConfirm( { messageBody: 'La scheda con la data selezionata non presente in database!', messageDate: 'Scegliere un altra data.', no: null } );
         throw Error();
       }
+      if (dataToRender === null) throw Error();
     }       
     catch (error) {
       loader.classList.add('visually-hidden');
-      asyncConfirm( {messageBody: 'La data selezionata non presente in database!', messageDate: 'Scegliere un altra data.' , no: null} );
       console.log('consultHandle +++++', error);
 
       return null;

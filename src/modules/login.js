@@ -78,47 +78,6 @@ export const showSignedUser = () => {
   }
 };
 
-const btnHandle = async (callback, arg) => {
-
-  insertNode.classList.add('visually-hidden');
-  loader.classList.remove('visually-hidden');
-  const idToken = await callback(arg);
-  if (!idToken) return null;
-
-  loader.classList.add('visually-hidden');
-  headerToHidden.classList.remove('visually-hidden');
-  deleteNodes(insertNode);
-  tabToShow.classList.remove('visually-hidden');
-  logoutBtn.classList.remove('visually-hidden');
-  showSignedUser();
-
-  return true;
-}
-
-async function btnLoginHandler() {
-  
-  const loginForm = document.getElementById('login-form'),
-        email = loginForm.elements.email.value,
-        password = loginForm.elements.password.value,
-        expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
-
-  if (!isValid(email, expForEmail) ) {
-    if (await asyncConfirm( { messageBody: 'L\'email non è corretta', no: null } ) ) insertNode.classList.remove('visually-hidden');
-
-    return null;
-  }
-  if (!isValid(password) ) {
-    if (await asyncConfirm( { messageBody: 'La password non è corretta', no: null } ) ) insertNode.classList.remove('visually-hidden');
-
-    return null;
-  }
-
-  const userData = new UserData(email, password);
-  const result = await btnHandle(authWithEmailAndPassword, userData)
-  
-  return result
-}
-
 export const bindLogout = () => {
   const logout = document.querySelector('.logout');
   logout.addEventListener('click', onLogoutHandler);
@@ -137,6 +96,47 @@ const onLogoutHandler = () => {
   catch (error) { () => console.error(error); }
 };
 
+const btnHandle = async (callback, arg) => {
+
+  insertNode.classList.add('visually-hidden');
+  loader.classList.remove('visually-hidden');
+  const idToken = await callback(arg);
+  if (!idToken) return null;
+
+  loader.classList.add('visually-hidden');
+  headerToHidden.classList.remove('visually-hidden');
+  deleteNodes(insertNode);
+  tabToShow.classList.remove('visually-hidden');
+  // logoutBtn.classList.remove('visually-hidden');
+  showSignedUser();
+
+  return true;
+}
+
+async function btnLoginHandler() {
+  
+  const loginForm = document.getElementById('login-form'),
+        email = loginForm.elements.email.value,
+        password = loginForm.elements.password.value,
+        expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
+
+  if (!isValid(email, expForEmail) ) {
+    await asyncConfirm( { messageBody: 'L\'email non è corretta', no: null } ) 
+    
+    return null;
+  }
+  if (!isValid(password) ) {
+    await asyncConfirm( { messageBody: 'La password non è corretta', no: null } ) 
+      
+    return null;
+  }
+
+  const userData = new UserData(email, password);
+  const result = await btnHandle(authWithEmailAndPassword, userData)
+  
+  return result
+}
+
 class FormLoginHandler {
   constructor(form, activeTab) {
     this._form = form;
@@ -151,7 +151,7 @@ class FormLoginHandler {
     this.rmClick();
 
     try {
-      const result = await btnLoginHandler();
+      const result = await btnHandle(btnLoginHandler);
       if (!result) throw 'Result undefined'
       bindLogout()
     }
@@ -162,7 +162,7 @@ class FormLoginHandler {
   }
 
   async onGoogle() {
-    this.rmClick();
+    this.rmClick(); 
   
     try {
       const result = await btnHandle(signInWithGoogle)

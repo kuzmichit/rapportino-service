@@ -35,7 +35,7 @@ const bindHandlerChooseTab = () => {
     let idToken = JSON.parse(sessionStorage.getItem('idToken') );
   
     if (userData && timePreviousRun && idToken) {
-      // if (timePreviousRun > (Date.now() - 3500000) ) return true;
+      if (timePreviousRun > (Date.now() - 3500000) ) return true;
       if (exchangeRefreshTokenForIdToken() ) return true;
     }
 
@@ -49,12 +49,12 @@ const bindHandlerChooseTab = () => {
     element.removeEventListener('click', fn);
   };
 
-  const onRegistrazioneClick = () => {
+  const onRegistrazioneClick = () => { 
     removeActive();
-    setActive(registrazione);
 
-    if (checkUserSignedIn() ) { // TODO: check refresh token
+    if (checkUserSignedIn() ) { 
       showSignedUser();
+      setActive(registrazione);
       calendar.classList.remove('visually-hidden');
       headerToHidden.classList.remove('visually-hidden');
       consultazioneForm.classList.add('visually-hidden');
@@ -63,14 +63,15 @@ const bindHandlerChooseTab = () => {
     }
     else {
       renderModalSignIn(calendar);
+      setActive(registrazione);
     }
   };
 
   const onConsultazioneClick = () => {
     removeActive();
-    setActive(consultazione);
-
+    
     if (checkUserSignedIn() ) {
+      setActive(consultazione);
       showSignedUser();
       headerToHidden.classList.remove('visually-hidden');
       consultazioneForm.classList.remove('visually-hidden');
@@ -80,6 +81,7 @@ const bindHandlerChooseTab = () => {
     }
     else {
       renderModalSignIn(consultazioneForm);
+      setActive(consultazione);
     }
   };
 

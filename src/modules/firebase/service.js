@@ -60,17 +60,13 @@ export const getResourceFromDatabase = async (_pathname) => {
     if(!response.ok) throw Error();
 
     const data = await response.json();
-    //console.log(data); //==================================== log
     if(data !== null) return data;
   }
   catch (error) {
     showTranslatedError(error.message);
- 
-    return null;
   }
   
   return null
-  
 };
 
 //ricerca dinosauri const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"& startAt=50`);*/

@@ -110,11 +110,11 @@ export const signInWithIdp = async (access_token, providerId = 'google.com') => 
     return idToken;
   }
   catch (error) {
+    console.log('signInWithIdp ++++++');
     await showError(error)
+    
+    return null
   }
-
-  return null;
-  
 }
 
 const loadGoogleIdentityServices = () => {
@@ -136,8 +136,10 @@ export const signInWithGoogle = async () => {
     const handleCredentialResponse = async (res) => {
       try {
         const JWT = await res.credential;
-        const tokenId = await signInWithIdp(JWT);
-        resolve(true); // Indica che l'operazione è riuscita
+        const idToken = await signInWithIdp(JWT);
+        if (!idToken) throw 'Oops'
+        resolve(true);
+        // Indica che l'operazione è riuscita
       }
       catch (error) {
 
@@ -147,7 +149,6 @@ export const signInWithGoogle = async () => {
     };
 
     loadGoogleIdentityServices()
-      .then(console.log('object') )
       .then( () => {
         // eslint-disable-next-line no-undef
         google.accounts.id.initialize( {
@@ -168,7 +169,7 @@ export const signInWithGoogle = async () => {
   } );
 };
 
-export const exchangeRefreshTokenForIdToken = async () => {
+export const exchangeRefreshTokenForIdToken = async () => { // TODO: cambiare la data expire
 
   let refreshToken = sessionStorage.getItem('refreshToken')
   if (refreshToken !== 'undefined' && refreshToken !== null && refreshToken !== '') {
@@ -200,7 +201,7 @@ export const exchangeRefreshTokenForIdToken = async () => {
   }
   catch (error) {
     await showError(error)
-    console.log('object');
+    console.log('exchangeRefreshTokenForIdToken--------');
   }
   
   return null;

@@ -6,7 +6,7 @@ import { getScheduleFromDatabase, submitScheduleInDatabase, getResourceFromDatab
 export async function btnRegisterFormHandler(currentDate, evt) {
 
   const workForm = evt.target.form,
-        userData = JSON.parse(localStorage.getItem('userData') ),
+        userData = JSON.parse(sessionStorage.getItem('userData') ),
         dateFormatted = currentDate.toLocaleString('it', dateFormat),
         dateToIndexFirebase = currentDate.toISOString().slice(0, 10),
         currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
@@ -43,36 +43,33 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   };
 
   try{
-    loader.classList.remove('visually-hidden');
+    loader.classList.remove('visually-hidden'); 
     
     const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
     if(!idToken) throw Error(); 
 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
     const currentData = await getResourceFromDatabase(_pathname);
-    if(currentData) {
-      //controllo se si puo memorizzare la scheda
+    if (!currentData) { throw Error() }
+    //controllo se si puo memorizzare la scheda
 
-      const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
-      if(!itsOverflow) throw Error();
-    }
+    const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
+    if (!itsOverflow) throw Error();
 
-    loader.classList.add('visually-hidden');
-    
+    loader.classList.add('visually-hidden');    
     if(await showPopupToConfirmPutData(optionConfirm) ) { 
       loader.classList.remove('visually-hidden');
-      submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
+      await submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
       loader.classList.add('visually-hidden');
     }
-    else { 
-      refreshCalendar();
+    else {
+      refreshCalendar()
     }
 
   }       
   catch (error) {
     refreshCalendar();
     loader.classList.add('visually-hidden');
-    renderModalSignIn();
     console.log('btnRegisterFormHandler ++++++', error);
   }
 
