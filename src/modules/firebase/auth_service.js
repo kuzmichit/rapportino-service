@@ -1,7 +1,7 @@
 
 import * as jose from 'jose'
 import { showTranslatedError } from '../support.js';
-const emulatorConfigURLs = {
+/*const emulatorConfigURLs = {
   _hostname: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'http://localhost:9090/securetoken.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
@@ -11,6 +11,14 @@ const emulatorConfigURLs = {
   _urlAuthWithPsd: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
   _urlAuthWithGoogleAcc: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accountstoken',
   _orderByDay: '21 settembre 2023'
+};
+*/
+const configURLs = {
+  _hostname: 'https://identitytoolkit.googleapis.com/v1/accounts',
+  _hostnameToken: 'https://identitytoolkit.googleapis.com/v1/',
+  _pathname: 'zucca@gmailcom',
+  _search: '?search',
+  _hash: '#hash',
 };
 // eslint-disable-next-line no-undef
 const apiKey = process.env._API_KEY;
@@ -35,15 +43,8 @@ const showError = async (error) => {
 export const authWithEmailAndPassword = async ( { email, password } ) => {
 
   let idToken = '';
-  // const timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
 
-  // if (timePreviousRun > (Date.now() - 350000) ) {
-  //   idToken = JSON.parse(sessionStorage.getItem('idToken') );
-
-  //   return idToken;
-  // }
-
-  const url = `${emulatorConfigURLs._hostname}:signInWithPassword?key=${apiKey}`
+  const url = `${configURLs._hostname}:signInWithPassword?key=${apiKey}`
   const body = {
     method: 'POST',
     mode: 'cors',
@@ -77,7 +78,7 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
 export const signInWithIdp = async (access_token, providerId = 'google.com') => {
   let idToken = '';
 
-  const url = `${emulatorConfigURLs._hostname}:signInWithIdp?key=${apiKey}`;
+  const url = `${configURLs._hostname}:signInWithIdp?key=${apiKey}`;
   const fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -176,7 +177,7 @@ export const exchangeRefreshTokenForIdToken = async () => { // TODO: cambiare la
     refreshToken = JSON.parse(refreshToken)
   }
 
-  const url = `${emulatorConfigURLs._hostnameToken}token?key=${apiKey}`;
+  const url = `${configURLs._hostnameToken}token?key=${apiKey}`;
   const fetchData = {
     method: 'POST',
     mode: 'cors',

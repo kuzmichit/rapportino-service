@@ -1,7 +1,7 @@
 import {validateForm, dateFormat, getRapportinoFromLocal, checkHoursOverflow, showModalError, showReport} from './support.js';
 import { renderModalSignIn } from './login.js';
 import {asyncConfirm, ConfirmBox} from './modal.js';
-import { getScheduleFromDatabase, submitScheduleInDatabase, getResourceFromDatabase} from './firebase/service.js';
+import {submitScheduleInDatabase, getResourceFromDatabase} from './firebase/service.js';
 
 export async function btnRegisterFormHandler(currentDate, evt) {
 
@@ -46,26 +46,24 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     loader.classList.remove('visually-hidden'); 
     
     const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
-    if(!idToken) throw Error(); 
+    if(!idToken) throw new Error(''); 
 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;
     const currentData = await getResourceFromDatabase(_pathname);
-    if (!currentData) { throw Error() }
+
     //controllo se si puo memorizzare la scheda
-
-    const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
-    if (!itsOverflow) throw Error();
-
+    if (currentData !== null) {
+      const itsOverflow = await checkHoursOverflow(currentData, dateFormatted, dataForm);
+      if (itsOverflow) throw new Error();
+    }
+    
     loader.classList.add('visually-hidden');    
     if(await showPopupToConfirmPutData(optionConfirm) ) { 
       loader.classList.remove('visually-hidden');
-      await submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm);
+      await submitScheduleInDatabase(dataForSaveInDatabase, _pathname, dateFormatted, workForm)
       loader.classList.add('visually-hidden');
     }
-    else {
-      refreshCalendar()
-    }
-
+   
   }       
   catch (error) {
     refreshCalendar();

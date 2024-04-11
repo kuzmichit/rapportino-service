@@ -5,8 +5,8 @@ import {showTranslatedError, getRapportinoFromLocal, showReport} from '../suppor
 import {asyncConfirm, ConfirmBox} from '../modal.js';
 import { renderModalSignIn } from '../login.js';
 
-//const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
-const emulatorConfigURLs = {
+/*const configURLs= { _baseURL: 'https://la-sceda-di-lavoro-default-rtdb.firebaseio.com'};
+  const emulatorConfigURLs = {
   _hostname: 'http://127.0.0.1:9000/',
   _pathname: 'zucca@gmailcom',
   _search: '?search',
@@ -14,11 +14,19 @@ const emulatorConfigURLs = {
   _URL() { return this._hostname + this._pathname; },
   _urlAuth: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword', // manca la d
   _orderByDay: '21 settembre 2023'
+};*/
+
+const configURLs = {
+  _hostname: 'https://rapportino-service-default-rtdb.asia-southeast1.firebasedatabase.app',
+  _search: '?search',
+  _hash: '#hash',
+  _URL() { return this._hostname + this._pathname; },
+  _orderByDay: '21 settembre 2023'
 };
 
 export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, workForm) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`,
+    const response = await fetch(`${configURLs._hostname}/${_pathname}`,
       {
         method: 'PATCH',
         body: JSON.stringify(dataForSaveInDatabase),
@@ -30,16 +38,20 @@ export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname,
     );
     if(!response.ok) throw Error();
     showReport(dateFormatted, workForm);
-    // saveDataInLocalStorage(dataForSaveInDatabase, dateFormatted);
   }
   catch(error) { 
-    showTranslatedError(error.message); 
+    showTranslatedError(error.message);
+    console.log('submitScheduleInDatabase ++++', error.message);
+    
+    throw error
   } 
+
+  return true
 };
 
 export const getScheduleFromDatabase = async (_pathname) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`);
+    const response = await fetch(`${configURLs._hostname}/${_pathname}`);
     if(!response.ok) throw Error();
     const data = await response.json();
 
@@ -56,7 +68,7 @@ export const getScheduleFromDatabase = async (_pathname) => {
 
 export const getResourceFromDatabase = async (_pathname) => {
   try {
-    const response = await fetch(`${emulatorConfigURLs._hostname}${_pathname}`);
+    const response = await fetch(`${configURLs._hostname}/${_pathname}`);
     if(!response.ok) throw Error();
 
     const data = await response.json();
@@ -64,9 +76,9 @@ export const getResourceFromDatabase = async (_pathname) => {
   }
   catch (error) {
     showTranslatedError(error.message);
+    
+    throw error
   }
   
-  return null
+  return null;
 };
-
-//ricerca dinosauri const response = await fetch(`${emulatorConfigURLs._hostname}scores.json?orderBy="$value"& startAt=50`);*/

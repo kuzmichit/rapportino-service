@@ -138,10 +138,10 @@ export async function checkHoursOverflow(rapportino, dateFormatted, { workedHour
     }
   }
   if (tmpHours >= 12) {
-    if (await asyncConfirm( { messageBody: 'E stato superato il limite delle ore', no: null } ) ) return false;
+    if (await asyncConfirm( { messageBody: 'E stato superato il limite delle ore', no: null } ) ) return true;
   }
 
-  return true;
+  return false;
 }
 
 export async function showReport(dateFormatted, workForm) {
