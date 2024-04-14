@@ -127,7 +127,7 @@ function isIncludingCurrentDate(rapportino, dateForCompare) {
 export async function checkHoursOverflow(rapportino, dateFormatted, { workedHours } ) {
 
   const dateForCompare = dateFormatted.slice(0, (dateFormatted.indexOf(202) + 4) );
-  if (!isIncludingCurrentDate(rapportino, dateForCompare) ) return true;
+  if (!isIncludingCurrentDate(rapportino, dateForCompare) ) return false;
 
   let rapParsed = rapportino;
   let tmpHours = +workedHours;

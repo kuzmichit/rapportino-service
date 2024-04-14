@@ -24,7 +24,6 @@ export class MainHandler {
     if (!action) return;
     if (!isObject(this[action[0]] ) ) return;
     this[action[0]](evt);
-    // console.log(action);
   }
 
   calendarHeaderText() {
@@ -63,7 +62,6 @@ export class MainHandler {
       }
       this.elems.listHour.style.left = newLeft + 'px';
     }
-    console.log(this.elems.listHour.getBoundingClientRect().left +150);
   }
 
   hourBtnRight(e) {
@@ -76,7 +74,6 @@ export class MainHandler {
         newLeft = leftMax;
       }
       this.elems.listHour.style.left = newLeft + 'px';
-      console.log(this.elems.listHour.getBoundingClientRect().left);
     }
   }
   //accerchiamento giorno

@@ -148,24 +148,28 @@ export const signInWithGoogle = async () => {
         reject(false); // Indica che l'operazione non è riuscita
       }
     };
-
+    const handleError = (error) => {
+      console.log(error);
+    }
     loadGoogleIdentityServices()
       .then( () => {
         // eslint-disable-next-line no-undef
         google.accounts.id.initialize( {
           client_id: '482515197259-4kfbochdgiikcpgkivj6jcthvocetpbc.apps.googleusercontent.com',
+          
           callback: handleCredentialResponse,
+          errorCallback: handleError,
           auto_select: true,
         } );
 
         // eslint-disable-next-line no-undef
         google.accounts.id.prompt(); // Visualizza anche il dialogo One Tap
       } )
-      .catch( () => {
-        if (showError( { message: 'NetworkError when attempting to fetch resource.' } ) ) {
+      .catch(async () => {
+        
+        await showError( { message: 'NetworkError when attempting to fetch resource.' } ) // TODO: dopo 10 sec controllare stato
           
-          reject(false); // Indica che l'operazione non è riuscita
-        }
+        reject(false); // Indica che l'operazione non è riuscita
       } );
   } );
 };
