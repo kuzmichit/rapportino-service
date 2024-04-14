@@ -1,5 +1,4 @@
-import { renderModalSignIn } from './login';
-import { ConfirmBox, asyncConfirm } from './modal';
+import { asyncConfirm } from './modal';
 const calendar = document.getElementById('calendar');
 
 export const calendarsElements = {
@@ -68,6 +67,10 @@ export async function showTranslatedError(message) {
 
   case 'NetworkError when attempting to fetch resource.':
     errorMessage = 'Manca il collegamento, riprovare più tardi';
+    break;
+    
+  case 'INVALID_LOGIN_CREDENTIALS':
+    errorMessage = 'Le credenziali di accesso non valide inserire nuovamente';
     break;
 
   default:

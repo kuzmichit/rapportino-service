@@ -2,11 +2,10 @@
 ** 
 ** 
  */
-import { dateFormat, autoClickOnElement, deleteNodes } from './support.js';
+import { autoClickOnElement, deleteNodes } from './support.js';
 import { renderModalSignIn } from './login.js';
 import {asyncConfirm} from './modal.js';
 import { getResourceFromDatabase} from './firebase/service.js';
-import {authWithEmailAndPassword} from './firebase/auth_service.js';
 
 const consultHandle = () => {
 
@@ -24,7 +23,7 @@ const consultHandle = () => {
     let URL_pathname;
     let dataToRender;
 
-    const render = dataToRender => {
+    const render = dataToRender => { // TODO: Se non esiste la scheda (mese) in FB far vedere il messaggio -> refresh cerca form 
 
       const createTbody = () => {
 
@@ -99,6 +98,7 @@ const consultHandle = () => {
     }       
     catch (error) {
       loader.classList.add('visually-hidden');
+      renderModalSignIn();
       console.log('consultHandle +++++', error);
 
       return null;

@@ -70,6 +70,7 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
   }
   catch (error) {
     await showError(error) 
+    console.log('authWithEmailAndPassword++++++', error)
   }
   
   return null;
@@ -111,8 +112,8 @@ export const signInWithIdp = async (access_token, providerId = 'google.com') => 
     return idToken;
   }
   catch (error) {
-    console.log('signInWithIdp ++++++');
     await showError(error)
+    console.log('signInWithIdp ++++++');
     
     return null
   }
