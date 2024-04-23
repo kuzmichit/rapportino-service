@@ -1,7 +1,8 @@
 
 import * as jose from 'jose'
 import { showTranslatedError } from '../support.js';
-/*const emulatorConfigURLs = {
+
+const configURLs = {
   _hostname: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'http://localhost:9090/securetoken.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
@@ -12,14 +13,14 @@ import { showTranslatedError } from '../support.js';
   _urlAuthWithGoogleAcc: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accountstoken',
   _orderByDay: '21 settembre 2023'
 };
-*/
-const configURLs = {
+
+/* const configURLs = {
   _hostname: 'https://identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'https://identitytoolkit.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
   _search: '?search',
   _hash: '#hash',
-};
+}; */
 // eslint-disable-next-line no-undef
 const apiKey = process.env._API_KEY;
 
@@ -132,10 +133,9 @@ const loadGoogleIdentityServices = () => {
     
 export const signInWithGoogle = async () => {
 
-  // return result = null
-
   return new Promise( (resolve, reject) => {
     const handleCredentialResponse = async (res) => {
+      console.log(1111);
       try {
         const JWT = await res.credential;
         const idToken = await signInWithIdp(JWT);
@@ -149,9 +149,7 @@ export const signInWithGoogle = async () => {
         reject(false); // Indica che l'operazione non è riuscita
       }
     };
-    const handleError = (error) => {
-      console.log(error);
-    }
+ 
     loadGoogleIdentityServices()
       .then( () => {
         // eslint-disable-next-line no-undef
@@ -159,17 +157,21 @@ export const signInWithGoogle = async () => {
           client_id: '482515197259-4kfbochdgiikcpgkivj6jcthvocetpbc.apps.googleusercontent.com',
           
           callback: handleCredentialResponse,
-          errorCallback: handleError,
           auto_select: true,
+          use_fedcm_for_prompt: true,
         } );
 
         // eslint-disable-next-line no-undef
         google.accounts.id.prompt(); // Visualizza anche il dialogo One Tap
       } )
       .catch(async () => {
+        await showError( { message: 'NetworkError when attempting to fetch resource.' } )
         
-        await showError( { message: 'NetworkError when attempting to fetch resource.' } ) // TODO: dopo 10 sec controllare stato
-          
+        /* TODO: dopo 10 sec  controllare stato
+        if (typeof google !== 'undefined' && google.accounts !== 'undefined' && google.accounts.id !== 'undefined') {
+          // Library is already loaded, you can use it here
+      }*/
+        
         reject(false); // Indica che l'operazione non è riuscita
       } );
   } );

@@ -89,4 +89,26 @@ select {
   overflow: hidden;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  /* Trasparenza dello sfondo */
+  z-index: 11;
+  /* Assicura che l'overlay sia posizionato sopra il resto del contenuto */
+}
+
+.loader {
+  width: 80px;
+  margin: 20px auto;
+  z-index: 10;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid #7eabc7;
+  border-right-color: orange;
+  animation: l2 1s infinite linear;
+}
 

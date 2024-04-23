@@ -10,7 +10,7 @@
 dopo errore render login
    */
 
-import { isValid, deleteNodes, deleteCookie /* autoClickOnElement */ } from './support.js';
+import { isValid, deleteNodes, deleteCookie ,autoClickOnElement } from './support.js';
 import { asyncConfirm } from './modal.js';
 import { authWithEmailAndPassword, signInWithGoogle } from './firebase/auth_service.js';
 
@@ -19,7 +19,6 @@ const insertNode = document.querySelector('.temp__container'),
       headerToHidden = document.querySelector('.header__hidden'),
       signBlock = document.querySelector('.sign-block'),
       signBlockSpan = signBlock.querySelector('.sign__name > span'),
-      logoutBtn = document.querySelector('.logout'),
       headerTitle = document.querySelector('.header__title');
 let tabToShow = '';
 
@@ -107,9 +106,8 @@ const btnHandle = async (callback, arg) => {
   headerToHidden.classList.remove('visually-hidden');
   deleteNodes(insertNode);
   tabToShow.classList.remove('visually-hidden');
-  // logoutBtn.classList.remove('visually-hidden');
   showSignedUser();
-
+  
   return true;
 }
 
@@ -132,7 +130,7 @@ async function btnLoginHandler() {
   }
 
   const userData = new UserData(email, password);
-  const result = await btnHandle(authWithEmailAndPassword, userData)
+  const result = await authWithEmailAndPassword(userData);
   
   return result
 }
@@ -163,7 +161,6 @@ class FormLoginHandler {
 
   async onGoogle() {
     this.rmClick(); 
-  
     try {
       const result = await btnHandle(signInWithGoogle)
       if (!result) this.restoreStateOfForm();
