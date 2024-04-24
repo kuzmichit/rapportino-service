@@ -165,7 +165,7 @@ body {
 @media(max-width: 767.98px) {
 
   html {
-    font-size: calc(20 * (100vw/768));
+    font-size: calc(16 * (100vw/768));
   }
 }
 
@@ -177,7 +177,7 @@ body {
   }
 
   html {
-    font-size: calc(16*(100vw/480));
+    font-size: calc(12*(100vw/480));
   }
 }
 

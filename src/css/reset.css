@@ -95,7 +95,9 @@ select {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Trasparenza dello sfondo */
+  ;
   /* Trasparenza dello sfondo */
   z-index: 11;
   /* Assicura che l'overlay sia posizionato sopra il resto del contenuto */

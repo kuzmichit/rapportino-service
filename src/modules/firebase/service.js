@@ -5,21 +5,21 @@ import {showTranslatedError, getRapportinoFromLocal, showReport} from '../suppor
 import {asyncConfirm, ConfirmBox} from '../modal.js';
 import { renderModalSignIn } from '../login.js';
 
-const configURLs = {
+/* const configURLs = {
   _hostname: 'http://127.0.0.1:9000',
   _pathname: 'zucca@gmailcom',
   _search: '?search',
   _hash: '#hash',
   _URL() { return this._hostname + this._pathname; },
-};
+}; */
 
-/* const configURLs = {
+const configURLs = {
   _hostname: 'https://rapportino-service-default-rtdb.asia-southeast1.firebasedatabase.app',
   _search: '?search',
   _hash: '#hash',
   _URL() { return this._hostname + this._pathname; },
   _orderByDay: '21 settembre 2023'
-}; */
+};
 
 export const submitScheduleInDatabase = async (dataForSaveInDatabase, _pathname, dateFormatted, workForm) => {
   try {

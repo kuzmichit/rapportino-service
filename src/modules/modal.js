@@ -121,4 +121,4 @@ const asyncConfirm = (option) => new Promise(resolve => {
   new ConfirmBox(option, onClick);
 } ); 
 
-export {asyncConfirm, ConfirmBox};
+export {asyncConfirm};

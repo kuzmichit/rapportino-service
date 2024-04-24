@@ -2,7 +2,7 @@
 import * as jose from 'jose'
 import { showTranslatedError } from '../support.js';
 
-const configURLs = {
+/* const configURLs = {
   _hostname: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'http://localhost:9090/securetoken.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
@@ -12,15 +12,15 @@ const configURLs = {
   _urlAuthWithPsd: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
   _urlAuthWithGoogleAcc: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accountstoken',
   _orderByDay: '21 settembre 2023'
-};
+}; */
 
-/* const configURLs = {
+const configURLs = {
   _hostname: 'https://identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'https://identitytoolkit.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
   _search: '?search',
   _hash: '#hash',
-}; */
+};
 // eslint-disable-next-line no-undef
 const apiKey = process.env._API_KEY;
 
