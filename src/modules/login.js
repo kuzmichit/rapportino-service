@@ -63,7 +63,7 @@ function initLoginForm() {
 }
 
 function UserData(email, password) {
-  this.email = email,
+  this.email = email.trim().toLowerCase(),
   this.password = password;
 }
 
@@ -114,7 +114,7 @@ const btnHandle = async (callback, arg) => {
 async function btnLoginHandler() {
   
   const loginForm = document.getElementById('login-form'),
-        email = loginForm.elements.email.value.trim().toLoverCase(),
+        email = loginForm.elements.email.value.trim().toLowerCase(),
         password = loginForm.elements.password.value,
         expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
 
@@ -155,7 +155,7 @@ class FormLoginHandler {
       bindLogout()
     }
     catch (error) {
-      console.log('error onLogin');
+      console.log(error, '---error onLogin');
       this.restoreStateOfForm();
     }
   }
@@ -185,7 +185,6 @@ class FormLoginHandler {
     this._form.addEventListener('click', this.onClick);
     loader.classList.add('visually-hidden');
     insertNode.classList.remove('visually-hidden')
-    console.log('restore');
   }
 
   onClick(event) {

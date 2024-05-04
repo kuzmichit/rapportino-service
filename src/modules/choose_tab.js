@@ -5,7 +5,7 @@
 */
 import { renderModalSignIn } from './login';
 import { showSignedUser } from './login';
-import { autoClickOnElement } from './support';
+import { autoClickOnElement, deleteNodes } from './support.js';
 import { exchangeRefreshTokenForIdToken } from './firebase/auth_service';
 import onBtnCercaHandler from './consult_handle.js';
 
@@ -30,6 +30,7 @@ const registrazione = document.querySelector('.register__tab'),
       headerToHidden = document.querySelector('.header__hidden'),
       calendar = document.getElementById('calendar'),
       consultazioneForm = document.getElementById('consulting'),
+      tempContainer = document.querySelector('.temp__container'),
       btnCerca = consultazioneForm.elements.cerca;
 
 const bindHandlerChooseTab = () => {
@@ -56,6 +57,7 @@ const checkUserSignedIn = () => {
 
 const onRegistrazioneClick = () => { 
   removeActive();
+  deleteNodes(tempContainer)
 
   if (checkUserSignedIn() ) { 
     showSignedUser();
