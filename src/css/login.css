@@ -8,7 +8,7 @@
 .login__container {
   width: 70vw;
   max-width: 800px;
-  margin: 150px auto;
+  margin: 25px auto;
   overflow: hidden;
 }
 
@@ -56,12 +56,23 @@
 }
 
 .visualizzare-password {
-  width: 35px;
+  width: 40px;
   height: 35px;
-  padding-right: 10px;
+  margin-right: 1px;
   align-self: center;
   background-image: url('../img/eye.png');
-}
+  }
+
+  .visualizzare-password-barra {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    margin-left: 30%;
+    font-size: 35px;
+    line-height: 30px;
+    font-weight: semibold;
+    color: white;
+  }
 
 /*move the underline*/
 .form-input-material::before {
@@ -82,6 +93,7 @@
 }
 
 .form-input-material .form-control-material {
+  width: 100%;
   padding: 0.5rem 0;
   background: none;
   border: none;
@@ -148,13 +160,6 @@ hr {
   margin-top: 1rem;
   max-width: 90%;
 }
-
-
-/* btn google  */
-.button-google {
-  /* display: none; */
-}
-
 .google-btn-wrapper {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
 }
@@ -218,4 +223,21 @@ hr {
   .btn-ghost {
     margin-top: 3rem;
   }
-}
+@media(max-width: 461px) {
+
+  .login__container {
+    width: 98vw;
+    }
+
+    .form-input-material,
+    .login-with-google-btn,
+    .btn-ghost {
+      margin-top: 2rem;
+      width: 70%;
+    }
+
+    .btn-ghost {
+      margin-top: 3rem;
+    }
+    }
+    }

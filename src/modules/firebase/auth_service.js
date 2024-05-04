@@ -135,7 +135,6 @@ export const signInWithGoogle = async () => {
 
   return new Promise( (resolve, reject) => {
     const handleCredentialResponse = async (res) => {
-      console.log(1111);
       try {
         const JWT = await res.credential;
         const idToken = await signInWithIdp(JWT);

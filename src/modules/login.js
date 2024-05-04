@@ -31,7 +31,7 @@ export function renderModalSignIn(chosenTab) {
       <label for="username">Email</label></div>
     <div class="form-input-material">
       <input type="password" name="password" placeholder=" " autocomplete="off" required="required" class="form-control-material" />
-      <span class="visualizzare-password" data-action='showPassword'></span>
+      <span class="visualizzare-password" data-action='showPassword'><span class="visually-hidden visualizzare-password-barra" data-action='showPassword'>&#92</span></span>
       <label for="password">Password</label>
     </div>
     <button id='sign-in' name="btn-ghost" type="submit" class="btn btn-ghost" onclick="return false" data-action='onLogin'>Login</button>
@@ -114,7 +114,7 @@ const btnHandle = async (callback, arg) => {
 async function btnLoginHandler() {
   
   const loginForm = document.getElementById('login-form'),
-        email = loginForm.elements.email.value,
+        email = loginForm.elements.email.value.trim().toLoverCase(),
         password = loginForm.elements.password.value,
         expForEmail = /(^\w+)@(\w+)\.[A-Za-z]{2,3}$/;
 
@@ -140,6 +140,7 @@ class FormLoginHandler {
     this._form = form;
     this._activeTab = activeTab
     this.eye = form.querySelector('.visualizzare-password')
+    this.eyeOverScore = form.querySelector('.visualizzare-password-barra')
     this.password = form.elements.password
     this.onClick = this.onClick.bind(this); // Bind del metodo onClick
     this._form.addEventListener('click', this.onClick);
@@ -195,6 +196,7 @@ class FormLoginHandler {
   }
 
   showPassword() {
+    this.eyeOverScore.classList.toggle('visually-hidden')
     this.password.type = (this.password.type === 'text') ? 'password' : 'text';
   }
 
