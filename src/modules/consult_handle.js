@@ -96,7 +96,6 @@ const onBtnCercaHandler = async (e) => {
       
       return null;
     }
-    if (dataToRender === null) console.log(111111);
   }       
   catch (error) {
     loader.classList.add('visually-hidden');

@@ -13,6 +13,7 @@ dopo errore render login
 import { isValid, deleteNodes, deleteCookie ,autoClickOnElement } from './support.js';
 import { asyncConfirm } from './modal.js';
 import { authWithEmailAndPassword, signInWithGoogle } from './firebase/auth_service.js';
+import { showSignedUser, onLogoutHandler } from './logging_user.js';
 
 const insertNode = document.querySelector('.temp__container'),
       loader = document.querySelector('.loader'),
@@ -67,32 +68,9 @@ function UserData(email, password) {
   this.password = password;
 }
 
-export const showSignedUser = () => {
-  const userEmail = JSON.parse(sessionStorage.getItem('userData') );
-
-  if (userEmail) {
-    signBlock.classList.remove('visually-hidden');
-    signBlockSpan.textContent = userEmail.email.slice(0, userEmail.email.indexOf('@') );
-    headerTitle.style.justifyContent = 'space-between';
-  }
-};
-
 export const bindLogout = () => {
   const logout = document.querySelector('.logout');
   logout.addEventListener('click', onLogoutHandler);
-};
-
-const onLogoutHandler = () => {
-  try {
-    signBlock.classList.add('visually-hidden');
-    signBlockSpan.textContent = '';
-    headerTitle.style.justifyContent = 'center';
-    sessionStorage.clear();
-    deleteCookie('g_state');  
-    location.reload();
-    console.log('logout ok');
-  }
-  catch (error) { () => console.error(error); }
 };
 
 const btnHandle = async (callback, arg) => {
@@ -150,6 +128,7 @@ class FormLoginHandler {
     this.rmClick();
 
     try {
+
       const result = await btnHandle(btnLoginHandler);
       if (!result) throw 'Result undefined'
       bindLogout()

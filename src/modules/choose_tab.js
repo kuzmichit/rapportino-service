@@ -4,7 +4,7 @@
 ** 
 */
 import { renderModalSignIn } from './login';
-import { showSignedUser } from './login';
+import { showSignedUser } from './logging_user.js';
 import { autoClickOnElement, deleteNodes } from './support.js';
 import { exchangeRefreshTokenForIdToken } from './firebase/auth_service';
 import onBtnCercaHandler from './consult_handle.js';
