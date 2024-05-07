@@ -4,7 +4,7 @@
 
 .consulting h3 {
   letter-spacing: 1.5;
-
+  font-size: 1.3rem;
 }
 
 .consulting__btn {
@@ -32,7 +32,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   margin-top: 1.5rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .consulting__date {

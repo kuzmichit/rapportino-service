@@ -1,8 +1,9 @@
 
 import * as jose from 'jose'
 import { showTranslatedError } from '../support.js';
+import { asyncConfirm } from '../modal.js';
 
-const configURLs = {
+/* const configURLs = {
   _hostname: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'http://localhost:9090/securetoken.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
@@ -12,23 +13,23 @@ const configURLs = {
   _urlAuthWithPsd: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
   _urlAuthWithGoogleAcc: 'http://localhost:9090/identitytoolkit.googleapis.com/v1/accountstoken',
   _orderByDay: '21 settembre 2023'
-};
+}; */
 
-/* const configURLs = {
+const configURLs = {
   _hostname: 'https://identitytoolkit.googleapis.com/v1/accounts',
   _hostnameToken: 'https://identitytoolkit.googleapis.com/v1/',
   _pathname: 'zucca@gmailcom',
   _search: '?search',
   _hash: '#hash',
-}; */
+};
 // eslint-disable-next-line no-undef
 const apiKey = process.env._API_KEY;
 
-const saveIdTokenDataInSessionStorage = (data, userData = null) => {
-  sessionStorage.setItem('idToken', JSON.stringify(data.idToken) );
-  sessionStorage.setItem('refreshToken', JSON.stringify(data.refreshToken) );
-  sessionStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
-  if (userData) sessionStorage.setItem('userData', JSON.stringify(userData) );
+const saveIdTokenDataInlocalStorage = (data, userData = null) => {
+  localStorage.setItem('idToken', JSON.stringify(data.idToken) );
+  localStorage.setItem('refreshToken', JSON.stringify(data.refreshToken) );
+  localStorage.setItem('timePreviousRun', JSON.stringify(Date.now() ) );
+  if (userData) localStorage.setItem('userData', JSON.stringify(userData) );
 
 }
 
@@ -65,7 +66,7 @@ export const authWithEmailAndPassword = async ( { email, password } ) => {
     if (data && data.error) throw data.error;
 
     idToken = data.idToken;
-    saveIdTokenDataInSessionStorage(data, { email } );
+    saveIdTokenDataInlocalStorage(data, { email } );
 
     return idToken;
   }
@@ -108,7 +109,7 @@ export const signInWithIdp = async (access_token, providerId = 'google.com') => 
 
     idToken = data.idToken;
     // Salvare i dati di idToken
-    saveIdTokenDataInSessionStorage(data, userData)
+    saveIdTokenDataInlocalStorage(data, userData)
 
     return idToken;
   }
@@ -133,10 +134,22 @@ const loadGoogleIdentityServices = () => {
     
 export const signInWithGoogle = async () => {
 
+  let gisLoaded = null
+  setTimeout(async () => {
+    if (!gisLoaded) {
+      console.log('error loading gis')
+      await asyncConfirm( { messageBody: 'Prima di accedere con il tasto Google devi accedere ad un account google in browser', no: null } )
+      location.reload()
+    }
+  }, 10000)
+
   return new Promise( (resolve, reject) => {
+    
     const handleCredentialResponse = async (res) => {
+
       try {
         const JWT = await res.credential;
+        gisLoaded = JWT
         const idToken = await signInWithIdp(JWT);
         if (!idToken) throw 'Oops'
         resolve(true);
@@ -148,7 +161,7 @@ export const signInWithGoogle = async () => {
         reject(false); // Indica che l'operazione non è riuscita
       }
     };
- 
+    // let a = window.onGoogleLibraryLoad = () => console.log(444) 
     loadGoogleIdentityServices()
       .then( () => {
         // eslint-disable-next-line no-undef
@@ -165,12 +178,7 @@ export const signInWithGoogle = async () => {
       } )
       .catch(async () => {
         await showError( { message: 'NetworkError when attempting to fetch resource.' } )
-        
-        /* TODO: dopo 10 sec  controllare stato
-        if (typeof google !== 'undefined' && google.accounts !== 'undefined' && google.accounts.id !== 'undefined') {
-          // Library is already loaded, you can use it here
-      }*/
-        
+          
         reject(false); // Indica che l'operazione non è riuscita
       } );
   } );
@@ -178,7 +186,7 @@ export const signInWithGoogle = async () => {
 
 export const exchangeRefreshTokenForIdToken = async () => { // TODO: cambiare la data expire
 
-  let refreshToken = sessionStorage.getItem('refreshToken')
+  let refreshToken = localStorage.getItem('refreshToken')
   if (refreshToken !== 'undefined' && refreshToken !== null && refreshToken !== '') {
     refreshToken = JSON.parse(refreshToken)
   }
@@ -202,7 +210,7 @@ export const exchangeRefreshTokenForIdToken = async () => { // TODO: cambiare la
       idToken: data.id_token,
       refreshToken: data.refresh_token
     }
-    saveIdTokenDataInSessionStorage(newData)
+    saveIdTokenDataInlocalStorage(newData)
     
     return data;
   }

@@ -5,7 +5,7 @@ import {submitScheduleInDatabase, getResourceFromDatabase} from './firebase/serv
 export async function btnRegisterFormHandler(currentDate, evt) {
 
   const workForm = evt.target.form,
-        userData = JSON.parse(sessionStorage.getItem('userData') ),
+        userData = JSON.parse(localStorage.getItem('userData') ),
         dateFormatted = currentDate.toLocaleString('it', dateFormat),
         dateToIndexFirebase = currentDate.toISOString().slice(0, 10),
         currentMonth = currentDate.toLocaleString('it', { month: 'long'} ),
@@ -21,12 +21,26 @@ export async function btnRegisterFormHandler(currentDate, evt) {
                   workForm.querySelector('.hour.item_checked').textContent
   };
 
-  main.style.display = 'none';
-  registerConsultTabs.style.display = 'none';
+  const restoreInitState = () => {
+
+    // document.getElementById('btnSubmit').classList.remove('visually-hidden');
+    main.classList.remove('visually-hidden');
+    registerConsultTabs.classList.remove('visually-hidden');
+    loader.classList.add('visually-hidden');
+  }
+
+  main.classList.add('visually-hidden');
+  registerConsultTabs.classList.add('visually-hidden');
   const dataForSaveInDatabase = new CreateObjectForDatabase(dateFormatted, dataForm, dateToIndexFirebase);
   
-  if(!validateForm(dataForm) ) return null; // controllo riempimento dei campi
-
+  const resultOfValidateForm = await validateForm(dataForm)
+      
+  if (!resultOfValidateForm) {
+    restoreInitState()
+      
+    return null; // controllo riempimento dei campi
+  }
+  
   const optionConfirm = {
     title:'Registrare la scheda?',
     messageBody: 'Cantiere: ' + dataForm.building,
@@ -35,24 +49,13 @@ export async function btnRegisterFormHandler(currentDate, evt) {
     yes: 'Si'
   }; 
 
-  const refreshCalendar = () => {
-    document.getElementById('btnSubmit').style.display = '';
-    main.style.display = '';
-    registerConsultTabs.style.display = '';
-  };
-
-  const restoreInitState = () => {
-    refreshCalendar();
-    loader.classList.add('visually-hidden');
-  }
-
   try {
     loader.classList.remove('visually-hidden'); 
     
-    const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
+    const idToken = await JSON.parse(localStorage.getItem('idToken') );
     if (!idToken) {
       restoreInitState()
-      throw 'non id_token'
+      throw 'Is not id_token'
     }
 
     const _pathname = userData.email.replace('.', '') + '/' + currentYear + '/' + currentMonth + '.json?auth=' + idToken;

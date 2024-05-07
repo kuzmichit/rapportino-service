@@ -106,7 +106,7 @@ export class MainHandler {
 
   //la registrazione della scheda o apertura la finestra Login
   handleSubmit(evt) {
-    this.btnSubmit.style.display = 'none';
+    // this.btnSubmit.classList.add('visually-hidden');
     btnRegisterFormHandler(this.currentDate, evt);
   }
   static test() {

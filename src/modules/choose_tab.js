@@ -43,9 +43,9 @@ const bindHandlerChooseTab = () => {
 
 const checkUserSignedIn = () => {
    
-  let userData = JSON.parse(sessionStorage.getItem('userData') ),
-        timePreviousRun = JSON.parse(sessionStorage.getItem('timePreviousRun') );
-  let idToken = JSON.parse(sessionStorage.getItem('idToken') );
+  let userData = JSON.parse(localStorage.getItem('userData') ),
+        timePreviousRun = JSON.parse(localStorage.getItem('timePreviousRun') );
+  let idToken = JSON.parse(localStorage.getItem('idToken') );
   
   if (userData && timePreviousRun && idToken) {
     if (timePreviousRun > (Date.now() - 3500000) ) return true;

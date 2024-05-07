@@ -14,7 +14,7 @@ export const onLogoutHandler = () => {
   try {
     render('lavoro giornaliero', 'center')
     signBlock.classList.add('visually-hidden');
-    sessionStorage.clear();
+    localStorage.clear();
     deleteCookie('g_state');  
     location.reload();
     console.log('logout ok');
@@ -27,7 +27,7 @@ export const onLogoutHandler = () => {
 export const showSignedUser = () => {
 
   try {
-    const userEmail = JSON.parse(sessionStorage.getItem('userData') );
+    const userEmail = JSON.parse(localStorage.getItem('userData') );
        
     if (userEmail) {
       const userName = userEmail.email.slice(0, 1).toUpperCase() + userEmail.email.slice(1, userEmail.email.indexOf('@') );

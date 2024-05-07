@@ -95,7 +95,7 @@ export function getRapportinoFromLocal() {
   return rapportino;
 }
 
-export function validateForm( { workedHours, building, description } ) {
+export async function validateForm( { workedHours, building, description } ) {
 
   let errorMessage = '';
   if (!workedHours) {
@@ -111,7 +111,7 @@ export function validateForm( { workedHours, building, description } ) {
   }
 
   if (errorMessage) {
-    asyncConfirm( { messageBody: errorMessage, no: null } );
+    await asyncConfirm( { messageBody: errorMessage, no: null } );
 
     return false;
   }

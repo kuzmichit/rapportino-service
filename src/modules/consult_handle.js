@@ -13,8 +13,9 @@ const onBtnCercaHandler = async (e) => {
         btnCerca = form.elements.cerca,
         inputDate = form.elements.date,
         selectMesi = form.elements.mesi,
-        userData = JSON.parse(sessionStorage.getItem('userData') ),
+        userData = JSON.parse(localStorage.getItem('userData') ),
         tempContainer = document.querySelector('.temp__container'),
+        consultazioneForm = document.getElementById('consulting'),
         loader = document.querySelector('.loader');
 
   deleteNodes(tempContainer);
@@ -85,7 +86,7 @@ const onBtnCercaHandler = async (e) => {
     
     loader.classList.remove('visually-hidden');
 
-    const idToken = await JSON.parse(sessionStorage.getItem('idToken') );
+    const idToken = await JSON.parse(localStorage.getItem('idToken') );
     if(!idToken) throw Error(); 
     URL_pathname += idToken;
   
@@ -98,6 +99,7 @@ const onBtnCercaHandler = async (e) => {
     }
   }       
   catch (error) {
+    consultazioneForm.classList.add('visually-hidden');
     loader.classList.add('visually-hidden');
     renderModalSignIn();
     console.log('consultHandle +++++', error);
