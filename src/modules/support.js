@@ -4,6 +4,7 @@ const calendar = document.getElementById('calendar');
 export const calendarsElements = {
   buttonRight: calendar.querySelector('.button__right'),
   buttonLeft: calendar.querySelector('.button__left'),
+  buttonHourRight: calendar.querySelector('.hour__btn-right'),
   targetCurrent: calendar,
   month: calendar.querySelector('.month'),
   nameBuildingInput: calendar.querySelector('.name-building__input'),

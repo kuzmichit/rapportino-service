@@ -93,6 +93,6 @@ const onConsultazioneClick = () => {
     setActive(consultazione);
   }
 };
-// autoClickOnElement(consultazione); // --------------------------------------------
+autoClickOnElement(registrazione); // --------------------------------------------
   
 export default bindHandlerChooseTab;

@@ -68,12 +68,26 @@ export class MainHandler {
     e.preventDefault();
     const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
     const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
+    const collectionItemHour = this.elems.listHour.querySelectorAll('.hour');
+
+    const setStyleLeft = newLeft => {
+      if (newLeft < leftMax) { newLeft = leftMax }
+      this.elems.listHour.style.left = newLeft + 'px';
+    } 
+
     if (listHourStyleLeft > leftMax) {
       let newLeft = listHourStyleLeft - 150;
-      if (newLeft < leftMax) {
-        newLeft = leftMax;
-      }
-      this.elems.listHour.style.left = newLeft + 'px';
+        
+      setStyleLeft(newLeft);
+
+      collectionItemHour.forEach(i => {
+        let marginItemHour = this.elems.buttonHourRight.getBoundingClientRect().left - i.getBoundingClientRect().left;
+        if (marginItemHour < 100) {
+          newLeft -= (marginItemHour - 100)
+          setStyleLeft(newLeft);
+          console.log('fire');
+        }
+      })
     }
   }
   //accerchiamento giorno
@@ -96,7 +110,7 @@ export class MainHandler {
 
       return;
     }
-    //let hourChecked = evt.target;
+
     for (let hour of this.elems.listHour.children) {
       if (hour.classList.contains('item_checked') ) hour.classList.remove('item_checked');
     }
@@ -106,7 +120,6 @@ export class MainHandler {
 
   //la registrazione della scheda o apertura la finestra Login
   handleSubmit(evt) {
-    // this.btnSubmit.classList.add('visually-hidden');
     btnRegisterFormHandler(this.currentDate, evt);
   }
   static test() {
