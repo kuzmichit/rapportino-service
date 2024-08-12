@@ -113,12 +113,21 @@ class ConfirmBox {
 
 }
 
-const asyncConfirm = (option) => new Promise(resolve => {
+const asyncConfirm = (option) => {
+  console.log('asyncConfirm run');
+  if (document.querySelector('.confirm-modal')) {
+  console.log(1111);
+    return;
+  }  
+
+  new Promise(resolve => {
   
-  const onClick = (val) => {
-    resolve(val);
-  };
-  new ConfirmBox(option, onClick);
-} ); 
+
+    const onClick = (val) => {
+      resolve(val);
+    };
+    new ConfirmBox(option, onClick);
+  })
+}; 
 
 export {asyncConfirm};

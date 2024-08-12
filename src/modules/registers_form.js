@@ -23,7 +23,6 @@ export async function btnRegisterFormHandler(currentDate, evt) {
 
   const restoreInitState = () => {
 
-    // document.getElementById('btnSubmit').classList.remove('visually-hidden');
     main.classList.remove('visually-hidden');
     registerConsultTabs.classList.remove('visually-hidden');
     loader.classList.add('visually-hidden');
@@ -101,7 +100,7 @@ class CreateObjectForDatabase {
 }
 
 const showPopupToConfirmPutData = async (optionConfirm, workForm) => {
-  if (await asyncConfirm(optionConfirm, workForm) ) return true;
+  if (asyncConfirm(optionConfirm, workForm) ) return true;
   
   return false;  
 };
