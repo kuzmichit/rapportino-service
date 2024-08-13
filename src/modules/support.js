@@ -12,7 +12,7 @@ export const calendarsElements = {
   placeToInsert: calendar.querySelector('.list__day'),
   listHour: calendar.querySelector('.list__hour'),
   inputHour: calendar.querySelector('.input__hour'),
-  listHourContainer: calendar.querySelector('.list__hour-container')
+  listHourContainer: calendar.querySelector('.list__hour-container'),
 };
 
 export function camelizeClass(nameClass) {
@@ -175,3 +175,13 @@ export const deleteCookie = (name) => {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
+export const getWidthElem = classElem => {
+
+  const elem = calendar.querySelector(`.${classElem}`);
+  const styleElem = window.getComputedStyle(elem);
+  let widthElem = parseInt(styleElem.marginLeft, 10);
+  widthElem += parseInt(styleElem.marginRight, 10);
+  widthElem += elem.getBoundingClientRect().width;
+
+  return widthElem;
+}

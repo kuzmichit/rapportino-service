@@ -1,7 +1,6 @@
 .calendar {}
 
 .calendar__container {
-  /* width: 100%; */
   background-color: #9eb7c7;
   border-radius: 2%;
 }
@@ -87,7 +86,6 @@
 
 
 .hour__container {
-  /* width: 100%; */
   background: #b7ced9;
   display: flex;
   justify-content: space-between;
@@ -99,7 +97,7 @@
   justify-content: space-evenly;
   width: fit-content;
   position: relative;
-  left: -36.5rem;
+  left: -950px;
   transition: 0.5s ease-in-out;
 }
 

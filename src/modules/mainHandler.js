@@ -1,4 +1,4 @@
-import { camelizeClass, isObject, deleteNodes, isUserDataInLocalStorage } from './support.js';
+import { camelizeClass, isObject, deleteNodes, getWidthElem } from './support.js';
 import { CreateCalendar } from './calendar.js';
 import { renderDay } from './renders.js';
 import { renderModalSignIn } from './login.js';
@@ -11,7 +11,8 @@ export class MainHandler {
     this.calendar = new CreateCalendar(this.elems.placeToInsert);
     this.currentDate = date;
     this.btnSubmit = document.getElementById('btnSubmit');
-    this.elems.targetCurrent.addEventListener('click', this.clickOnHandler.bind(this) );
+    this.elems.targetCurrent.addEventListener('click', this.clickOnHandler.bind(this));
+    this.widthHourItem = getWidthElem('hour');
     this.addSubmit();
     renderDay(date);
     // this.test();
@@ -54,9 +55,10 @@ export class MainHandler {
   hourBtnLeft(e) {
     e.preventDefault();
     const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left,
-          maxLeft = this.elems.listHourContainer.getBoundingClientRect().left
+      maxLeft = this.elems.listHourContainer.getBoundingClientRect().left
+    
     if (listHourStyleLeft < maxLeft) {
-      let newLeft = listHourStyleLeft - maxLeft + 150;
+      let newLeft = listHourStyleLeft - maxLeft + this.widthHourItem*3;
       if (newLeft > 0) {
         newLeft = 0;
       }
@@ -68,28 +70,16 @@ export class MainHandler {
     e.preventDefault();
     const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
     const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
-    const collectionItemHour = this.elems.listHour.querySelectorAll('.hour');
-
-    const setStyleLeft = newLeft => {
-      if (newLeft < leftMax) { newLeft = leftMax }
-      this.elems.listHour.style.left = newLeft + 'px';
-    } 
-
-    if (listHourStyleLeft > leftMax) {
-      let newLeft = listHourStyleLeft - 150;
         
-      setStyleLeft(newLeft);
-
-      collectionItemHour.forEach(i => {
-        let marginItemHour = this.elems.buttonHourRight.getBoundingClientRect().left - i.getBoundingClientRect().left;
-        if (marginItemHour < 100) {
-          newLeft -= (marginItemHour - 100)
-          setStyleLeft(newLeft);
-          console.log('fire');
-        }
-      })
+    if (listHourStyleLeft > leftMax) {
+      let newLeft = listHourStyleLeft - this.widthHourItem * 3;
+      console.log(this.widthHourItem);
+        
+    if (newLeft < leftMax) { newLeft = leftMax }
+      this.elems.listHour.style.left = newLeft + 'px';
     }
   }
+
   //accerchiamento giorno
   dayItem(evt) {
     evt.preventDefault();

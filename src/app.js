@@ -13,6 +13,7 @@ import bindHandlerChooseTab from '../src/modules/choose_tab';
 import { MainHandler } from './modules/mainHandler.js';
 import { calendarsElements, deleteCookie } from './modules/support.js';
 import { bindLogout } from './modules/login.js';
+import moveListHoursOnTouch from "./modules/move_list_hours.js";
 
 const date = new Date();
 new MainHandler(date, calendarsElements);
@@ -20,3 +21,4 @@ new MainHandler(date, calendarsElements);
 deleteCookie('g_state') // da controllare
 bindHandlerChooseTab();
 bindLogout();
+new moveListHoursOnTouch();
