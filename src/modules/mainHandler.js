@@ -11,7 +11,7 @@ export class MainHandler {
     this.calendar = new CreateCalendar(this.elems.placeToInsert);
     this.currentDate = date;
     this.btnSubmit = document.getElementById('btnSubmit');
-    this.elems.targetCurrent.addEventListener('click', this.clickOnHandler.bind(this));
+    this.elems.targetCurrent.addEventListener('click', this.clickOnHandler.bind(this) );
     this.widthHourItem = getWidthElem('hour');
     this.addSubmit();
     renderDay(date);
@@ -51,34 +51,34 @@ export class MainHandler {
     this.calendar(this.currentDate.setMonth(this.currentDate.getMonth() - 1) );
     renderDay(null, this.currentDate);
   }
-  //le frecce per spostare le ore
-  hourBtnLeft(e) {
-    e.preventDefault();
-    const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left,
-      maxLeft = this.elems.listHourContainer.getBoundingClientRect().left
+  // //le frecce per spostare le ore
+  // hourBtnLeft(e) {
+  //   e.preventDefault();
+  //   const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left,
+  //         maxLeft = this.elems.listHourContainer.getBoundingClientRect().left
     
-    if (listHourStyleLeft < maxLeft) {
-      let newLeft = listHourStyleLeft - maxLeft + this.widthHourItem*3;
-      if (newLeft > 0) {
-        newLeft = 0;
-      }
-      this.elems.listHour.style.left = newLeft + 'px';
-    }
-  }
+  //   if (listHourStyleLeft < maxLeft) {
+  //     let newLeft = listHourStyleLeft - maxLeft + this.widthHourItem*3;
+  //     if (newLeft > 0) {
+  //       newLeft = 0;
+  //     }
+  //     this.elems.listHour.style.left = newLeft + 'px';
+  //   }
+  // }
 
-  hourBtnRight(e) {
-    e.preventDefault();
-    const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
-    const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
+  // hourBtnRight(e) {
+  //   e.preventDefault();
+  //   const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
+  //   const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
         
-    if (listHourStyleLeft > leftMax) {
-      let newLeft = listHourStyleLeft - this.widthHourItem * 3;
-      console.log(this.widthHourItem);
+  //   if (listHourStyleLeft > leftMax) {
+  //     let newLeft = listHourStyleLeft - this.widthHourItem * 3;
         
-    if (newLeft < leftMax) { newLeft = leftMax }
-      this.elems.listHour.style.left = newLeft + 'px';
-    }
-  }
+  //     if (newLeft < leftMax) newLeft = leftMax 
+      
+  //     this.elems.listHour.style.left = newLeft + 'px';
+  //   }
+  // }
 
   //accerchiamento giorno
   dayItem(evt) {
