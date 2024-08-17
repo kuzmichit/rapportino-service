@@ -42,8 +42,6 @@ export default class moveListHoursOnTouch {
     this.#listHour.removeEventListener('pointermove', this.onListMove);
     this.#listHour.removeEventListener('pointerup', this.onListUp);
     this.#calendar.removeEventListener('pointermove', this.isAreaListLeave);
-
-    console.log('Trascinamento terminato');
   }
 
   onListMove(e) { // Aggiungi uscita dal campo 
