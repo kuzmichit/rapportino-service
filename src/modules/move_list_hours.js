@@ -1,11 +1,10 @@
 import { getWidthElem } from './support.js';
 export default class moveListHoursOnTouch {
 
+  #calendar = document.getElementById('calendar');
   #hourContainer = document.querySelector('.hour__container');
   #listHourContainer = this.#hourContainer.querySelector('.list__hour-container');
   #listHour = this.#hourContainer.querySelector('.list__hour');
-  #btnLeft = this.#hourContainer.querySelector('.hour__btn-left');
-  #btnRight = this.#hourContainer.querySelector('.hour__btn-right');
   #shiftX = 0;
   #leftEdge = 0;
   #listHourContainerStyleLeft = 0;
@@ -18,12 +17,9 @@ export default class moveListHoursOnTouch {
     this.onListDown = this.onListDown.bind(this);
     this.onListUp = this.onListUp.bind(this);
     this.onHourContainerClick = this.onHourContainerClick.bind(this)
-    // this.onBtnLeftClick = this.onBtnLeftClick.bind(this);
-    // this.onBtnRightClick = this.onBtnRightClick.bind(this);
-
     this.#listHour.addEventListener('pointerdown', this.onListDown);
     this.#hourContainer.addEventListener('click', this.onHourContainerClick);
-    // this.#btnRight.addEventListener('click', this.onBtnRightClick);
+    this.isAreaListLeave = this.isAreaListLeave.bind(this)
   }
 
   onListDown(e) {
@@ -35,6 +31,7 @@ export default class moveListHoursOnTouch {
 
     // Aggiungi l'evento pointermove quando inizia il trascinamento
     this.#listHour.addEventListener('pointermove', this.onListMove);
+    // this.#calendar.addEventListener('pointermove', this.isAreaListLeave);
 
     // Aggiungi l'evento pointerup
     this.#listHour.addEventListener('pointerup', this.onListUp);
@@ -44,6 +41,7 @@ export default class moveListHoursOnTouch {
     // Rimuovi gli eventi pointermove e pointerup quando il trascinamento è terminato
     this.#listHour.removeEventListener('pointermove', this.onListMove);
     this.#listHour.removeEventListener('pointerup', this.onListUp);
+    // this.#calendar.removeEventListener('pointermove', this.isAreaListLeave);
 
     console.log('Trascinamento terminato');
   }
@@ -59,8 +57,10 @@ export default class moveListHoursOnTouch {
     if (newLeft < this.#leftEdge) {
       newLeft = this.#leftEdge;
     }
-
+    
     this.#listHour.style.left = newLeft + 'px';
+    // this.isAreaListLesave(e);
+  
   }
 
   onHourContainerClick(e) { //le frecce per spostare le ore
@@ -88,21 +88,21 @@ export default class moveListHoursOnTouch {
       this.#listHour.style.transition = 'none';
     }, 500);
   }
-
-  onBtnRightClick(e) {
+  
+  isAreaListLeave(e) { // uscita dal campo list hour
     e.preventDefault();
-
-    const leftEdge = this.#listHourContainer.getBoundingClientRect().width - this.#listHour.getBoundingClientRect().width;
-    const listHourStyleLeft = this.#listHour.getBoundingClientRect().left - this.#listHourContainer.getBoundingClientRect().left;
-
-    let newLeft = listHourStyleLeft - this.#widthHourItem * this.#count;
-       
-    if (newLeft < leftEdge) newLeft = leftEdge 
+    const containerRect = this.#listHourContainer.getBoundingClientRect();
+    console.log(e.clientX < containerRect.left);
     
-    this.#listHour.style.left = newLeft + 'px';
-
-    setTimeout( () => {
-      this.#listHour.style.transition = 'none';
-    }, 500);
+    if (
+      e.clientX < containerRect.left ||
+      e.clientX > containerRect.right ||
+      e.clientY < containerRect.top ||
+      e.clientY > containerRect.bottom
+    ) {
+      this.onListUp();
+      this.#calendar.removeEventListener('pointermove', this.isAreaListLeave);
+    }
   }
+
 }

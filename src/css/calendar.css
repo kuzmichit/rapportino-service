@@ -98,7 +98,6 @@
   width: fit-content;
   position: relative;
   left: -950px;
-  /* transition: 0.5s ease-in-out; */
 }
 
 @media(min-width: 768px) {
