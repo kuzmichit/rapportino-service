@@ -31,7 +31,7 @@ export default class moveListHoursOnTouch {
 
     // Aggiungi l'evento pointermove quando inizia il trascinamento
     this.#listHour.addEventListener('pointermove', this.onListMove);
-    // this.#calendar.addEventListener('pointermove', this.isAreaListLeave);
+    this.#calendar.addEventListener('pointermove', this.isAreaListLeave);
 
     // Aggiungi l'evento pointerup
     this.#listHour.addEventListener('pointerup', this.onListUp);
@@ -41,7 +41,7 @@ export default class moveListHoursOnTouch {
     // Rimuovi gli eventi pointermove e pointerup quando il trascinamento è terminato
     this.#listHour.removeEventListener('pointermove', this.onListMove);
     this.#listHour.removeEventListener('pointerup', this.onListUp);
-    // this.#calendar.removeEventListener('pointermove', this.isAreaListLeave);
+    this.#calendar.removeEventListener('pointermove', this.isAreaListLeave);
 
     console.log('Trascinamento terminato');
   }
@@ -58,16 +58,16 @@ export default class moveListHoursOnTouch {
       newLeft = this.#leftEdge;
     }
     
+    this.isAreaListLeave(e);
+    
     this.#listHour.style.left = newLeft + 'px';
-    // this.isAreaListLesave(e);
-  
   }
 
   onHourContainerClick(e) { //le frecce per spostare le ore
     e.preventDefault();
     this.#listHour.style.transition = '0.5s ease-in-out';
 
-    let newLeft = 0;
+    let newLeft;
     const shiftLeftListHour = this.#listHour.getBoundingClientRect().left - this.#listHourContainer.getBoundingClientRect().left;
     const leftEdge = this.#listHourContainer.getBoundingClientRect().width - this.#listHour.getBoundingClientRect().width;
 
@@ -92,7 +92,6 @@ export default class moveListHoursOnTouch {
   isAreaListLeave(e) { // uscita dal campo list hour
     e.preventDefault();
     const containerRect = this.#listHourContainer.getBoundingClientRect();
-    console.log(e.clientX < containerRect.left);
     
     if (
       e.clientX < containerRect.left ||
