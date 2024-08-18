@@ -1,17 +1,22 @@
 import { getWidthElem } from './support.js';
-export default class moveListHoursOnClick {
 
-  #calendar = document.getElementById('calendar');
-  #hourContainer = document.querySelector('.hour__container');
-  #listHourContainer = this.#hourContainer.querySelector('.list__hour-container');
-  #listHour = this.#hourContainer.querySelector('.list__hour');
-  #shiftX = 0;
-  #leftEdge = 0;
-  #listHourContainerStyleLeft = 0;
-  #widthHourItem = getWidthElem('hour');
-  #count = 3;
+export default class moveList {
 
-  constructor() {
+  calendar = document.getElementById('calendar');
+  hourContainer = document.querySelector('.hour__container');
+  listHourContainer = this.hourContainer.querySelector('.list__hour-container');
+  listHour = this.hourContainer.querySelector('.list__hour');
+  shiftX = 0;
+  leftEdge = 0;
+  listHourContainerStyleLeft = 0;
+  widthHourItem = getWidthElem('hour');
+  count = 3;
+
+  constructor( {eventStart='pointerdown', eventEnd = 'pointerup', eventMove='pointermove' } ) {
+    // tipi di evento
+    this.eventMove = eventMove;
+    this.eventEnd = eventEnd;
+    this.eventStart = eventStart;
     // Lega i metodi solo una volta nel costruttore
     this.onListMove = this.onListMove.bind(this);
     this.onListDown = this.onListDown.bind(this);
@@ -19,38 +24,39 @@ export default class moveListHoursOnClick {
     this.onListUp = this.onListUp.bind(this);
     this.onHourContainerClick = this.onHourContainerClick.bind(this)
 
-    this.#listHour.addEventListener('touchstart', this.onListTouch);
-    this.#listHour.addEventListener('pointerdown', this.onListDown);
-    this.#hourContainer.addEventListener('click', this.onHourContainerClick);
+    this.listHour.addEventListener(eventStart, this.onListDown);
+    this.hourContainer.addEventListener('click', this.onHourContainerClick);
     this.isAreaListLeave = this.isAreaListLeave.bind(this)
   }
 
   onListDown(e) {
-    console.log(e.type);
     e.preventDefault();
-    this.#listHourContainerStyleLeft = this.#hourContainer.getBoundingClientRect().left;
-    this.#leftEdge = this.#listHourContainer.offsetWidth - this.#listHour.offsetWidth;
+    this.listHourContainerStyleLeft = this.hourContainer.getBoundingClientRect().left;
+    this.leftEdge = this.listHourContainer.offsetWidth - this.listHour.offsetWidth;
 
-    this.#shiftX = e.clientX - this.#listHour.getBoundingClientRect().left;
+    let coordX = this.eventStart === 'pointerdown' ? e.clientX : e.touches[0].clientX 
+    this.shiftX = coordX - this.listHour.getBoundingClientRect().left;
 
     // Aggiungi l'evento pointermove quando inizia il trascinamento
-    this.#listHour.addEventListener('pointermove', this.onListMove);
-    this.#calendar.addEventListener('pointermove', this.isAreaListLeave);
+    this.listHour.addEventListener(this.eventMove, this.onListMove);
+    this.calendar.addEventListener(this.eventMove, this.isAreaListLeave);
 
     // Aggiungi l'evento pointerup
-    this.#listHour.addEventListener('pointerup', this.onListUp);
+    this.listHour.addEventListener(this.eventEnd, this.onListUp);
   }
 
   onListUp() {
     // Rimuovi gli eventi pointermove e pointerup quando il trascinamento è terminato
-    this.#listHour.removeEventListener('pointermove', this.onListMove);
-    this.#listHour.removeEventListener('pointerup', this.onListUp);
-    this.#calendar.removeEventListener('pointermove', this.isAreaListLeave);
+    this.listHour.removeEventListener(this.eventMove, this.onListMove);
+    this.listHour.removeEventListener(this.eventEnd, this.onListUp);
+    this.calendar.removeEventListener(this.eventMove, this.isAreaListLeave);
   }
 
-  onListMove(e) { // Aggiungi uscita dal campo 
+  onListMove(e) { 
+
+    let coordX = (e.type =  )
     
-    let newLeft = e.clientX - this.#shiftX - this.#listHourContainerStyleLeft;
+    let newLeft = e.clientX - this.shiftX - this.listHourContainerStyleLeft;
     // if the pointer is out of slider => adjust left to be within the boundaries
     if (newLeft > 0) {
       newLeft = 0;
@@ -107,7 +113,7 @@ export default class moveListHoursOnClick {
   }
 
   onListTouch(e) {
-    console.log(e.type);
+    console.log(e.touches[0].clientX);
     function isMobile() {
       const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
       
@@ -121,4 +127,5 @@ export default class moveListHoursOnClick {
       console.log('Desktop device detected');
     }
   }
+}
 }
