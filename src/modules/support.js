@@ -191,3 +191,32 @@ export const isMobile = () => {
   
   return regex.test(navigator.userAgent);
 }
+
+export const reduceEntries = (entries) => {
+  // Utilizziamo un oggetto per raggruppare gli elementi per edificio e data
+  const groupedEntries = {};
+
+  entries.forEach( ( [timestamp, entry] ) => {
+    const { building, date, description, workedHours } = entry;
+    const key = building.trim() + date.trim(); // Usare sia l'edificio che la data come chiave
+
+    if (!groupedEntries[key] ) {
+      // Se non esiste un gruppo per questo edificio e data, lo creiamo
+      groupedEntries[key] = {
+        ...entry,
+        workedHours: parseFloat(workedHours),
+        description,
+        timestamp
+      };
+    }
+    else {
+      // Se esiste già un gruppo, aggiorniamo i valori
+      groupedEntries[key].workedHours += parseFloat(workedHours);
+    }
+  } );
+
+  // Convertiamo l'oggetto di gruppi di nuovo in un array
+  return Object.values(groupedEntries).map(entry => {
+    return entry;
+  } );
+}

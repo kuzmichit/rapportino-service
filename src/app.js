@@ -13,7 +13,6 @@ import bindHandlerChooseTab from '../src/modules/choose_tab';
 import { MainHandler } from './modules/mainHandler.js';
 import { calendarsElements, deleteCookie, isMobile } from './modules/support.js';
 import { bindLogout } from './modules/login.js';
-import moveListHoursOnTouch from './modules/move_list_hours.js';
 import moveList from './modules/move_list.js';
 
 const date = new Date();

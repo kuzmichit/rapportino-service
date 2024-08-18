@@ -1,8 +1,4 @@
-/* 
-** 
-** 
- */
-import { autoClickOnElement, deleteNodes } from './support.js';
+import { autoClickOnElement, deleteNodes, reduceEntries } from './support.js';
 import { renderModalSignIn } from './login.js';
 import {asyncConfirm} from './modal.js';
 import { getResourceFromDatabase } from './firebase/service.js';
@@ -24,14 +20,20 @@ const onBtnCercaHandler = async (e) => {
   let dataToRender;
 
   const render = dataToRender => { // TODO: Se non esiste la scheda (mese) in FB far vedere il messaggio -> refresh cerca form 
+    const amendHourWork = (item) => {
 
+      let result = parseInt(item)
+    }
     const createTbody = () => {
 
       let tbody = '<tbody>';
-      const entries = Object.entries(dataToRender);
-
-      let rows = entries.reduce( (row,item) => {
-        row += `<tr><td>${item[0].slice(0, item[0].indexOf('alle') - 6)}</td><td>${item[1].workedHours}</td><td>${item[1].building}</td><td class="render__description">${item[1].description}</td></tr>`;
+      let entries = Object.entries(dataToRender);
+      entries.forEach(i => console.log(i[1].workedHours) ) 
+      entries = reduceEntries(entries).sort( (a, b) => a.date > b.date);
+ 
+      let rows = entries.reduce( (row, item) => {
+        
+        row += `<tr><td>${item.timestamp.slice(0, item.timestamp.indexOf('alle') - 6)}</td><td>${item.workedHours}</td><td>${item.building}</td><td class="render__description">${item.description}</td></tr>`;
 
         return row;
       }, '');
