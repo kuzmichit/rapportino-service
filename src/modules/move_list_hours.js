@@ -107,7 +107,7 @@ export default class moveListHoursOnClick {
   }
 
   onListTouch(e) {
-    console.log(e.type);
+    console.log(e.touches[0].clientX);
     function isMobile() {
       const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
       
