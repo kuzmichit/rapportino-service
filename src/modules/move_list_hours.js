@@ -15,15 +15,18 @@ export default class moveListHoursOnTouch {
     // Lega i metodi solo una volta nel costruttore
     this.onListMove = this.onListMove.bind(this);
     this.onListDown = this.onListDown.bind(this);
+    this.onListTouch = this.onListTouch.bind(this);
     this.onListUp = this.onListUp.bind(this);
     this.onHourContainerClick = this.onHourContainerClick.bind(this)
+
+    this.#listHour.addEventListener('touchstart', this.onListTouch);
     this.#listHour.addEventListener('pointerdown', this.onListDown);
     this.#hourContainer.addEventListener('click', this.onHourContainerClick);
     this.isAreaListLeave = this.isAreaListLeave.bind(this)
   }
 
   onListDown(e) {
-    e.preventDefault(); 
+    e.preventDefault();
     this.#listHourContainerStyleLeft = this.#hourContainer.getBoundingClientRect().left;
     this.#leftEdge = this.#listHourContainer.offsetWidth - this.#listHour.offsetWidth;
 
@@ -102,4 +105,19 @@ export default class moveListHoursOnTouch {
     }
   }
 
+  onListTouch(e) {
+    console.log(e.touches[0].clientX);
+    function isMobile() {
+      const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      
+      return regex.test(navigator.userAgent);
+    }
+    
+    if (isMobile() ) {
+      console.log('Mobile device detected');
+    }
+    else {
+      console.log('Desktop device detected');
+    }
+  }
 }
