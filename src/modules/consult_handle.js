@@ -19,16 +19,12 @@ const onBtnCercaHandler = async (e) => {
   let URL_pathname;
   let dataToRender;
 
-  const render = dataToRender => { // TODO: Se non esiste la scheda (mese) in FB far vedere il messaggio -> refresh cerca form 
-    const amendHourWork = (item) => {
-
-      let result = parseInt(item)
-    }
+  const render = dataToRender => { 
+ 
     const createTbody = () => {
 
       let tbody = '<tbody>';
       let entries = Object.entries(dataToRender);
-      entries.forEach(i => console.log(i[1].workedHours) ) 
       entries = reduceEntries(entries).sort( (a, b) => a.date > b.date);
  
       let rows = entries.reduce( (row, item) => {

@@ -57,6 +57,8 @@
         </div>
         <form id="work-data">
           <div class="hour__container">
+            <div class="edit__hour hour">&#9998;</div>
+            <input type="text" placeholder="Inserire le ore per esempio 3.6" class="input__hour visually-hidden">
             <div class="hour__btn-left button__left button-array"></div>
             <div class="list__hour-container">
                   <ul class="list__hour">
@@ -96,7 +98,10 @@
         <div class="consulting">
           <h3 class="consulting__title">Scegli la data o il mese:</h3>
           <div class="consulting__fields">
-            <input class="consulting__date" type = 'date' name="date"/>
+            <label>Seleziona una data
+            <input class="consulting__date" type = 'date' name="date" placeholder="Scegli la data"/>
+            </label>
+            <label> o seleziona un mese
             <select class="consulting__month" size="1" id="mesi" name="mesi">
               <option value="">Scegli il mese</option>
               <option>Gennaio</option>
@@ -112,6 +117,7 @@
               <option>Novembre</option>
               <option>Dicembre</option>
             </select>
+            </label>
             <button class ='consulting__btn' name="cerca" return false>Cerca</button>
           </div>
         </div>

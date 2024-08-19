@@ -38,6 +38,7 @@
 .consulting__date {
   width: 260px;
   margin-right: 20px;
+  margin-top: 10px;
   padding: 8px;
   border: none;
   background-color: lightgray;
@@ -47,6 +48,7 @@
 .consulting__month {
   width: 260px;
   margin-right: 20px;
+  margin-top: 10px;
   padding: 8px;
   background-color: lightgray;
   border-radius: 4px;
@@ -86,17 +88,26 @@
 
 @media (max-width: 576.98px) {
 
+  .consulting {
+    min-width: 99vw;
+  }
+
+  .consulting__fields {
+    flex-direction: column;
+  }
+
   .consulting__date {
     margin-right: 0;
-    width: 95%;
+    width: 96vw;
   }
 
   .consulting__month {
-    width: 95%;
+    width: 96vw;
     margin-right: 0;
   }
 
   .consulting__btn {
     width: 80%;
+    margin: 0 auto;
   }
 }

@@ -22,6 +22,7 @@ export class MainHandler {
   }
   clickOnHandler(evt) {
     let action = camelizeClass(evt.target.className).split(' ');
+    console.log(action);
     if (!action) return;
     if (!isObject(this[action[0]] ) ) return;
     this[action[0]](evt);
@@ -51,34 +52,6 @@ export class MainHandler {
     this.calendar(this.currentDate.setMonth(this.currentDate.getMonth() - 1) );
     renderDay(null, this.currentDate);
   }
-  // //le frecce per spostare le ore
-  // hourBtnLeft(e) {
-  //   e.preventDefault();
-  //   const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left,
-  //         maxLeft = this.elems.listHourContainer.getBoundingClientRect().left
-    
-  //   if (listHourStyleLeft < maxLeft) {
-  //     let newLeft = listHourStyleLeft - maxLeft + this.widthHourItem*3;
-  //     if (newLeft > 0) {
-  //       newLeft = 0;
-  //     }
-  //     this.elems.listHour.style.left = newLeft + 'px';
-  //   }
-  // }
-
-  // hourBtnRight(e) {
-  //   e.preventDefault();
-  //   const leftMax = this.elems.listHourContainer.getBoundingClientRect().width - this.elems.listHour.getBoundingClientRect().width;
-  //   const listHourStyleLeft = this.elems.listHour.getBoundingClientRect().left - this.elems.listHourContainer.getBoundingClientRect().left;
-        
-  //   if (listHourStyleLeft > leftMax) {
-  //     let newLeft = listHourStyleLeft - this.widthHourItem * 3;
-        
-  //     if (newLeft < leftMax) newLeft = leftMax 
-      
-  //     this.elems.listHour.style.left = newLeft + 'px';
-  //   }
-  // }
 
   //accerchiamento giorno
   dayItem(evt) {
@@ -91,6 +64,13 @@ export class MainHandler {
     let tmpDate = new Date(+this.currentDate);
     tmpDate.setDate(evt.target.textContent);
     this.currentDate = tmpDate;
+  }
+  
+  editHour() {
+    this.elems.listHour.classList.toggle('visually-hidden');
+    this.elems.inputHour.classList.toggle('visually-hidden');
+    this.elems.hourBtnLeft.classList.toggle('visually-hidden')
+    this.elems.hourBtnRight.classList.toggle('visually-hidden')
   }
   //accerchiamento ora
   hour(evt) {
@@ -111,19 +91,5 @@ export class MainHandler {
   //la registrazione della scheda o apertura la finestra Login
   handleSubmit(evt) {
     btnRegisterFormHandler(this.currentDate, evt);
-  }
-  static test() {
-
-    const autoClickOnElement = element => {
-      window.addEventListener('DOMContentLoaded', click);
-
-      function click() {
-        const clickEvent = new Event('pointerdown');
-
-        document.querySelector('.submit__button').dispatchEvent(clickEvent);
-      }
-    };
-    autoClickOnElement();
-    console.log('autoClickOnSubmit');
   }
 }

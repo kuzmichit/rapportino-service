@@ -17,7 +17,7 @@ export async function btnRegisterFormHandler(currentDate, evt) {
   const dataForm = {
     building : workForm.building.value,
     description : workForm.description.value,           
-    workedHours : workForm.querySelector('.hour.item_checked') && 
+    workedHours : workForm.querySelector('.input__hour').value || workForm.querySelector('.hour.item_checked') && 
                   workForm.querySelector('.hour.item_checked').textContent
   };
 
