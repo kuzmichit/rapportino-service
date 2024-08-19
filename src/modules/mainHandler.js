@@ -1,7 +1,6 @@
 import { camelizeClass, isObject, deleteNodes, getWidthElem } from './support.js';
 import { CreateCalendar } from './calendar.js';
 import { renderDay } from './renders.js';
-import { renderModalSignIn } from './login.js';
 import { btnRegisterFormHandler } from './registers_form.js';
 
 export class MainHandler {
