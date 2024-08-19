@@ -21,10 +21,10 @@ export class MainHandler {
   }
   clickOnHandler(evt) {
     let action = camelizeClass(evt.target.className).split(' ');
-    console.log(action);
     if (!action) return;
     if (!isObject(this[action[0]] ) ) return;
     this[action[0]](evt);
+    // console.log(action[0] );
   }
 
   calendarHeaderText() {

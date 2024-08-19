@@ -29,7 +29,6 @@ export default class moveList {
   }
   
   onListDown(e) {
-    e.preventDefault();
     this.listHourContainerStyleLeft = this.hourContainer.getBoundingClientRect().left;
     this.leftEdge = this.listHourContainer.offsetWidth - this.listHour.offsetWidth;
     
