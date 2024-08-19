@@ -100,7 +100,7 @@ class CreateObjectForDatabase {
 }
 
 const showPopupToConfirmPutData = async (optionConfirm, workForm) => {
-  if (asyncConfirm(optionConfirm, workForm) ) return true;
+  if (await asyncConfirm(optionConfirm, workForm) ) return true;
   
   return false;  
 };
