@@ -97,10 +97,9 @@
       <form class="container visually-hidden" id="consulting">
         <div class="consulting">
           <div class="consulting__fields">
-            <label>Seleziona una data
-            <input class="consulting__date" type = 'date' name="date" placeholder="Scegli la data"/>
-            </label>
-            <label> o seleziona un mese
+            <label for="consulting__date">Seleziona una data</label>
+            <input class="consulting__date" type = 'date' name="date" placeholder="Scegli la data" id="consulting__date"/>
+            <label for="mesi"> o seleziona un mese</label>
             <select class="consulting__month" size="1" id="mesi" name="mesi">
               <option value="">Scegli il mese</option>
               <option>Gennaio</option>
@@ -116,7 +115,6 @@
               <option>Novembre</option>
               <option>Dicembre</option>
             </select>
-            </label>
             <button class ='consulting__btn' name="cerca" return false>Cerca</button>
           </div>
         </div>
