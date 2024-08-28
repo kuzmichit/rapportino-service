@@ -1,4 +1,4 @@
-import { autoClickOnElement, deleteNodes, reduceEntries } from './support.js';
+import { autoClickOnElement, deleteNodes, reduceEqualEntries } from './support.js';
 import { renderModalSignIn } from './login.js';
 import {asyncConfirm} from './modal.js';
 import { getResourceFromDatabase } from './firebase/service.js';
@@ -20,13 +20,12 @@ const onBtnCercaHandler = async (e) => {
   let dataToRender;
 
   const render = dataToRender => { 
- 
     const createTbody = () => {
 
       let tbody = '<tbody>';
       let entries = Object.entries(dataToRender);
-      entries = reduceEntries(entries).sort( (a, b) => a.date > b.date);
- 
+      entries = reduceEqualEntries(entries).sort( (a, b) => a.date.replace(/-/g, '') - b.date.replace(/-/g, '') );
+      console.log(entries);
       let rows = entries.reduce( (row, item) => {
         
         row += `<tr><td>${item.timestamp.slice(0, item.timestamp.indexOf('alle') - 6)}</td><td>${item.workedHours}</td><td>${item.building}</td><td class="render__description">${item.description}</td></tr>`;

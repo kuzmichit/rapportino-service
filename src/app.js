@@ -23,3 +23,5 @@ bindHandlerChooseTab();
 bindLogout();
  
 const onListTouch = isMobile() ? new moveList( { eventStart: 'touchstart', eventEnd: 'touchend', eventMove: 'touchmove' } ) : new moveList( {} )
+
+console.log('object');

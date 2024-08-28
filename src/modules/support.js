@@ -193,7 +193,7 @@ export const isMobile = () => {
   return regex.test(navigator.userAgent);
 }
 
-export const reduceEntries = (entries) => {
+export const reduceEqualEntries = (entries) => {
   // Utilizziamo un oggetto per raggruppare gli elementi per edificio e data
   const groupedEntries = {};
 
