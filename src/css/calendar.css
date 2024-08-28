@@ -87,7 +87,7 @@
   border-radius: 0 0 2% 2%;
 }
 .input__hour {
-  width: 30vw;
+  width: 50%;
   margin: 5px auto;
   border: none;
   border-radius: 5px;
@@ -103,15 +103,8 @@
   justify-content: space-evenly;
   width: fit-content;
   position: relative;
-  left: -950px;
+  left: -96%;
 }
-
-@media(min-width: 768px) {
-  .list__hour {
-    left: -10rem;
-  }
-}
-
 .list__hour-container {
   overflow: hidden;
   position: relative;
@@ -150,4 +143,25 @@
 .hour__btn-right {
   align-self: center;
   margin: 0 1rem;
+}
+@media(max-width: 10px) {
+  .list__hour {
+    left: -65%;
+  }
+}
+
+@media(max-width: 768px) {
+  .list__hour {
+    left: -10rem;
+  }
+
+  .input__hour {
+    width: 80%;
+  }
+}
+
+@media(max-width: 461px) {
+  .list__hour {
+    left: -64rem;
+  }
 }
