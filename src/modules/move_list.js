@@ -9,7 +9,8 @@ export default class moveList {
   shiftX = 0;
   leftEdge = 0;
   listHourContainerStyleLeft = 0;
-  widthHourItem = getWidthElem('hour');
+  marginListHourItem = 16;
+  widthHourItem = getWidthElem('hour') + 2 * this.marginListHourItem;
   count = 3;
 
   constructor( {eventStart='pointerdown', eventEnd = 'pointerup', eventMove='pointermove' } ) {
@@ -70,19 +71,24 @@ export default class moveList {
  
   onHourContainerClick(e) { //le frecce per spostare le ore
     e.preventDefault();
-    this.listHour.style.transition = '0.5s ease-in-out';
+    this.listHour.style.transition = '0.3s ease-in-out';
 
     let newLeft;
-    const shiftLeftListHour = this.listHour.getBoundingClientRect().left - this.listHourContainer.getBoundingClientRect().left;
+    const shiftLeftListHour = this.listHour.getBoundingClientRect().left - this.hourContainer.getBoundingClientRect().left;
     const leftEdge = this.listHourContainer.getBoundingClientRect().width - this.listHour.getBoundingClientRect().width;
-
+    const leftBounderListHourContainer = this.listHourContainer.getBoundingClientRect().left
+    
     if (e.target.classList.contains('hour__btn-left') ) {
-      newLeft = shiftLeftListHour + this.widthHourItem * this.count;
+      newLeft = this.listHour.getBoundingClientRect().left + this.widthHourItem * this.count - this.listHourContainer.getBoundingClientRect().left; 
       if (newLeft > 0) newLeft = 0;
     }
 
     if (e.target.classList.contains('hour__btn-right') ) {
-      newLeft = shiftLeftListHour - this.widthHourItem * this.count;
+      
+      newLeft = this.listHour.getBoundingClientRect().left - this.widthHourItem * this.count - this.listHourContainer.getBoundingClientRect().left;
+      
+      ( () => console.log(this.listHour.getBoundingClientRect().left, 'listEnd') )()
+      //, shiftLeftListHour, 'shiftLeftListHour', this.widthHourItem * this.count, 'this.widthHourItem * this.count');
        
       if (newLeft < leftEdge) newLeft = leftEdge;
     }

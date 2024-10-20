@@ -110,7 +110,7 @@ body {
 
 .active-tab {
   background-color: rgb(255, 166, 1);
-  transition-duration: 2s;
+  transition-duration: 1s;
 }
 
 .get-data {

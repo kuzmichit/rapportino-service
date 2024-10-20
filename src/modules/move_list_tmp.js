@@ -1,3 +1,5 @@
+// Creato per migliorare identificazione del touch e click 
+
 import { getWidthElem } from './support.js';
 export default class moveListHoursOnClick {
 
