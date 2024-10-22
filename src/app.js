@@ -13,7 +13,7 @@ import bindHandlerChooseTab from '../src/modules/choose_tab';
 import { MainHandler } from './modules/mainHandler.js';
 import { calendarsElements, deleteCookie, isMobile } from './modules/support.js';
 import { bindLogout } from './modules/login.js';
-import moveList from './modules/move_list.js';
+import {bindNavHourHandler} from './modules/move_list.js';
 
 const date = new Date();
 new MainHandler(date, calendarsElements);
@@ -21,7 +21,7 @@ new MainHandler(date, calendarsElements);
 deleteCookie('g_state') // da controllare
 bindHandlerChooseTab();
 bindLogout();
- 
-const onListTouch = isMobile() ? new moveList( { eventStart: 'touchstart', eventEnd: 'touchend', eventMove: 'touchmove' } ) : new moveList( {} )
+// const onListTouch = isMobile() ? new moveList( { eventStart: 'touchstart', eventEnd: 'touchend', eventMove: 'touchmove' } ) : new moveList( {} )
 
+bindNavHourHandler();
 console.log('object');

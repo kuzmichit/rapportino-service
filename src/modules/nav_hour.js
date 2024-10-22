@@ -1,7 +1,7 @@
-import { getWidthElem } from './support.js';
+import { getWidthElem, isMobile } from './support.js';
 
-class moveList {
-
+class navHourHandler {
+  
   calendar = document.getElementById('calendar');
   hourContainer = document.querySelector('.hour__container');
   listHourContainer = this.hourContainer.querySelector('.list__hour-container');
@@ -19,17 +19,17 @@ class moveList {
     this.eventEnd = eventEnd;
     this.eventStart = eventStart;
     // Lega i metodi solo una volta nel costruttore
-    this.onListDown = this.onListDown.bind(this);
-    this.onListMove = this.onListMove.bind(this);
-    this.onListUp = this.onListUp.bind(this);
-    this.onHourContainerClick = this.onHourContainerClick.bind(this)
-    this.isAreaListLeave = this.isAreaListLeave.bind(this);
+    this.onListDown = this.onNavHourDown.bind(this);
+    this.onListMove = this.onNavHourTouch.bind(this);
+    this.onListUp = this.onNavHourUp.bind(this);
+    this.onHourContainerClick = this.onNavHourContainerClick.bind(this)
+    this.isAreaListLeave = this.isNavHourAreaLeave.bind(this);
 
-    this.listHour.addEventListener(eventStart, this.onListDown);
-    this.hourContainer.addEventListener('click', this.onHourContainerClick);
+    this.listHour.addEventListener(eventStart, this.onNavHourDown);
+    this.hourContainer.addEventListener('click', this.onNavHourContainerClick);
   }
   
-  onListDown(e) {
+  onNavHourDown(e) {
     this.listHourContainerStyleLeft = this.hourContainer.getBoundingClientRect().left;
     this.leftEdge = this.listHourContainer.offsetWidth - this.listHour.offsetWidth;
     
@@ -37,23 +37,23 @@ class moveList {
     this.shiftX = coordX - this.listHour.getBoundingClientRect().left;
 
     // Aggiungi l'evento pointermove quando inizia il trascinamento
-    this.listHour.addEventListener(this.eventMove, this.onListMove);
-    this.calendar.addEventListener(this.eventMove, this.isAreaListLeave);
+    this.listHour.addEventListener(this.eventMove, this.onNavHourTouch);
+    this.calendar.addEventListener(this.eventMove, this.isNavHourAreaLeave);
 
     // Aggiungi l'evento pointerup
-    this.listHour.addEventListener(this.eventEnd, this.onListUp);
+    this.listHour.addEventListener(this.eventEnd, this.onNavHourUp);
   }
  
-  onListUp() {
+  onNavHourUp() {
     // Rimuovi gli eventi pointermove e pointerup quando il trascinamento è terminato
-    this.listHour.removeEventListener(this.eventMove, this.onListMove);
-    this.listHour.removeEventListener(this.eventEnd, this.onListUp);
-    this.calendar.removeEventListener(this.eventMove, this.isAreaListLeave);
+    this.listHour.removeEventListener(this.eventMove, this.onNavHourTouch);
+    this.listHour.removeEventListener(this.eventEnd, this.onNavHourUp);
+    this.calendar.removeEventListener(this.eventMove, this.isNavHourAreaLeave);
   }
 
-  onListMove(e) { 
+  onNavHourTouch(e) { 
     const coordX = this.getCoordX(e)    
-    let newLeft = coordX - this.shiftX - this.listHourContainerStyleLeft;
+    let newLeft = coordX - this.shiftX - this.listHourStyleLeft;
 
     // if the pointer is out of slider => adjust left to be within the boundaries
     if (newLeft > 0) {
@@ -64,12 +64,12 @@ class moveList {
       newLeft = this.leftEdge;
     }
     
-    this.isAreaListLeave(e);
+    this.isNavHourAreaLeave(e);
     
     this.listHour.style.left = newLeft + 'px';
   }
  
-  onHourContainerClick(e) { //le frecce per spostare le ore
+  onNavHourContainerClick(e) { //le frecce per spostare le ore
     e.preventDefault();
     this.listHour.style.transition = '0.3s ease-in-out';
 
@@ -100,7 +100,7 @@ class moveList {
     }, 500);
   }
   
-  isAreaListLeave(e) { // uscita dal campo list hour
+  isNavHourAreaLeave(e) { // uscita dal campo list hour
     e.preventDefault();
     const containerRect = this.listHourContainer.getBoundingClientRect();
     const coordX = this.getCoordX(e);
@@ -112,8 +112,8 @@ class moveList {
       coordY < containerRect.top ||
       coordY > containerRect.bottom
     ) {
-      this.onListUp();
-      this.calendar.removeEventListener(this.eventMove, this.isAreaListLeave);
+      this.onNavHourUp();
+      this.calendar.removeEventListener(this.eventMove, this.isNavHourAreaLeave);
     }
   }
 
@@ -126,12 +126,12 @@ class moveList {
   }
 }
 
-// const getEventTypes = () => {
-//   return isMobile() 
-//     ? { eventStart: 'touchstart', eventEnd: 'touchend', eventMove: 'touchmove' } 
-//     : { };
-// };
+const getEventTypes = () => {
+  return isMobile() 
+    ? { eventStart: 'touchstart', eventEnd: 'touchend', eventMove: 'touchmove' } 
+    : { };
+};
 
-export const bindNavHourHandler = () => {
-  new moveList( {} )
+export const initNavHourHandler = () => {
+  new navHourHandler(getEventTypes() )
 }

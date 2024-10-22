@@ -102,7 +102,7 @@
   display: flex;
   justify-content: space-evenly;
   width: fit-content;
-  position: absolute;
+  position: relative;
   left: -96%;
 }
 .list__hour-container {
