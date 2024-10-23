@@ -18,14 +18,14 @@ class navHourHandler {
     this.eventMove = eventMove;
     this.eventEnd = eventEnd;
     this.eventStart = eventStart;
-    // Lega i metodi solo una volta nel costruttore
+    // Legamento i metodi solo una volta nel costruttore
     this.onNavHourDown= this.onNavHourDown.bind(this);
     this.onNavHourTouch = this.onNavHourTouch.bind(this);
     this.onNavHourUp = this.onNavHourUp.bind(this);
     this.onNavHourContainerClick = this.onNavHourContainerClick.bind(this)
     this.isNavHourAreaLeave = this.isNavHourAreaLeave.bind(this);
 
-    this.listHour.addEventListener(eventStart, this.onNavHourDown);
+    this.listHour.addEventListener(this.eventStart, this.onNavHourDown);
     this.hourContainer.addEventListener('click', this.onNavHourContainerClick);
   }
   
@@ -52,6 +52,7 @@ class navHourHandler {
   }
 
   onNavHourTouch(e) { 
+    console.log(55555);
     const coordX = this.getCoordX(e)    
     let newLeft = coordX - this.shiftX - this.listHourStyleLeft;
 
