@@ -19,11 +19,11 @@ class navHourHandler {
     this.eventEnd = eventEnd;
     this.eventStart = eventStart;
     // Lega i metodi solo una volta nel costruttore
-    this.onListDown = this.onNavHourDown.bind(this);
-    this.onListMove = this.onNavHourTouch.bind(this);
-    this.onListUp = this.onNavHourUp.bind(this);
-    this.onHourContainerClick = this.onNavHourContainerClick.bind(this)
-    this.isAreaListLeave = this.isNavHourAreaLeave.bind(this);
+    this.onNavHourDown= this.onNavHourDown.bind(this);
+    this.onNavHourTouch = this.onNavHourTouch.bind(this);
+    this.onNavHourUp = this.onNavHourUp.bind(this);
+    this.onNavHourContainerClick = this.onNavHourContainerClick.bind(this)
+    this.isNavHourAreaLeave = this.isNavHourAreaLeave.bind(this);
 
     this.listHour.addEventListener(eventStart, this.onNavHourDown);
     this.hourContainer.addEventListener('click', this.onNavHourContainerClick);
@@ -132,6 +132,6 @@ const getEventTypes = () => {
     : { };
 };
 
-export const initNavHourHandler = () => {
-  new navHourHandler(getEventTypes() )
+export const bindNavHourHandler = () => {
+  new navHourHandler( {} )
 }
